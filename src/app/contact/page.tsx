@@ -1,23 +1,195 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { io, Socket } from 'socket.io-client';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
+import { LoginModal } from '@/components/login';
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
 export default function ContactPage() {
+    // Ticket submission states
     const [subject, setSubject] = useState('');
     const [category, setCategory] = useState('');
     const [description, setDescription] = useState('');
-    const [chatMessage, setChatMessage] = useState('');
 
-    const handleTicketSubmit = (e: React.FormEvent) => {
+    // Chat support states
+    const [chatMessage, setChatMessage] = useState('');
+    const [chatMessages, setChatMessages] = useState<any[]>([]);
+    const [sessionStatus, setSessionStatus] = useState('Disconnected');
+    const [agentName, setAgentName] = useState('Agent');
+
+    // Auth states
+    const [user, setUser] = useState<any>(null);
+    const [token, setToken] = useState<string>('');
+    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+    const [showLoginModal, setShowLoginModal] = useState<boolean>(false);
+
+    const socketRef = useRef<Socket | null>(null);
+
+    // Check auth on mount
+    useEffect(() => {
+        const getCookie = (name: string) => {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop()?.split(';').shift();
+            return '';
+        };
+
+        const storedToken = getCookie('token');
+        const storedUser = localStorage.getItem('user');
+
+        if (storedToken && storedUser) {
+            setToken(storedToken);
+            setUser(JSON.parse(storedUser));
+            setIsAuthenticated(true);
+        } else {
+            setShowLoginModal(true);
+        }
+    }, []);
+
+    // Socket.io and chat history loading
+    useEffect(() => {
+        if (!isAuthenticated || !token || !user) return;
+
+        const loadHistory = async () => {
+            try {
+                const res = await fetch(`${API_URL}/api/support/chats/my-history`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+                if (data.success && data.data) {
+                    const mapped = data.data.map((m: any) => ({
+                        sender: m.isAdmin ? 'Agent' : 'User',
+                        senderName: m.senderName,
+                        message: m.message,
+                        createdAt: m.timestamp || new Date().toISOString()
+                    }));
+                    setChatMessages(mapped);
+                }
+            } catch (err) {
+                console.error("Failed to load chat history", err);
+            }
+        };
+
+        loadHistory();
+
+        const socket = io(API_URL, {
+            auth: { token },
+            transports: ['websocket', 'polling']
+        });
+
+        socketRef.current = socket;
+
+        socket.on('connect', () => {
+            socket.emit('register-user', { userId: user.userID, role: 'user' });
+        });
+
+        socket.on('support-session-accepted', (data) => {
+            setSessionStatus('Connected');
+            setAgentName(data.agentName);
+            setChatMessages(prev => [
+                ...prev,
+                { sender: 'System', senderName: 'System', message: `Connected with agent ${data.agentName}.`, createdAt: new Date().toISOString() }
+            ]);
+        });
+
+        socket.on('support-session-closed', () => {
+            setSessionStatus('Closed');
+            setChatMessages(prev => [
+                ...prev,
+                { sender: 'System', senderName: 'System', message: 'Chat session closed by support.', createdAt: new Date().toISOString() }
+            ]);
+        });
+
+        socket.on('receive-message', (msg: any) => {
+            const isAgent = msg.senderId?._id !== user.userID;
+            setChatMessages(prev => [
+                ...prev,
+                {
+                    sender: isAgent ? 'Agent' : 'User',
+                    senderName: msg.senderId?.playerName || 'Agent',
+                    message: msg.message,
+                    createdAt: msg.createdAt || new Date().toISOString()
+                }
+            ]);
+        });
+
+        return () => {
+            socket.disconnect();
+        };
+    }, [isAuthenticated, token, user]);
+
+    // Handle ticket submission
+    const handleTicketSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log({ subject, category, description });
+        if (!isAuthenticated || !token || !user) {
+            setShowLoginModal(true);
+            return;
+        }
+
+        try {
+            const res = await fetch(`${API_URL}/api/tickets/createTicket`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    userId: user.userID,
+                    subject,
+                    category,
+                    priority: 'Medium',
+                    status: 'Open',
+                    messages: [{
+                        sender: 'User',
+                        message: description
+                    }],
+                    actions: ['Ticket created']
+                })
+            });
+
+            const data = await res.json();
+            if (data.success) {
+                alert('Ticket submitted successfully!');
+                setSubject('');
+                setCategory('');
+                setDescription('');
+            } else {
+                alert(data.message || 'Failed to submit ticket');
+            }
+        } catch (err) {
+            alert('Error connecting to backend server to submit ticket');
+        }
     };
 
+    // Handle sending support chat message
     const handleChatSend = (e: React.FormEvent) => {
         e.preventDefault();
-        console.log(chatMessage);
+        if (!chatMessage.trim() || !socketRef.current || !user) return;
+
+        const msgData = {
+            senderId: user.userID,
+            receiverId: 'admin',
+            message: chatMessage,
+            messageType: 'text'
+        };
+
+        socketRef.current.emit('send-message', msgData, (response: any) => {
+            if (response && response.success) {
+                setChatMessages(prev => [
+                    ...prev,
+                    {
+                        sender: 'User',
+                        senderName: user.playerName,
+                        message: chatMessage,
+                        createdAt: new Date().toISOString()
+                    }
+                ]);
+            }
+        });
+
         setChatMessage('');
     };
 
@@ -109,88 +281,88 @@ export default function ContactPage() {
                                         <button className="text-gray-500 hover:text-white transition-colors text-sm">✕</button>
                                     </div>
 
-                                    {/* Chat Canvas (with mock messages) */}
+                                    {/* Chat Canvas (dynamic messages) */}
                                     <div className="flex-1 flex flex-col gap-4 overflow-y-auto p-2 pr-1 my-3 scrollbar-thin scrollbar-thumb-amber-900/50">
-                                        {/* Message 1: Support */}
-                                        <div className="flex items-start gap-2.5">
-                                            <div className="w-8 h-8 rounded-full border border-[#f3c677]/60 overflow-hidden flex items-center justify-center bg-[#070402] shrink-0">
-                                                <img src="/burracoAsset/logo.svg" alt="Baloot Logo" className="w-5 h-5 object-contain" />
-                                            </div>
-                                            <div className="flex flex-col gap-1 max-w-[70%]">
-                                                <div className="bg-[#191410] border border-[#3e2c1c]/40 text-xs text-[#e6dcc8] rounded-2xl rounded-tl-none p-3 shadow-md">
-                                                    <p className="leading-relaxed">Hello! 👋</p>
-                                                    <p className="leading-relaxed">How can we help you today?</p>
+                                        {chatMessages.length === 0 ? (
+                                            <>
+                                                {/* Message 1: Support */}
+                                                <div className="flex items-start gap-2.5">
+                                                    <div className="w-8 h-8 rounded-full border border-[#f3c677]/60 overflow-hidden flex items-center justify-center bg-[#070402] shrink-0">
+                                                        <img src="/burracoAsset/logo.svg" alt="Baloot Logo" className="w-5 h-5 object-contain" />
+                                                    </div>
+                                                    <div className="flex flex-col gap-1 max-w-[70%]">
+                                                        <div className="bg-[#191410] border border-[#3e2c1c]/40 text-xs text-[#e6dcc8] rounded-2xl rounded-tl-none p-3 shadow-md">
+                                                            <p className="leading-relaxed">Hello! 👋</p>
+                                                            <p className="leading-relaxed">How can we help you today?</p>
+                                                        </div>
+                                                        <span className="text-[10px] text-[#8c7e67] pl-1">10:30 AM</span>
+                                                    </div>
                                                 </div>
-                                                <span className="text-[10px] text-[#8c7e67] pl-1">10:30 AM</span>
+                                            </>
+                                        ) : (
+                                            chatMessages.map((msg, index) => {
+                                                const isAgent = msg.sender === 'Agent' || msg.sender === 'System';
+                                                const isSystem = msg.sender === 'System';
+                                                if (isSystem) {
+                                                    return (
+                                                        <div key={index} className="text-center text-[10px] text-gray-500 my-1 font-mono">
+                                                            {msg.message}
+                                                        </div>
+                                                    );
+                                                }
+                                                return (
+                                                    <div key={index} className={`flex items-start gap-2.5 ${isAgent ? '' : 'justify-end'}`}>
+                                                        {isAgent && (
+                                                            <div className="w-8 h-8 rounded-full border border-[#f3c677]/60 overflow-hidden flex items-center justify-center bg-[#070402] shrink-0">
+                                                                <img src="/burracoAsset/logo.svg" alt="Baloot Logo" className="w-5 h-5 object-contain" />
+                                                            </div>
+                                                        )}
+                                                        <div className={`flex flex-col gap-1 max-w-[70%] ${isAgent ? '' : 'items-end'}`}>
+                                                            <div className={`${isAgent ? 'bg-[#191410] border border-[#3e2c1c]/40' : 'bg-[#14321e] border border-[#2e623a]/40'} text-xs text-[#e6dcc8] rounded-2xl ${isAgent ? 'rounded-tl-none' : 'rounded-tr-none'} p-3 shadow-md`}>
+                                                                <p className="leading-relaxed">{msg.message}</p>
+                                                            </div>
+                                                            <span className="text-[10px] text-[#8c7e67] px-1">
+                                                                {msg.senderName} • {new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                );
+                                            })
+                                        )}
+                                        {sessionStatus === 'Connected' && (
+                                            <div className="text-center text-[10px] text-green-400 font-bold uppercase tracking-wider animate-pulse">
+                                                Connected with {agentName}
                                             </div>
-                                        </div>
-
-                                        {/* Message 2: User */}
-                                        <div className="flex items-start gap-2.5 justify-end">
-                                            <div className="flex flex-col gap-1 max-w-[70%] items-end">
-                                                <div className="bg-[#14321e] border border-[#2e623a]/40 text-xs text-[#e6dcc8] rounded-2xl rounded-tr-none p-3 shadow-md">
-                                                    <p className="leading-relaxed">I need help with a payment issue.</p>
-                                                </div>
-                                                <div className="flex items-center gap-1 text-[10px] text-[#8c7e67] pr-1">
-                                                    <span>10:31 AM</span>
-                                                    <span className="text-green-500 font-bold">✓✓</span>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        {/* Message 3: Support */}
-                                        <div className="flex items-start gap-2.5">
-                                            <div className="w-8 h-8 rounded-full border border-[#f3c677]/60 overflow-hidden flex items-center justify-center bg-[#070402] shrink-0">
-                                                <img src="/burracoAsset/logo.svg" alt="Baloot Logo" className="w-5 h-5 object-contain" />
-                                            </div>
-                                            <div className="flex flex-col gap-1 max-w-[70%]">
-                                                <div className="bg-[#191410] border border-[#3e2c1c]/40 text-xs text-[#e6dcc8] rounded-2xl rounded-tl-none p-3 shadow-md">
-                                                    <p className="leading-relaxed">Sure, I'll be happy to assist you with that. Can you please share more details?</p>
-                                                </div>
-                                                <span className="text-[10px] text-[#8c7e67] pl-1">10:31 AM</span>
-                                            </div>
-                                        </div>
-
-                                        {/* Message 4: Typing Indicator */}
-                                        <div className="flex items-start gap-2.5">
-                                            <div className="w-8 h-8 rounded-full border border-[#f3c677]/60 overflow-hidden flex items-center justify-center bg-[#070402] shrink-0">
-                                                <img src="/burracoAsset/logo.svg" alt="Baloot Logo" className="w-5 h-5 object-contain" />
-                                            </div>
-                                            <div className="flex flex-col gap-1">
-                                                <div className="bg-[#191410] border border-[#3e2c1c]/40 rounded-2xl rounded-tl-none p-3 px-4 shadow-md flex items-center gap-1">
-                                                    <span className="w-1.5 h-1.5 bg-[#8c7e67] rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></span>
-                                                    <span className="w-1.5 h-1.5 bg-[#8c7e67] rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></span>
-                                                    <span className="w-1.5 h-1.5 bg-[#8c7e67] rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></span>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        )}
                                     </div>
                                 </div>
 
                                 {/* Chat Input Row */}
                                 <form onSubmit={handleChatSend} className="mt-4 flex items-center gap-2.5 w-full shrink-0">
-                                    {/* Input & Attachment wrapper: max-width 483px, height 51px, border-radius 6px */}
+                                    {/* Input & Attachment wrapper */}
                                     <div
                                         className="flex items-center justify-between bg-[#080c0e]/95 border border-[#f3c677]/20 rounded-[6px] px-4"
                                         style={{ width: "100%", maxWidth: "483px", height: "51px" }}
                                     >
                                         <input
                                             type="text"
-                                            placeholder="Type your message..."
+                                            placeholder={isAuthenticated ? "Type your message..." : "Please log in to chat"}
                                             value={chatMessage}
                                             onChange={(e) => setChatMessage(e.target.value)}
                                             className="bg-transparent text-sm w-full focus:outline-none placeholder-[#8c7e67] text-[#e6dcc8]"
+                                            disabled={!isAuthenticated}
                                         />
                                         <button type="button" className="hover:opacity-80 transition-all flex items-center justify-center shrink-0 ml-2">
                                             <img src="/burracoAsset/doc-logo.svg" alt="Attachment" className="w-5 h-6 object-contain" />
                                         </button>
                                     </div>
 
-                                    {/* Send button wrapper: width 51px, height 51px, border-radius 6px */}
+                                    {/* Send button wrapper */}
                                     <button
                                         type="submit"
                                         className="flex items-center justify-center bg-[#080c0e]/95 border border-[#f3c677]/20 rounded-[6px] hover:bg-[#121619]/50 transition-all shrink-0"
                                         style={{ width: "51px", height: "51px" }}
+                                        disabled={!isAuthenticated}
                                     >
                                         <img src="/burracoAsset/msg-send.svg" alt="Send" className="w-5 h-5 object-contain" />
                                     </button>
@@ -301,12 +473,26 @@ export default function ContactPage() {
                                 </div>
                             </form>
                         </div>
-
                     </div>
                 </div>
             </div>
             {/* Footer */}
             <Footer />
+
+            {/* Shared Login Modal component */}
+            <LoginModal 
+                isOpen={showLoginModal} 
+                onClose={() => setShowLoginModal(false)}
+                onSuccess={(data: any) => {
+                    const { accessToken, user: userData } = data;
+                    document.cookie = `token=${accessToken}; path=/; max-age=7200; Secure; SameSite=Lax`;
+                    localStorage.setItem('user', JSON.stringify(userData));
+                    setToken(accessToken);
+                    setUser(userData);
+                    setIsAuthenticated(true);
+                    setShowLoginModal(false);
+                }}
+            />
         </div>
     );
 }

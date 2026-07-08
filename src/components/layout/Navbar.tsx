@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Poppins } from "next/font/google";
 import { usePathname } from "next/navigation";
 import Login from "@/components/sections/Login";
@@ -13,6 +13,23 @@ const poppins = Poppins({
 export default function Navbar() {
     const pathname = usePathname();
     const [isLoginOpen, setIsLoginOpen] = useState(false);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+    useEffect(() => {
+        const getCookie = (name: string) => {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop()?.split(';').shift();
+            return '';
+        };
+
+        const storedToken = getCookie('token');
+        const storedUser = localStorage.getItem('user');
+
+        if (storedToken && storedUser) {
+            setIsAuthenticated(true);
+        }
+    }, []);
     const navLinks = [
         { name: "HOME", href: "/", width: "46px", left: "423px" },
         { name: "ABOUT US", href: "/about", width: "78px", left: "542px" },
@@ -117,25 +134,27 @@ export default function Navbar() {
                     }}
                 >
                     {/* Login Button */}
-                    <a
-                        href="#"
-                        onClick={(e) => {
-                            e.preventDefault();
-                            setIsLoginOpen(true);
-                        }}
-                        className="absolute block hover:brightness-110 active:brightness-90 transition-all duration-200"
-                        style={{
-                            width: "101px",
-                            height: "40px",
-                            left: "0px",
-                        }}
-                    >
-                        <img
-                            src="/burracoAsset/login.svg"
-                            alt="Login"
-                            className="w-full h-full object-contain"
-                        />
-                    </a>
+                    {!isAuthenticated && (
+                        <a
+                            href="#"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                setIsLoginOpen(true);
+                            }}
+                            className="absolute block hover:brightness-110 active:brightness-90 transition-all duration-200"
+                            style={{
+                                width: "101px",
+                                height: "40px",
+                                left: "0px",
+                            }}
+                        >
+                            <img
+                                src="/burracoAsset/login.svg"
+                                alt="Login"
+                                className="w-full h-full object-contain"
+                            />
+                        </a>
+                    )}
 
                     {/* Register Button */}
                     {/* <a

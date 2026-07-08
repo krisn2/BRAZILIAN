@@ -7,9 +7,13 @@ interface LoginProps {
     onClose: () => void;
 }
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+
 export default function Login({ isOpen, onClose }: LoginProps) {
     const [step, setStep] = useState<"login" | "otp">("login");
     const [email, setEmail] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
 
     // OTP State
     const [otp, setOtp] = useState<string[]>(new Array(6).fill(""));
@@ -23,6 +27,8 @@ export default function Login({ isOpen, onClose }: LoginProps) {
             setEmail("");
             setOtp(new Array(6).fill(""));
             setTimer(30);
+            setError("");
+            setLoading(false);
         }
     }, [isOpen]);
 
@@ -54,11 +60,28 @@ export default function Login({ isOpen, onClose }: LoginProps) {
 
     if (!isOpen) return null;
 
-    const handleLoginSubmit = (e: React.FormEvent) => {
+    const handleLoginSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (email) {
-            setStep("otp");
-            setTimer(30);
+        if (!email) return;
+        setLoading(true);
+        setError("");
+        try {
+            const res = await fetch(`${API_URL}/api/auth/send-otp`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email }),
+            });
+            const data = await res.json();
+            if (data.success) {
+                setStep("otp");
+                setTimer(30);
+            } else {
+                setError(data.message || "Failed to send OTP");
+            }
+        } catch (err) {
+            setError("Connection error to server");
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -101,19 +124,60 @@ export default function Login({ isOpen, onClose }: LoginProps) {
         e.preventDefault();
     };
 
-    const handleOtpSubmit = (e: React.FormEvent) => {
+    const handleOtpSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         const code = otp.join("");
-        console.log("Verifying OTP:", code);
-        // Add verification logic
-        onClose();
+        if (code.length < 6) {
+            setError("Please enter a 6-digit code");
+            return;
+        }
+        setLoading(true);
+        setError("");
+        try {
+            const res = await fetch(`${API_URL}/api/auth/verify-otp`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, otp: code }),
+            });
+            const data = await res.json();
+            if (data.success && data.data) {
+                const { accessToken, user: userData } = data.data;
+                document.cookie = `token=${accessToken}; path=/; max-age=7200; Secure; SameSite=Lax`;
+                localStorage.setItem('user', JSON.stringify(userData));
+                onClose();
+                window.location.reload();
+            } else {
+                setError(data.message || "Invalid verification code");
+            }
+        } catch (err) {
+            setError("Connection error to server");
+        } finally {
+            setLoading(false);
+        }
     };
 
-    const handleResendOtp = () => {
+    const handleResendOtp = async () => {
         if (timer === 0) {
-            setTimer(30);
-            setOtp(new Array(6).fill(""));
-            console.log("Resending OTP to:", email);
+            setLoading(true);
+            setError("");
+            try {
+                const res = await fetch(`${API_URL}/api/auth/send-otp`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ email }),
+                });
+                const data = await res.json();
+                if (data.success) {
+                    setTimer(30);
+                    setOtp(new Array(6).fill(""));
+                } else {
+                    setError(data.message || "Failed to resend OTP");
+                }
+            } catch (err) {
+                setError("Connection error to server");
+            } finally {
+                setLoading(false);
+            }
         }
     };
 
@@ -180,6 +244,12 @@ export default function Login({ isOpen, onClose }: LoginProps) {
                                 Welcome back! Please login to your account.
                             </p>
 
+                            {error && (
+                                <div className="bg-red-950/40 border border-red-500/30 text-red-400 text-[11px] rounded-lg p-2.5 mb-4 text-center font-sans">
+                                    {error}
+                                </div>
+                            )}
+
                             {/* Login Form */}
                             <form onSubmit={handleLoginSubmit} className="space-y-4">
                                 {/* Email Field */}
@@ -195,16 +265,18 @@ export default function Login({ isOpen, onClose }: LoginProps) {
                                         onChange={(e) => setEmail(e.target.value)}
                                         placeholder="Email address"
                                         required
-                                        className="w-full bg-[#040808]/90 border border-[#544434] rounded-lg pl-11 pr-4 py-2.5 text-[14px] text-white placeholder-[#544434] focus:outline-none focus:border-[#E5B962] focus:ring-1 focus:ring-[#E5B962] transition-all font-sans"
+                                        disabled={loading}
+                                        className="w-full bg-[#040808]/90 border border-[#544434] rounded-lg pl-11 pr-4 py-2.5 text-[14px] text-white placeholder-[#544434] focus:outline-none focus:border-[#E5B962] focus:ring-1 focus:ring-[#E5B962] transition-all font-sans disabled:opacity-50"
                                     />
                                 </div>
 
                                 {/* Submit Button */}
                                 <button
                                     type="submit"
-                                    className="w-full mt-2 bg-gradient-to-r from-[#B86B1D] via-[#EFCC88] to-[#B86B1D] hover:brightness-110 active:brightness-95 text-[#040808] font-bold py-2.5 rounded-lg text-[14px] uppercase tracking-wider transition-all shadow-md focus:outline-none"
+                                    disabled={loading}
+                                    className="w-full mt-2 bg-gradient-to-r from-[#B86B1D] via-[#EFCC88] to-[#B86B1D] hover:brightness-110 active:brightness-95 text-[#040808] font-bold py-2.5 rounded-lg text-[14px] uppercase tracking-wider transition-all shadow-md focus:outline-none disabled:opacity-50"
                                 >
-                                    LOGIN
+                                    {loading ? "SENDING..." : "LOGIN"}
                                 </button>
                             </form>
                         </div>
@@ -221,6 +293,12 @@ export default function Login({ isOpen, onClose }: LoginProps) {
                                 {email}
                             </p>
 
+                            {error && (
+                                <div className="bg-red-950/40 border border-red-500/30 text-red-400 text-[11px] rounded-lg p-2.5 mb-4 text-center font-sans">
+                                    {error}
+                                </div>
+                            )}
+
                             {/* OTP Form */}
                             <form onSubmit={handleOtpSubmit} className="space-y-4">
                                 <div className="flex justify-center gap-2 my-6">
@@ -233,7 +311,8 @@ export default function Login({ isOpen, onClose }: LoginProps) {
                                             onChange={(e) => handleOtpChange(e.target, index)}
                                             onKeyDown={(e) => handleOtpKeyDown(e, index)}
                                             onPaste={handleOtpPaste}
-                                            className="w-11 h-12 text-center text-lg font-bold bg-[#040808]/90 border border-[#544434] rounded-lg text-white focus:outline-none focus:border-[#E5B962] focus:ring-1 focus:ring-[#E5B962] transition-all font-sans"
+                                            disabled={loading}
+                                            className="w-11 h-12 text-center text-lg font-bold bg-[#040808]/90 border border-[#544434] rounded-lg text-white focus:outline-none focus:border-[#E5B962] focus:ring-1 focus:ring-[#E5B962] transition-all font-sans disabled:opacity-50"
                                             placeholder="·"
                                         />
                                     ))}
@@ -245,8 +324,8 @@ export default function Login({ isOpen, onClose }: LoginProps) {
                                     <button
                                         type="button"
                                         onClick={handleResendOtp}
-                                        disabled={timer > 0}
-                                        className={`font-medium transition-colors ${timer > 0
+                                        disabled={timer > 0 || loading}
+                                        className={`font-medium transition-colors ${timer > 0 || loading
                                                 ? "text-[#544434] cursor-default"
                                                 : "text-[#E5B962] hover:text-[#EFCC88] cursor-pointer hover:underline"
                                             }`}
@@ -258,9 +337,10 @@ export default function Login({ isOpen, onClose }: LoginProps) {
                                 {/* Verify Button */}
                                 <button
                                     type="submit"
-                                    className="w-full mt-2 bg-gradient-to-r from-[#B86B1D] via-[#EFCC88] to-[#B86B1D] hover:brightness-110 active:brightness-95 text-[#040808] font-bold py-2.5 rounded-lg text-[14px] uppercase tracking-wider transition-all shadow-md focus:outline-none"
+                                    disabled={loading}
+                                    className="w-full mt-2 bg-gradient-to-r from-[#B86B1D] via-[#EFCC88] to-[#B86B1D] hover:brightness-110 active:brightness-95 text-[#040808] font-bold py-2.5 rounded-lg text-[14px] uppercase tracking-wider transition-all shadow-md focus:outline-none disabled:opacity-50"
                                 >
-                                    VERIFY OTP
+                                    {loading ? "VERIFYING..." : "VERIFY OTP"}
                                 </button>
                             </form>
                         </div>
