@@ -228,23 +228,23 @@ export default function BlogPage() {
                             }}
                         >
                             {/* CATEGORIES WIDGET */}
-                            <div className="w-full mb-6">
-                                <h3 className="text-sm font-bold tracking-widest uppercase pb-2 mb-3 border-b border-[#544434]/30" style={goldTextStyle}>
+                            <div className="w-full mb-8">
+                                <h3 className="text-xs font-bold tracking-widest uppercase pb-2 mb-4 border-b border-[#544434]/30" style={goldTextStyle}>
                                     Categories
                                 </h3>
-                                <ul className="space-y-2">
+                                <ul className="space-y-0">
                                     {CATEGORIES.map((cat, idx) => (
-                                        <li key={idx} className="flex flex-col">
+                                        <li key={idx} className="border-b border-[#544434]/20 last:border-b-0">
                                             <Link
                                                 href="#"
-                                                className="flex items-center justify-between text-xs py-0.5 px-1 text-gray-300 hover:text-[#E5B962] transition-all group"
+                                                className="flex items-center justify-between text-[13px] py-3 text-[#dcd1bc]/80 hover:text-[#E5B962] transition-all group"
                                             >
                                                 <div className="flex items-center space-x-3">
                                                     <div
-                                                        className="relative shrink-0 flex items-center justify-center"
+                                                        className="relative shrink-0 flex items-center justify-center opacity-80 group-hover:opacity-100 transition-opacity"
                                                         style={{
-                                                            width: `${cat.width}px`,
-                                                            height: `${cat.height}px`,
+                                                            width: `20px`, // Slightly normalized size for cleaner alignment
+                                                            height: `20px`,
                                                         }}
                                                     >
                                                         <img
@@ -253,21 +253,12 @@ export default function BlogPage() {
                                                             className="w-full h-full object-contain"
                                                         />
                                                     </div>
-                                                    <span className="font-medium">{cat.name}</span>
+                                                    <span className="font-medium tracking-wide">{cat.name}</span>
                                                 </div>
-                                                <span className="text-xs text-gray-400 font-mono bg-black/40 px-2 py-0.5 rounded-sm">
+                                                <span className="text-xs text-gray-500 font-mono">
                                                     {cat.count}
                                                 </span>
                                             </Link>
-
-                                            {/* Golden underline divider */}
-                                            <div className="w-full h-[5px] relative mt-1 opacity-60">
-                                                <img
-                                                    src="/burracoAsset/golden-category.png"
-                                                    alt="divider"
-                                                    className="absolute inset-0 w-full h-full object-fill"
-                                                />
-                                            </div>
                                         </li>
                                     ))}
                                 </ul>
@@ -275,21 +266,21 @@ export default function BlogPage() {
 
                             {/* POPULAR POSTS WIDGET */}
                             <div className="w-full">
-                                <h3 className="text-sm font-bold tracking-widest uppercase pb-2 mb-3 border-b border-[#544434]/30" style={goldTextStyle}>
+                                <h3 className="text-xs font-bold tracking-widest uppercase pb-2 mb-4 border-b border-[#544434]/30" style={goldTextStyle}>
                                     Popular Posts
                                 </h3>
-                                <div className="space-y-3">
+                                <div className="space-y-0">
                                     {POPULAR_POSTS.map((pop, idx) => (
-                                        <div key={idx} className="flex flex-col">
+                                        <div key={idx} className="border-b border-[#544434]/20 last:border-b-0 py-3 first:pt-0">
                                             <Link
                                                 href="#"
-                                                className="flex gap-4 items-center group cursor-pointer pb-1"
+                                                className="flex gap-4 items-center group cursor-pointer"
                                             >
                                                 <div
-                                                    className="relative shrink-0 border border-[#544434]/40 bg-black/40 rounded-sm overflow-hidden"
+                                                    className="relative shrink-0 border border-[#544434]/30 bg-black/40 rounded-sm overflow-hidden"
                                                     style={{
-                                                        width: `${pop.width}px`,
-                                                        height: `${pop.height}px`,
+                                                        width: `72px`,  // Adjusted closer to the visual scale of Image 2
+                                                        height: `54px`,
                                                     }}
                                                 >
                                                     <Image
@@ -299,29 +290,19 @@ export default function BlogPage() {
                                                         className="object-cover group-hover:scale-105 transition-transform duration-300"
                                                     />
                                                 </div>
-                                                <div className="space-y-1">
-                                                    <h4 className="text-[11px] font-semibold group-hover:text-[#E5B962] transition-colors line-clamp-2 leading-tight" style={goldTextStyle}>
+                                                <div className="space-y-1 flex-1">
+                                                    <h4 className="text-xs font-medium text-[#dcd1bc] group-hover:text-[#E5B962] transition-colors line-clamp-2 leading-tight">
                                                         {pop.title}
                                                     </h4>
-                                                    <p className="text-[9px] text-gray-400">
-                                                        📅 {pop.date}
+                                                    <p className="text-[10px] text-gray-500 flex items-center gap-1">
+                                                        <span>📅</span> {pop.date}
                                                     </p>
                                                 </div>
                                             </Link>
-
-                                            {/* Golden underline divider */}
-                                            <div className="w-full h-[5px] relative mt-0.5 opacity-60">
-                                                <img
-                                                    src="/burracoAsset/golden-category.png"
-                                                    alt="divider"
-                                                    className="absolute inset-0 w-full h-full object-fill"
-                                                />
-                                            </div>
                                         </div>
                                     ))}
                                 </div>
                             </div>
-
                         </aside>
 
                     </div>

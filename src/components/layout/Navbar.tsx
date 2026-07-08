@@ -1,8 +1,9 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { Poppins } from "next/font/google";
 import { usePathname } from "next/navigation";
+import Login from "@/components/sections/Login";
 
 const poppins = Poppins({
     subsets: ["latin"],
@@ -11,6 +12,7 @@ const poppins = Poppins({
 
 export default function Navbar() {
     const pathname = usePathname();
+    const [isLoginOpen, setIsLoginOpen] = useState(false);
     const navLinks = [
         { name: "HOME", href: "/", width: "46px", left: "423px" },
         { name: "ABOUT US", href: "/about", width: "78px", left: "542px" },
@@ -38,49 +40,32 @@ export default function Navbar() {
                     <div
                         className="absolute"
                         style={{
-                            width: "89px",
-                            height: "87px",
-                            left: "83px",
-                            top: "4px",
+                            width: "59px",
+                            height: "59px",
+                            left: "86px",
+                            top: "17px",
                         }}
                     >
                         <img
-                            src="/burracoAsset/logo.svg"
+                            src="/burracoAsset/navbar-logo.svg"
                             alt="logo"
                             className="w-full h-full object-contain"
                         />
                     </div>
 
-                    {/* BALOOT text SVG */}
+                    {/* DIWANYEH branding SVG */}
                     <div
                         className="absolute flex items-center justify-start select-none"
                         style={{
-                            width: "140px",
-                            height: "28px",
-                            left: "185px",
+                            width: "212px",
+                            height: "42px",
+                            left: "166.5px",
                             top: "27px",
                         }}
                     >
                         <img
-                            src="/burracoAsset/baloot-name.svg"
-                            alt="BALOOT"
-                            className="w-full h-full object-contain"
-                        />
-                    </div>
-
-                    {/* Card Game SVG */}
-                    <div
-                        className="absolute flex items-center justify-start select-none"
-                        style={{
-                            width: "83px",
-                            height: "15px",
-                            left: "213px",
-                            top: "60px",
-                        }}
-                    >
-                        <img
-                            src="/burracoAsset/Card-Game.svg"
-                            alt="Card Game"
+                            src="/burracoAsset/DIWANYEH.svg"
+                            alt="DIWANYEH"
                             className="w-full h-full object-contain"
                         />
                     </div>
@@ -134,6 +119,10 @@ export default function Navbar() {
                     {/* Login Button */}
                     <a
                         href="#"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            setIsLoginOpen(true);
+                        }}
                         className="absolute block hover:brightness-110 active:brightness-90 transition-all duration-200"
                         style={{
                             width: "101px",
@@ -167,6 +156,9 @@ export default function Navbar() {
                 </div>
 
             </div>
+            
+            {/* Login Modal */}
+            <Login isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
         </nav>
     );
 }
