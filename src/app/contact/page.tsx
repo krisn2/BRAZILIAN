@@ -38,7 +38,8 @@ export default function ContactPage() {
 
         const loadHistory = async () => {
             try {
-                const res = await fetch(`${API_URL}/api/support/chats/my-history`, {
+                const cleanApiUrl = API_URL.endsWith("/api") ? API_URL : `${API_URL}/api`;
+                const res = await fetch(`${cleanApiUrl}/support/chats/my-history`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
                 const data = await res.json();
@@ -58,8 +59,9 @@ export default function ContactPage() {
 
         loadHistory();
 
-        const socket = io(API_URL, {
-            auth: { token },
+        const socketUrl = API_URL.replace(/\/api$/, "");
+        const socket = io(socketUrl, {
+            auth: { token, userId: user.userID },
             transports: ['websocket', 'polling']
         });
 
@@ -113,7 +115,8 @@ export default function ContactPage() {
         }
 
         try {
-            const res = await fetch(`${API_URL}/api/tickets/createTicket`, {
+            const cleanApiUrl = API_URL.endsWith("/api") ? API_URL : `${API_URL}/api`;
+            const res = await fetch(`${cleanApiUrl}/tickets/createTicket`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -225,7 +228,7 @@ export default function ContactPage() {
                 <div className="flex flex-col items-center justify-center pt-[143px] pb-16 px-4 sm:px-6 lg:px-8">
                     {/* Header Section */}
                     <div className="flex flex-col items-center text-center">
-                        <h1 
+                        <h1
                             className="font-serif tracking-wide font-bold uppercase flex items-center justify-center"
                             style={{
                                 width: '249px',
@@ -240,11 +243,11 @@ export default function ContactPage() {
                         >
                             Contact Us
                         </h1>
-                        
+
                         {/* Golden Line SVG Divider */}
-                        <div 
+                        <div
                             className="bg-center bg-no-repeat bg-contain"
-                            style={{ 
+                            style={{
                                 backgroundImage: `url('/burracoAsset/gloden-line.svg')`,
                                 width: '338px',
                                 height: '18px',
@@ -380,21 +383,9 @@ export default function ContactPage() {
                                         {/* Chat Canvas (dynamic messages) */}
                                         <div className="flex-1 flex flex-col gap-4 overflow-y-auto p-2 pr-1 my-3 scrollbar-thin scrollbar-thumb-amber-900/50">
                                             {chatMessages.length === 0 ? (
-                                                <>
-                                                    {/* Message 1: Support */}
-                                                    <div className="flex items-start gap-2.5">
-                                                        <div className="w-8 h-8 rounded-full border border-[#f3c677]/60 overflow-hidden flex items-center justify-center bg-[#070402] shrink-0">
-                                                            <img src="/burracoAsset/logo.svg" alt="Baloot Logo" className="w-5 h-5 object-contain" />
-                                                        </div>
-                                                        <div className="flex flex-col gap-1 max-w-[70%]">
-                                                            <div className="bg-[#191410] border border-[#3e2c1c]/40 text-xs text-[#e6dcc8] rounded-2xl rounded-tl-none p-3 shadow-md">
-                                                                <p className="leading-relaxed">Hello! 👋</p>
-                                                                <p className="leading-relaxed">How can we help you today?</p>
-                                                            </div>
-                                                            <span className="text-[10px] text-[#8c7e67] pl-1">10:30 AM</span>
-                                                        </div>
-                                                    </div>
-                                                </>
+                                                <div className="text-center text-xs text-gray-500 my-4">
+                                                    No messages
+                                                </div>
                                             ) : (
                                                 chatMessages.map((msg, index) => {
                                                     const isAgent = msg.sender === 'Agent' || msg.sender === 'System';
@@ -577,8 +568,8 @@ export default function ContactPage() {
             <Footer />
 
             {/* Shared Login Modal component */}
-            <LoginModal 
-                isOpen={showLoginModal} 
+            <LoginModal
+                isOpen={showLoginModal}
                 onClose={() => setShowLoginModal(false)}
                 onSuccess={(data: any) => {
                     const { accessToken, user: userData } = data;
