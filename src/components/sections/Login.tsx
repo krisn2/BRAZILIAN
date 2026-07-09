@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import { useAuth } from "@/context/AuthContext";
 
 interface LoginProps {
     isOpen: boolean;
@@ -10,6 +11,7 @@ interface LoginProps {
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
 export default function Login({ isOpen, onClose }: LoginProps) {
+    const { login } = useAuth();
     const [step, setStep] = useState<"login" | "otp">("login");
     const [email, setEmail] = useState("");
     const [loading, setLoading] = useState(false);
@@ -142,10 +144,8 @@ export default function Login({ isOpen, onClose }: LoginProps) {
             const data = await res.json();
             if (data.success && data.data) {
                 const { accessToken, user: userData } = data.data;
-                document.cookie = `token=${accessToken}; path=/; max-age=7200; Secure; SameSite=Lax`;
-                localStorage.setItem('user', JSON.stringify(userData));
+                login(userData, accessToken);
                 onClose();
-                window.location.reload();
             } else {
                 setError(data.message || "Invalid verification code");
             }

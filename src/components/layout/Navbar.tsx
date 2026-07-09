@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Poppins } from "next/font/google";
 import { usePathname } from "next/navigation";
 import Login from "@/components/sections/Login";
+import { useAuth } from "@/context/AuthContext";
 
 const poppins = Poppins({
     subsets: ["latin"],
@@ -13,23 +14,7 @@ const poppins = Poppins({
 export default function Navbar() {
     const pathname = usePathname();
     const [isLoginOpen, setIsLoginOpen] = useState(false);
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-    useEffect(() => {
-        const getCookie = (name: string) => {
-            const value = `; ${document.cookie}`;
-            const parts = value.split(`; ${name}=`);
-            if (parts.length === 2) return parts.pop()?.split(';').shift();
-            return '';
-        };
-
-        const storedToken = getCookie('token');
-        const storedUser = localStorage.getItem('user');
-
-        if (storedToken && storedUser) {
-            setIsAuthenticated(true);
-        }
-    }, []);
+    const { isAuthenticated, logout } = useAuth();
     const navLinks = [
         { name: "HOME", href: "/", width: "46px", left: "423px" },
         { name: "ABOUT US", href: "/about", width: "78px", left: "542px" },
@@ -133,8 +118,8 @@ export default function Navbar() {
                         left: "1206px",
                     }}
                 >
-                    {/* Login Button */}
-                    {!isAuthenticated && (
+                    {/* Login / Logout Button */}
+                    {!isAuthenticated ? (
                         <a
                             href="#"
                             onClick={(e) => {
@@ -154,6 +139,22 @@ export default function Navbar() {
                                 className="w-full h-full object-contain"
                             />
                         </a>
+                    ) : (
+                        <button
+                            onClick={(e) => {
+                                e.preventDefault();
+                                logout();
+                            }}
+                            className="absolute flex items-center justify-center font-semibold text-xs tracking-wider uppercase border border-[#E5B962]/40 rounded-lg hover:bg-[#E5B962]/10 transition-colors"
+                            style={{
+                                width: "101px",
+                                height: "40px",
+                                left: "0px",
+                                color: "#E5B962",
+                            }}
+                        >
+                            Logout
+                        </button>
                     )}
 
                     {/* Register Button */}
