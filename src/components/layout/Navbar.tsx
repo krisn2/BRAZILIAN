@@ -2,31 +2,41 @@
 
 import React, { useState } from "react";
 import { Poppins } from "next/font/google";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Login from "@/components/sections/Login";
 import { useAuth } from "@/context/AuthContext";
 
 const poppins = Poppins({
     subsets: ["latin"],
-    weight: ["400", "700"],
+    weight: ["400", "500", "600", "700"],
 });
 
 export default function Navbar() {
     const pathname = usePathname();
+    const router = useRouter();
     const [isLoginOpen, setIsLoginOpen] = useState(false);
-    const { isAuthenticated, logout } = useAuth();
+    const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
+
+    // Assuming your auth context returns user details along with balance/coins
+    const { isAuthenticated, logout, user } = useAuth();
+
+    // Fallback values matching your UI screenshot if user context isn't fully set up yet
+    const userCoins = user?.coins ?? 0;
+    const userName = user?.playerName;
+    const userAvatar = user?.avatarUrl ?? "/burracoAsset/default-avatar.svg"; // Fallback path
+
     const navLinks = [
-        { name: "HOME", href: "/", width: "46px", left: "423px" },
-        { name: "ABOUT US", href: "/about", width: "78px", left: "542px" },
-        { name: "GAMES", href: "/games", width: "55px", left: "693px" },
-        { name: "STORE", href: "/store", width: "48px", left: "821px" },
-        { name: "BLOG", href: "/blog", width: "42px", left: "942px" },
-        { name: "CONTACT US", href: "/contact", width: "102px", left: "1057px" },
+        { name: "HOME", href: "/" },
+        { name: "ABOUT US", href: "/about" },
+        { name: "GAMES", href: "/games" },
+        { name: "STORE", href: "/store" },
+        { name: "BLOG", href: "/blog" },
+        { name: "CONTACT US", href: "/contact" },
     ];
 
     return (
         <nav
-            className="w-full flex items-center relative"
+            className="w-full flex items-center relative z-50 select-none"
             style={{
                 height: "94px",
                 background: "linear-gradient(90deg, #060503 0%, #0C0805 51.62%, #060503 100%)",
@@ -34,149 +44,132 @@ export default function Navbar() {
                 borderImage: "linear-gradient(90deg, #544434 0%, #F1DF82 57.21%, #46372A 100%) 1",
             }}
         >
-            <div className={`relative w-full max-w-[1440px] h-full mx-auto ${poppins.className}`}>
+            <div className={`w-full max-w-[1440px] h-full mx-auto px-6 md:px-12 flex items-center justify-between ${poppins.className}`}>
 
                 {/* ================= BRANDING SECTION ================= */}
-                <div className="relative h-full flex-shrink-0" style={{ width: "350px" }}>
-                    {/* logo-navbar */}
-                    <div
-                        className="absolute"
-                        style={{
-                            width: "59px",
-                            height: "59px",
-                            left: "86px",
-                            top: "17px",
-                        }}
-                    >
-                        <img
-                            src="/burracoAsset/navbar-logo.svg"
-                            alt="logo"
-                            className="w-full h-full object-contain"
-                        />
-                    </div>
-
-                    {/* DIWANYEH branding SVG */}
-                    <div
-                        className="absolute flex items-center justify-start select-none"
-                        style={{
-                            width: "212px",
-                            height: "42px",
-                            left: "166.5px",
-                            top: "27px",
-                        }}
-                    >
-                        <img
-                            src="/burracoAsset/DIWANYEH.svg"
-                            alt="DIWANYEH"
-                            className="w-full h-full object-contain"
-                        />
-                    </div>
+                <div className="flex items-center gap-4 cursor-pointer" onClick={() => router.push("/")}>
+                    <img
+                        src="/burracoAsset/navbar-logo.svg"
+                        alt="BALOOT"
+                        className="w-[59px] h-[59px] object-contain"
+                    />
+                    <img
+                        src="/burracoAsset/DIWANYEH.svg"
+                        alt="DIWANYEH"
+                        className="hidden sm:block w-[150px] md:w-[212px] h-[42px] object-contain"
+                    />
                 </div>
 
                 {/* ================= MIDDLE NAVIGATION LINKS ================= */}
-                {navLinks.map((link) => {
-                    const isActive = link.href === "/" ? pathname === "/" : pathname?.startsWith(link.href);
-                    return (
-                        <a
-                            key={link.name}
-                            href={link.href}
-                            className="absolute flex items-center justify-center transition-colors duration-200 hover:opacity-80 active:opacity-100"
-                            style={{
-                                width: link.width,
-                                height: "24px",
-                                top: "36px",
-                                left: link.left,
-                                color: isActive ? "#E5B962" : "#FFFFFF",
-                                fontFamily: "Poppins, sans-serif",
-                                fontWeight: 400,
-                                fontSize: "16px",
-                                lineHeight: "100%",
-                                textTransform: "uppercase",
-                            }}
-                        >
-                            <span className="relative w-full h-full flex flex-col items-center justify-center">
-                                {link.name}
+                <div className="hidden lg:flex items-center gap-8 xl:gap-12">
+                    {navLinks.map((link) => {
+                        const isActive = link.href === "/" ? pathname === "/" : pathname?.startsWith(link.href);
+                        return (
+                            <a
+                                key={link.name}
+                                href={link.href}
+                                className="relative flex flex-col items-center justify-center transition-colors duration-200 hover:opacity-80 active:opacity-100 text-base"
+                                style={{
+                                    color: isActive ? "#E5B962" : "#FFFFFF",
+                                    fontWeight: isActive ? 600 : 400,
+                                }}
+                            >
+                                <span className="uppercase tracking-wider">{link.name}</span>
                                 {isActive && (
-                                    <span className="absolute -bottom-4 flex items-center justify-center w-full select-none pointer-events-none">
+                                    <span className="absolute -bottom-4 flex items-center justify-center w-full pointer-events-none">
                                         <span className="h-[1px] w-4 bg-gradient-to-r from-transparent to-[#E5B962]"></span>
                                         <span className="text-[#E5B962] text-[8px] mx-0.5">◆</span>
                                         <span className="h-[1px] w-4 bg-gradient-to-l from-transparent to-[#E5B962]"></span>
                                     </span>
                                 )}
-                            </span>
-                        </a>
-                    );
-                })}
+                            </a>
+                        );
+                    })}
+                </div>
 
-                {/* ================= RIGHT AUTHENTICATION BUTTONS ================= */}
-                <div
-                    className="absolute flex items-center select-none"
-                    style={{
-                        width: "237px",
-                        height: "40px",
-                        top: "28px",
-                        left: "1206px",
-                    }}
-                >
-                    {/* Login / Logout Button */}
+                {/* ================= RIGHT AUTHENTICATION / USER PROFILE SECTION ================= */}
+                <div className="flex items-center gap-6">
                     {!isAuthenticated ? (
-                        <a
-                            href="#"
-                            onClick={(e) => {
-                                e.preventDefault();
-                                setIsLoginOpen(true);
-                            }}
-                            className="absolute block hover:brightness-110 active:brightness-90 transition-all duration-200"
-                            style={{
-                                width: "101px",
-                                height: "40px",
-                                left: "0px",
-                            }}
+                        /* Unauthenticated: Show Login Button */
+                        <button
+                            onClick={() => setIsLoginOpen(true)}
+                            className="hover:brightness-110 active:brightness-90 transition-all duration-200"
                         >
                             <img
                                 src="/burracoAsset/login.svg"
                                 alt="Login"
-                                className="w-full h-full object-contain"
+                                className="w-[101px] h-[40px] object-contain"
                             />
-                        </a>
-                    ) : (
-                        <button
-                            onClick={(e) => {
-                                e.preventDefault();
-                                logout();
-                            }}
-                            className="absolute flex items-center justify-center font-semibold text-xs tracking-wider uppercase border border-[#E5B962]/40 rounded-lg hover:bg-[#E5B962]/10 transition-colors"
-                            style={{
-                                width: "101px",
-                                height: "40px",
-                                left: "0px",
-                                color: "#E5B962",
-                            }}
-                        >
-                            Logout
                         </button>
-                    )}
+                    ) : (
+                        /* Authenticated State: Coins Widget + User Profile Context Dropdown */
+                        <div className="flex items-center gap-4 relative">
 
-                    {/* Register Button */}
-                    {/* <a
-                        href="#"
-                        className="absolute block hover:brightness-110 active:brightness-90 transition-all duration-200"
-                        style={{
-                            width: "126px",
-                            height: "40px",
-                            left: "111px",
-                        }}
-                    >
-                        <img
-                            src="/burracoAsset/register.svg"
-                            alt="Register"
-                            className="w-full h-full object-contain"
-                        />
-                    </a> */}
+                            {/* Coin Display Widget */}
+                            <div className="flex items-center bg-[#14110E] border border-[#3E342A] rounded-md px-3 py-1.5 h-[40px] gap-2.5">
+                                <div className="w-5 h-5 rounded-full bg-gradient-to-b from-[#F9E79F] to-[#B7952A] flex items-center justify-center font-bold text-black text-[11px]">
+                                    C
+                                </div>
+                                <span className="text-[#E5B962] text-sm font-medium">
+                                    {userCoins.toLocaleString()}
+                                </span>
+                                <button className="text-[#E5B962] font-bold text-sm bg-[#221D17] hover:bg-[#2D261F] w-5 h-5 rounded flex items-center justify-center transition-colors ml-1">
+                                    +
+                                </button>
+                            </div>
+
+                            {/* User Profile Container */}
+                            <div className="relative">
+                                <div
+                                    className="flex items-center gap-2 cursor-pointer hover:opacity-90 transition-opacity"
+                                    onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
+                                >
+                                    <img
+                                        src={userAvatar}
+                                        alt={userName}
+                                        className="w-10 h-10 rounded-full border border-[#E5B962] object-cover"
+                                    />
+                                    <div className="hidden md:flex flex-col text-left leading-none">
+                                        <span className="text-[11px] text-gray-400 font-medium">Welcome,</span>
+                                        <span className="text-sm text-white font-semibold mt-0.5">{userName}</span>
+                                    </div>
+                                    <span className="text-gray-400 text-xs ml-1 transition-transform duration-200" style={{ transform: isProfileDropdownOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}>
+                                        ▼
+                                    </span>
+                                </div>
+
+                                {/* Dropdown Menu */}
+                                {isProfileDropdownOpen && (
+                                    <div className="absolute right-0 mt-3 w-48 bg-[#0F0C09] border border-[#3E342A] rounded-lg shadow-2xl py-2 z-50">
+                                        <button
+                                            onClick={() => {
+                                                setIsProfileDropdownOpen(false);
+                                                router.push("/dashboard"); // Navigates to user dashboard page
+                                            }}
+                                            className="w-full text-left px-4 py-2.5 text-sm text-white hover:bg-[#1C1712] hover:text-[#E5B962] transition-colors"
+                                        >
+                                            User Dashboard
+                                        </button>
+                                        <div className="border-t border-[#3E342A] my-1"></div>
+                                        <button
+                                            onClick={() => {
+                                                setIsProfileDropdownOpen(false);
+                                                logout();
+                                            }}
+                                            className="w-full text-left px-4 py-2.5 text-sm text-red-400 hover:bg-[#1C1712] transition-colors"
+                                        >
+                                            Logout
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
+
+                        </div>
+                    )}
                 </div>
 
             </div>
-            
+
             {/* Login Modal */}
             <Login isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
         </nav>

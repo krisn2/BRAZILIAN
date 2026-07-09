@@ -485,9 +485,9 @@ export default function ContactPage() {
                                             <button type="button" className="border-b-2 border-[#f3c677] pb-2 text-[#f3c677] px-2 font-bold">
                                                 Submit Ticket
                                             </button>
-                                            <button type="button" className="pb-2 text-gray-500 hover:text-gray-300 px-4 transition-colors font-medium">
+                                            {/* <button type="button" className="pb-2 text-gray-500 hover:text-gray-300 px-4 transition-colors font-medium">
                                                 My Tickets
-                                            </button>
+                                            </button> */}
                                         </div>
 
                                         {/* Form Inputs Container */}
