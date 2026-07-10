@@ -28,9 +28,9 @@ export default function Footer() {
 
             {/* Right section: Links */}
             <div className="flex-1 flex justify-center md:justify-end items-center gap-6 text-xs font-light tracking-wide">
-                <a href="#" className="hover:text-white transition-colors duration-200">Terms & Conditions</a>
+                <a href="/TermsAndConditions" className="hover:text-white transition-colors duration-200">Terms & Conditions</a>
                 <span className="opacity-30">|</span>
-                <a href="#" className="hover:text-white transition-colors duration-200">Privacy Policy</a>
+                <a href="/PrivacyPolicy" className="hover:text-white transition-colors duration-200">Privacy Policy</a>
             </div>
         </footer>
     );

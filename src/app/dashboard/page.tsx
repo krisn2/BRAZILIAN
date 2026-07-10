@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Poppins } from "next/font/google";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
+import { io, Socket } from "socket.io-client";
 
 const poppins = Poppins({
     subsets: ["latin"],
@@ -47,12 +48,68 @@ export default function DashboardPage() {
     const [profileLoading, setProfileLoading] = useState(true);
     const [ticketsLoading, setTicketsLoading] = useState(true);
 
+    const socketRef = useRef<Socket | null>(null);
+
     // Redirect if not logged in
     useEffect(() => {
         if (!isLoading && !isAuthenticated) {
             router.push("/");
         }
     }, [isLoading, isAuthenticated, router]);
+
+    // Socket.io connection for real-time ticket updates
+    useEffect(() => {
+        if (!isAuthenticated || !token || !user) return;
+
+        const socketUrl = API_URL.replace(/\/api$/, "");
+        const socket = io(socketUrl, {
+            auth: { token, userId: user.userID },
+            transports: ['websocket', 'polling']
+        });
+
+        socketRef.current = socket;
+
+        socket.on('connect', () => {
+            socket.emit('register-user', { userId: user.userID, role: 'user' });
+        });
+
+        socket.on('ticket-message-received', (data: { ticketId: string, message: TicketMessage }) => {
+            setTickets(prevTickets => {
+                const updated = prevTickets.map(t => {
+                    if (t._id === data.ticketId) {
+                        const alreadyExists = t.messages.some(m => 
+                            m.message === data.message.message && 
+                            m.createdAt === data.message.createdAt &&
+                            m.sender === data.message.sender
+                        );
+                        if (!alreadyExists) {
+                            return { ...t, messages: [...t.messages, data.message] };
+                        }
+                    }
+                    return t;
+                });
+                return updated;
+            });
+
+            setSelectedTicket(prevSelected => {
+                if (prevSelected && prevSelected._id === data.ticketId) {
+                    const alreadyExists = prevSelected.messages.some(m => 
+                        m.message === data.message.message && 
+                        m.createdAt === data.message.createdAt &&
+                        m.sender === data.message.sender
+                    );
+                    if (!alreadyExists) {
+                        return { ...prevSelected, messages: [...prevSelected.messages, data.message] };
+                    }
+                }
+                return prevSelected;
+            });
+        });
+
+        return () => {
+            socket.disconnect();
+        };
+    }, [isAuthenticated, token, user]);
 
     // Fetch user profile and tickets
     useEffect(() => {
