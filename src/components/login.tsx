@@ -177,7 +177,7 @@ export function LoginModal({ isOpen, onClose, onSuccess }: LoginModalProps) {
       const data = await sendOtpApi(email);
       if (data.success) {
         setOtpSent(true);
-        setTimer(30);
+        setTimer(60);
       } else {
         setError(data.message || "Failed to send OTP");
       }

@@ -19,7 +19,7 @@ export default function Login({ isOpen, onClose }: LoginProps) {
 
     // OTP State
     const [otp, setOtp] = useState<string[]>(new Array(6).fill(""));
-    const [timer, setTimer] = useState(30);
+    const [timer, setTimer] = useState(60);
     const otpRefs = useRef<(HTMLInputElement | null)[]>([]);
 
     // Reset state on open/close
@@ -28,7 +28,7 @@ export default function Login({ isOpen, onClose }: LoginProps) {
             setStep("login");
             setEmail("");
             setOtp(new Array(6).fill(""));
-            setTimer(30);
+            setTimer(60);
             setError("");
             setLoading(false);
         }
@@ -76,7 +76,7 @@ export default function Login({ isOpen, onClose }: LoginProps) {
             const data = await res.json();
             if (data.success) {
                 setStep("otp");
-                setTimer(30);
+                setTimer(60);
             } else {
                 setError(data.message || "Failed to send OTP");
             }
@@ -168,7 +168,7 @@ export default function Login({ isOpen, onClose }: LoginProps) {
                 });
                 const data = await res.json();
                 if (data.success) {
-                    setTimer(30);
+                    setTimer(60);
                     setOtp(new Array(6).fill(""));
                 } else {
                     setError(data.message || "Failed to resend OTP");

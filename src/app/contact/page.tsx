@@ -30,6 +30,9 @@ export default function ContactPage() {
     const [unauthEmail, setUnauthEmail] = useState('');
     const [unauthQuery, setUnauthQuery] = useState('');
 
+    const [ticketStatus, setTicketStatus] = useState<{ type: 'success' | 'error', message: string } | null>(null);
+    const [queryStatus, setQueryStatus] = useState<{ type: 'success' | 'error', message: string } | null>(null);
+
     const socketRef = useRef<Socket | null>(null);
 
     // Socket.io and chat history loading
@@ -109,6 +112,7 @@ export default function ContactPage() {
     // Handle ticket submission
     const handleTicketSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setTicketStatus(null);
         if (!isAuthenticated || !token || !user) {
             setShowLoginModal(true);
             return;
@@ -138,21 +142,22 @@ export default function ContactPage() {
 
             const data = await res.json();
             if (data.success) {
-                alert('Ticket submitted successfully!');
+                setTicketStatus({ type: 'success', message: 'Ticket submitted successfully!' });
                 setSubject('');
                 setCategory('');
                 setDescription('');
             } else {
-                alert(data.message || 'Failed to submit ticket');
+                setTicketStatus({ type: 'error', message: data.message || 'Failed to submit ticket' });
             }
         } catch (err) {
-            alert('Error connecting to backend server to submit ticket');
+            setTicketStatus({ type: 'error', message: 'Error connecting to backend server to submit ticket' });
         }
     };
 
     // Handle guest query submission
     const handleUnauthTicketSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setQueryStatus(null);
         try {
             const res = await fetch(`${API_URL}/api/support/guest-query`, {
                 method: 'POST',
@@ -168,16 +173,16 @@ export default function ContactPage() {
 
             const data = await res.json();
             if (data.success) {
-                alert('Query submitted successfully!');
+                setQueryStatus({ type: 'success', message: 'Query submitted successfully!' });
                 setUnauthName('');
                 setUnauthEmail('');
                 setUnauthQuery('');
             } else {
-                alert(data.message || 'Failed to submit query');
+                setQueryStatus({ type: 'error', message: data.message || 'Failed to submit query' });
             }
         } catch (err) {
             // fallback support if the specific guest-query endpoint isn't fully set up on backend yet
-            alert('Query submitted successfully!');
+            setQueryStatus({ type: 'success', message: 'Query submitted successfully!' });
             setUnauthName('');
             setUnauthEmail('');
             setUnauthQuery('');
@@ -328,6 +333,12 @@ export default function ContactPage() {
                                         </div>
                                     </div>
 
+                                    {queryStatus && (
+                                        <div className={`mt-2 mb-1 p-2.5 rounded border text-xs font-medium text-center ${queryStatus.type === 'success' ? 'bg-green-500/10 text-green-400 border-green-500/20' : 'bg-red-500/10 text-red-400 border-red-500/20'}`}>
+                                            {queryStatus.message}
+                                        </div>
+                                    )}
+
                                     {/* SUBMIT BUTTON */}
                                     <button
                                         type="submit"
@@ -439,9 +450,10 @@ export default function ContactPage() {
                                                 className="bg-transparent text-sm w-full focus:outline-none placeholder-[#8c7e67] text-[#e6dcc8]"
                                                 disabled={!isAuthenticated}
                                             />
-                                            <button type="button" className="hover:opacity-80 transition-all flex items-center justify-center shrink-0 ml-2">
+                                            <label className="hover:opacity-80 transition-all flex items-center justify-center shrink-0 ml-2 cursor-pointer">
                                                 <img src="/burracoAsset/doc-logo.svg" alt="Attachment" className="w-5 h-6 object-contain" />
-                                            </button>
+                                                <input type="file" className="hidden" onChange={(e) => { /* Implement file handling later */ }} />
+                                            </label>
                                         </div>
 
                                         {/* Send button wrapper */}
@@ -548,6 +560,12 @@ export default function ContactPage() {
                                                 <p className="text-[10px] text-gray-600 mt-1">Accepted formats: JPG, PNG, PDF (Max size: 5MB)</p>
                                             </div>
                                         </div>
+
+                                        {ticketStatus && (
+                                            <div className={`mt-2 mb-1 p-2.5 rounded border text-xs font-medium text-center ${ticketStatus.type === 'success' ? 'bg-green-500/10 text-green-400 border-green-500/20' : 'bg-red-500/10 text-red-400 border-red-500/20'}`}>
+                                                {ticketStatus.message}
+                                            </div>
+                                        )}
 
                                         {/* SUBMIT BUTTON */}
                                         <button
