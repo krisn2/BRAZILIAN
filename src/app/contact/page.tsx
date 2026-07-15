@@ -33,7 +33,156 @@ export default function ContactPage() {
     const [ticketStatus, setTicketStatus] = useState<{ type: 'success' | 'error', message: string } | null>(null);
     const [queryStatus, setQueryStatus] = useState<{ type: 'success' | 'error', message: string } | null>(null);
 
+    // Upload states
+    const [chatUploading, setChatUploading] = useState(false);
+    const [ticketUploading, setTicketUploading] = useState(false);
+    const [ticketAttachments, setTicketAttachments] = useState<{ key: string; fileName: string }[]>([]);
+    const [ticketFileName, setTicketFileName] = useState<string | null>(null);
+    const [uploadError, setUploadError] = useState<string | null>(null);
+
     const socketRef = useRef<Socket | null>(null);
+    const chatFileRef = useRef<HTMLInputElement | null>(null);
+    const ticketFileRef = useRef<HTMLInputElement | null>(null);
+
+    const ALLOWED_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+    const MAX_CHAT_SIZE = 2 * 1024 * 1024; // 2MB
+    const MAX_TICKET_SIZE = 5 * 1024 * 1024; // 5MB
+    const R2_PUBLIC_URL = 'https://pub-5772df54895c479a884ffac2dca0a451.r2.dev';
+
+    // Upload an image via presigned URL flow
+    const uploadImage = async (file: File, module: 'chat' | 'ticket', entityId: string): Promise<{ key: string; publicUrl: string } | null> => {
+        const cleanApiUrl = API_URL.endsWith('/api') ? API_URL : `${API_URL}/api`;
+
+        // Step 1: Get presigned upload URL from backend
+        const presignRes = await fetch(`${cleanApiUrl}/uploads/presigned-url`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                module,
+                entityId,
+                fileName: file.name,
+                contentType: file.type,
+                size: file.size
+            })
+        });
+
+        const presignData = await presignRes.json();
+        if (!presignData.success) {
+            throw new Error(presignData.message || 'Failed to get upload URL');
+        }
+
+        // Step 2: Upload file directly to R2 via presigned URL
+        const uploadRes = await fetch(presignData.uploadUrl, {
+            method: 'PUT',
+            headers: { 'Content-Type': file.type },
+            body: file
+        });
+
+        if (!uploadRes.ok) {
+            throw new Error('Failed to upload file to storage');
+        }
+
+        return {
+            key: presignData.key,
+            publicUrl: `${R2_PUBLIC_URL}/${presignData.key}`
+        };
+    };
+
+    // Handle chat image upload
+    const handleChatImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file || !user || !socketRef.current) return;
+
+        // Reset file input so the same file can be re-selected
+        if (chatFileRef.current) chatFileRef.current.value = '';
+
+        // Client-side validation
+        if (!ALLOWED_TYPES.includes(file.type)) {
+            setUploadError('Only JPG, PNG, and WEBP images are allowed.');
+            setTimeout(() => setUploadError(null), 4000);
+            return;
+        }
+        if (file.size > MAX_CHAT_SIZE) {
+            setUploadError('File size exceeds 2MB limit.');
+            setTimeout(() => setUploadError(null), 4000);
+            return;
+        }
+
+        setChatUploading(true);
+        setUploadError(null);
+
+        try {
+            const result = await uploadImage(file, 'chat', 'support');
+            if (!result) throw new Error('Upload returned no result');
+
+            // Send image message via socket
+            const msgData = {
+                senderId: user.userID,
+                receiverId: 'admin',
+                message: result.publicUrl,
+                messageType: 'image',
+                imageUrl: result.publicUrl
+            };
+
+            socketRef.current.emit('send-message', msgData, (response: any) => {
+                if (response && response.success) {
+                    setChatMessages(prev => [
+                        ...prev,
+                        {
+                            sender: 'User',
+                            senderName: user.playerName,
+                            message: result.publicUrl,
+                            messageType: 'image',
+                            imageUrl: result.publicUrl,
+                            createdAt: new Date().toISOString()
+                        }
+                    ]);
+                }
+            });
+        } catch (err: any) {
+            setUploadError(err.message || 'Upload failed. Please try again.');
+            setTimeout(() => setUploadError(null), 5000);
+        } finally {
+            setChatUploading(false);
+        }
+    };
+
+    // Handle ticket image upload
+    const handleTicketImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file || !user) return;
+
+        // Reset file input
+        if (ticketFileRef.current) ticketFileRef.current.value = '';
+
+        // Client-side validation
+        if (!ALLOWED_TYPES.includes(file.type)) {
+            setTicketStatus({ type: 'error', message: 'Only JPG, PNG, and WEBP images are allowed.' });
+            return;
+        }
+        if (file.size > MAX_TICKET_SIZE) {
+            setTicketStatus({ type: 'error', message: 'File size exceeds 5MB limit.' });
+            return;
+        }
+
+        setTicketUploading(true);
+        setTicketStatus(null);
+
+        try {
+            const result = await uploadImage(file, 'ticket', 'new-ticket');
+            if (!result) throw new Error('Upload returned no result');
+
+            setTicketAttachments(prev => [...prev, { key: result.key, fileName: file.name }]);
+            setTicketFileName(file.name);
+        } catch (err: any) {
+            setTicketStatus({ type: 'error', message: err.message || 'Failed to upload attachment.' });
+        } finally {
+            setTicketUploading(false);
+        }
+    };
 
     // Socket.io and chat history loading
     useEffect(() => {
@@ -51,6 +200,8 @@ export default function ContactPage() {
                         sender: m.isAdmin ? 'Agent' : 'User',
                         senderName: m.senderName,
                         message: m.message,
+                        messageType: m.messageType || 'text',
+                        imageUrl: m.imageUrl || null,
                         createdAt: m.timestamp || new Date().toISOString()
                     }));
                     setChatMessages(mapped);
@@ -99,6 +250,8 @@ export default function ContactPage() {
                     sender: isAgent ? 'Agent' : 'User',
                     senderName: msg.senderId?.playerName || 'Agent',
                     message: msg.message,
+                    messageType: msg.messageType || 'text',
+                    imageUrl: msg.imageUrl || null,
                     createdAt: msg.createdAt || new Date().toISOString()
                 }
             ]);
@@ -134,7 +287,8 @@ export default function ContactPage() {
                     status: 'Open',
                     messages: [{
                         sender: 'User',
-                        message: description
+                        message: description,
+                        attachments: ticketAttachments.map(a => a.key)
                     }],
                     actions: ['Ticket created']
                 })
@@ -146,6 +300,8 @@ export default function ContactPage() {
                 setSubject('');
                 setCategory('');
                 setDescription('');
+                setTicketAttachments([]);
+                setTicketFileName(null);
             } else {
                 setTicketStatus({ type: 'error', message: data.message || 'Failed to submit ticket' });
             }
@@ -401,6 +557,7 @@ export default function ContactPage() {
                                                 chatMessages.map((msg, index) => {
                                                     const isAgent = msg.sender === 'Agent' || msg.sender === 'System';
                                                     const isSystem = msg.sender === 'System';
+                                                    const isImage = msg.messageType === 'image';
                                                     if (isSystem) {
                                                         return (
                                                             <div key={index} className="text-center text-[10px] text-gray-500 my-1 font-mono">
@@ -417,7 +574,18 @@ export default function ContactPage() {
                                                             )}
                                                             <div className={`flex flex-col gap-1 max-w-[70%] ${isAgent ? '' : 'items-end'}`}>
                                                                 <div className={`${isAgent ? 'bg-[#191410] border border-[#3e2c1c]/40' : 'bg-[#14321e] border border-[#2e623a]/40'} text-xs text-[#e6dcc8] rounded-2xl ${isAgent ? 'rounded-tl-none' : 'rounded-tr-none'} p-3 shadow-md`}>
-                                                                    <p className="leading-relaxed">{msg.message}</p>
+                                                                    {isImage ? (
+                                                                        <a href={msg.imageUrl || msg.message} target="_blank" rel="noopener noreferrer">
+                                                                            <img
+                                                                                src={msg.imageUrl || msg.message}
+                                                                                alt="Shared image"
+                                                                                className="max-w-[200px] max-h-[200px] rounded-lg object-cover cursor-pointer hover:opacity-90 transition-opacity"
+                                                                                loading="lazy"
+                                                                            />
+                                                                        </a>
+                                                                    ) : (
+                                                                        <p className="leading-relaxed">{msg.message}</p>
+                                                                    )}
                                                                 </div>
                                                                 <span className="text-[10px] text-[#8c7e67] px-1">
                                                                     {msg.senderName} • {new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
@@ -435,6 +603,22 @@ export default function ContactPage() {
                                         </div>
                                     </div>
 
+                                    {/* Upload error/progress banner */}
+                                    {uploadError && (
+                                        <div className="mt-2 p-2 rounded border text-xs font-medium text-center bg-red-500/10 text-red-400 border-red-500/20 animate-pulse">
+                                            {uploadError}
+                                        </div>
+                                    )}
+                                    {chatUploading && (
+                                        <div className="mt-2 p-2 rounded border text-xs font-medium text-center bg-amber-500/10 text-amber-400 border-amber-500/20 flex items-center justify-center gap-2">
+                                            <svg className="animate-spin h-3.5 w-3.5" viewBox="0 0 24 24" fill="none">
+                                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                                            </svg>
+                                            Uploading image…
+                                        </div>
+                                    )}
+
                                     {/* Chat Input Row */}
                                     <form onSubmit={handleChatSend} className="mt-4 flex items-center gap-2.5 w-full shrink-0">
                                         {/* Input & Attachment wrapper */}
@@ -450,9 +634,16 @@ export default function ContactPage() {
                                                 className="bg-transparent text-sm w-full focus:outline-none placeholder-[#8c7e67] text-[#e6dcc8]"
                                                 disabled={!isAuthenticated}
                                             />
-                                            <label className="hover:opacity-80 transition-all flex items-center justify-center shrink-0 ml-2 cursor-pointer">
+                                            <label className={`hover:opacity-80 transition-all flex items-center justify-center shrink-0 ml-2 ${isAuthenticated && !chatUploading ? 'cursor-pointer' : 'opacity-40 cursor-not-allowed'}`}>
                                                 <img src="/burracoAsset/doc-logo.svg" alt="Attachment" className="w-5 h-6 object-contain" />
-                                                <input type="file" className="hidden" onChange={(e) => { /* Implement file handling later */ }} />
+                                                <input
+                                                    ref={chatFileRef}
+                                                    type="file"
+                                                    className="hidden"
+                                                    accept="image/jpeg,image/jpg,image/png,image/webp"
+                                                    onChange={handleChatImageUpload}
+                                                    disabled={!isAuthenticated || chatUploading}
+                                                />
                                             </label>
                                         </div>
 
@@ -551,13 +742,32 @@ export default function ContactPage() {
                                             <div>
                                                 <label className="block text-[#a49a8a] font-medium mb-1 uppercase tracking-wide">Attach Files <span className="text-gray-600">(optional)</span></label>
                                                 <div className="flex items-center gap-3 bg-[#070b0d]/90 border border-[#3e2c1c]/40 rounded-lg p-2">
-                                                    <label className="bg-[#121619] border border-gray-700 hover:border-gray-500 cursor-pointer text-[11px] font-semibold text-gray-300 px-3 py-1.5 rounded-md transition-colors">
-                                                        Choose File
-                                                        <input type="file" className="hidden" />
+                                                    <label className={`bg-[#121619] border border-gray-700 hover:border-gray-500 text-[11px] font-semibold text-gray-300 px-3 py-1.5 rounded-md transition-colors ${ticketUploading ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}`}>
+                                                        {ticketUploading ? (
+                                                            <span className="flex items-center gap-1.5">
+                                                                <svg className="animate-spin h-3 w-3" viewBox="0 0 24 24" fill="none">
+                                                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                                                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                                                                </svg>
+                                                                Uploading…
+                                                            </span>
+                                                        ) : 'Choose File'}
+                                                        <input
+                                                            ref={ticketFileRef}
+                                                            type="file"
+                                                            className="hidden"
+                                                            accept="image/jpeg,image/jpg,image/png,image/webp"
+                                                            onChange={handleTicketImageUpload}
+                                                            disabled={ticketUploading}
+                                                        />
                                                     </label>
-                                                    <span className="text-gray-600 text-[11px]">No file chosen</span>
+                                                    <span className="text-gray-600 text-[11px] truncate max-w-[180px]">
+                                                        {ticketAttachments.length > 0
+                                                            ? ticketAttachments.map(a => a.fileName).join(', ')
+                                                            : 'No file chosen'}
+                                                    </span>
                                                 </div>
-                                                <p className="text-[10px] text-gray-600 mt-1">Accepted formats: JPG, PNG, PDF (Max size: 5MB)</p>
+                                                <p className="text-[10px] text-gray-600 mt-1">Accepted formats: JPG, PNG, WEBP (Max size: 5MB)</p>
                                             </div>
                                         </div>
 
