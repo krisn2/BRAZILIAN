@@ -6,14 +6,14 @@ import Footer from "@/components/layout/Footer";
 
 // Dynamic item data matching mockups
 const STORE_ITEMS = [
-    { id: 1, amount: '1,000', label: '1K', price: '$0.99' },
-    { id: 2, amount: '2,000', label: '2K', price: '$1.99' },
-    { id: 3, amount: '5,000', label: '5K', price: '$4.99' },
-    { id: 4, amount: '10,000', label: '10K', price: '$9.99' },
-    { id: 5, amount: '20,000', label: '20K', price: '$18.99' },
-    { id: 6, amount: '50,000', label: '50K', price: '$44.99' },
-    { id: 7, amount: '100,000', label: '100K', price: '$84.99' },
-    { id: 8, amount: '250,000', label: '250K', price: '$199.99' },
+    { id: 1, amount: '1,000', label: '1K', price: 'SAR0.99' },
+    { id: 2, amount: '2,000', label: '2K', price: 'SAR1.99' },
+    { id: 3, amount: '5,000', label: '5K', price: 'SAR4.99' },
+    { id: 4, amount: '10,000', label: '10K', price: 'SAR9.99' },
+    { id: 5, amount: '20,000', label: '20K', price: 'SAR18.99' },
+    { id: 6, amount: '50,000', label: '50K', price: 'SAR44.99' },
+    { id: 7, amount: '100,000', label: '100K', price: 'SAR84.99' },
+    { id: 8, amount: '250,000', label: '250K', price: 'SAR199.99' },
 ];
 
 export default function StorePage() {
@@ -25,11 +25,11 @@ export default function StorePage() {
         <div className="min-h-screen bg-[#060503] flex flex-col justify-between overflow-x-hidden">
             <div>
                 <Navbar />
-                
+
                 <main className="text-white pt-[143px] pb-16 px-4 font-sans select-none flex flex-col items-center">
                     <div className="max-w-[1165px] mx-auto flex flex-col items-center w-full">
                         {/* Header Title */}
-                        <h1 
+                        <h1
                             className="font-serif tracking-widest font-bold uppercase text-center flex items-center justify-center"
                             style={{
                                 width: '153px', // matches store heading or slightly wider if needed, 153px is good
@@ -48,7 +48,7 @@ export default function StorePage() {
                         {/* Golden Decorative Line Divider */}
                         <div
                             className="bg-center bg-no-repeat bg-contain"
-                            style={{ 
+                            style={{
                                 backgroundImage: `url('/burracoAsset/gloden-line.svg')`,
                                 width: '338px',
                                 height: '18px',
@@ -147,7 +147,7 @@ export default function StorePage() {
                     </div>
                 </main>
             </div>
-            
+
             <Footer />
         </div>
     );
