@@ -423,20 +423,71 @@ export default function ContactPage() {
 
                     {/* Main Containers Wrapper */}
                     {!isAuthenticated ? (
-                        <div
-                            className="relative p-8 md:p-10 flex flex-col justify-between w-full max-w-[550px] h-[620px] shadow-2xl"
+                        <div 
+                            className="w-full flex flex-col md:flex-row items-center justify-between relative shadow-2xl overflow-hidden"
                             style={{
-                                backgroundImage: "url('/burracoAsset/chat-box.svg')",
+                                width: '100%',
+                                maxWidth: '1145px',
+                                minHeight: '676px',
+                                backgroundImage: "url('/burracoAsset/contact-form-bg.svg')",
                                 backgroundSize: '100% 100%',
                                 backgroundPosition: 'center',
                                 backgroundRepeat: 'no-repeat',
+                                padding: '2rem'
                             }}
                         >
-                            <form onSubmit={handleUnauthTicketSubmit} className="flex flex-col h-full justify-between">
-                                <div className="flex flex-col h-full justify-between">
+                            {/* LEFT COLUMN: Customer Care Support */}
+                            <div
+                                className="relative flex flex-col items-center justify-center w-full md:w-[45%]"
+                                style={{
+                                    height: '600px',
+                                    backgroundImage: "url('/burracoAsset/contact-form-detail-bg.svg')",
+                                    backgroundSize: '100% 100%',
+                                    backgroundPosition: 'center',
+                                    backgroundRepeat: 'no-repeat',
+                                }}
+                            >
+                                <img src="/burracoAsset/custmore-support-logo.svg" alt="Customer Support" className="w-[120px] mb-6" />
+                                <h2 className="text-[#f3c677] text-xl md:text-2xl font-serif text-center uppercase tracking-widest mb-8 leading-tight">
+                                    CUSTOMER CARE<br />SUPPORT
+                                </h2>
+
+                                <div className="w-[60%] border-b border-[#3e2c1c]/50 mb-8" />
+
+                                <div className="flex items-center gap-6 w-[60%] mb-8">
+                                    <div className="w-12 h-12 rounded-full border border-[#f3c677] flex items-center justify-center shrink-0">
+                                        <svg className="w-6 h-6 text-[#f3c677]" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                                            <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h3 className="text-[#f3c677] text-xs font-semibold uppercase tracking-wider mb-1">Email</h3>
+                                        <p className="text-[#e6dcc8] text-sm">info@diwanyeh.com</p>
+                                    </div>
+                                </div>
+
+                                <div className="w-[60%] border-b border-[#3e2c1c]/50 mb-8" />
+
+                                <div className="flex items-center gap-6 w-[60%]">
+                                    <div className="w-12 h-12 rounded-full border border-[#f3c677] flex items-center justify-center shrink-0">
+                                        <svg className="w-6 h-6 text-[#f3c677]" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h3 className="text-[#f3c677] text-xs font-semibold uppercase tracking-wider mb-1">Mobile</h3>
+                                        <p className="text-[#e6dcc8] text-sm">0541002907</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* RIGHT COLUMN: Submit your query */}
+                            <div className="relative p-6 md:p-8 flex flex-col justify-between w-full md:w-[50%] h-[600px]">
+                                <form onSubmit={handleUnauthTicketSubmit} className="flex flex-col h-full justify-start">
                                     {/* Component Header */}
-                                    <div className="text-center mb-3 shrink-0">
-                                        <h2 className="text-lg font-semibold tracking-wider text-[#f3c677] uppercase flex items-center justify-center gap-2">
+                                    <div className="text-left mb-3 shrink-0">
+                                        <h2 className="text-lg font-semibold tracking-wider text-[#f3c677] uppercase flex items-center gap-2">
                                             <svg className="w-5 h-5 text-[#f3c677]" fill="none" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M14.5 13.5V5.41a1 1 0 0 0-.3-.7L9.8.29A1 1 0 0 0 9.08 0H1.5v13.5A2.5 2.5 0 0 0 4 16h8a2.5 2.5 0 0 0 2.5-2.5m-1.5 0v-7H8v-5H3v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1M9.5 5V2.12L12.38 5zM5.13 5h-.62v1.25h2.12V5zm-.62 3h7.12v1.25H4.5zm.62 3h-.62v1.25h7.12V11z" clipRule="evenodd" fill="currentColor" fillRule="evenodd" />
                                             </svg>
@@ -445,16 +496,15 @@ export default function ContactPage() {
                                     </div>
 
                                     {/* Divider */}
-                                    <div className="border-b border-[#3e2c1c]/30 mb-6 shrink-0" />
+                                    <div className="border-b border-[#3e2c1c]/30 mb-8 shrink-0" />
 
                                     {/* Form Inputs Container */}
-                                    <div className="space-y-4 text-xs flex-grow flex flex-col justify-center">
+                                    <div className="space-y-6 text-xs flex-grow flex flex-col justify-start">
                                         {/* Name Field */}
-                                        <div className="mb-2">
-                                            <label className="block text-[#a49a8a] font-medium mb-1.5 uppercase tracking-wide">Name</label>
+                                        <div>
+                                            <label className="block text-[#a49a8a] font-medium mb-1.5 capitalize tracking-wide">Name</label>
                                             <input
                                                 type="text"
-                                                placeholder="Enter your name"
                                                 value={unauthName}
                                                 onChange={(e) => setUnauthName(e.target.value)}
                                                 className="w-full bg-[#070b0d]/90 border border-[#3e2c1c]/40 rounded-lg p-3 text-[#e6dcc8] focus:outline-none focus:border-[#f3c677] transition-colors placeholder-gray-600"
@@ -463,11 +513,10 @@ export default function ContactPage() {
                                         </div>
 
                                         {/* Email Address Field */}
-                                        <div className="mb-2">
-                                            <label className="block text-[#a49a8a] font-medium mb-1.5 uppercase tracking-wide">Email address</label>
+                                        <div>
+                                            <label className="block text-[#a49a8a] font-medium mb-1.5 capitalize tracking-wide">Email address</label>
                                             <input
                                                 type="email"
-                                                placeholder="Enter your email address"
                                                 value={unauthEmail}
                                                 onChange={(e) => setUnauthEmail(e.target.value)}
                                                 className="w-full bg-[#070b0d]/90 border border-[#3e2c1c]/40 rounded-lg p-3 text-[#e6dcc8] focus:outline-none focus:border-[#f3c677] transition-colors placeholder-gray-600"
@@ -476,21 +525,19 @@ export default function ContactPage() {
                                         </div>
 
                                         {/* Query Field */}
-                                        <div className="mb-2">
-                                            <label className="block text-[#a49a8a] font-medium mb-1.5 uppercase tracking-wide">Query</label>
+                                        <div className="flex-1 flex flex-col">
+                                            <label className="block text-[#a49a8a] font-medium mb-1.5 capitalize tracking-wide">Query</label>
                                             <textarea
-                                                rows={4}
-                                                placeholder="Enter your query here..."
                                                 value={unauthQuery}
                                                 onChange={(e) => setUnauthQuery(e.target.value)}
-                                                className="w-full bg-[#070b0d]/90 border border-[#3e2c1c]/40 rounded-lg p-3 text-[#e6dcc8] focus:outline-none focus:border-[#f3c677] transition-colors placeholder-gray-600 resize-none flex-1 min-h-[100px]"
+                                                className="w-full bg-[#070b0d]/90 border border-[#3e2c1c]/40 rounded-lg p-3 text-[#e6dcc8] focus:outline-none focus:border-[#f3c677] transition-colors placeholder-gray-600 resize-none flex-1 min-h-[120px]"
                                                 required
                                             ></textarea>
                                         </div>
                                     </div>
 
                                     {queryStatus && (
-                                        <div className={`mt-2 mb-1 p-2.5 rounded border text-xs font-medium text-center ${queryStatus.type === 'success' ? 'bg-green-500/10 text-green-400 border-green-500/20' : 'bg-red-500/10 text-red-400 border-red-500/20'}`}>
+                                        <div className={`mt-4 mb-2 p-2.5 rounded border text-xs font-medium text-center ${queryStatus.type === 'success' ? 'bg-green-500/10 text-green-400 border-green-500/20' : 'bg-red-500/10 text-red-400 border-red-500/20'}`}>
                                             {queryStatus.message}
                                         </div>
                                     )}
@@ -498,13 +545,13 @@ export default function ContactPage() {
                                     {/* SUBMIT BUTTON */}
                                     <button
                                         type="submit"
-                                        className="w-full h-11 bg-cover bg-center rounded-lg font-serif font-bold text-sm text-[#3a2503] uppercase tracking-widest hover:brightness-110 active:scale-[0.99] transition-all flex items-center justify-center shadow-lg shadow-amber-950/20 shrink-0 mt-4"
+                                        className="w-full h-12 bg-cover bg-center rounded-lg font-serif font-bold text-sm text-[#3a2503] uppercase tracking-widest hover:brightness-110 active:scale-[0.99] transition-all flex items-center justify-center shadow-lg shadow-amber-950/20 shrink-0 mt-6"
                                         style={{ backgroundImage: "url('/burracoAsset/sumit-ticket-bg.svg')" }}
                                     >
                                         Submit
                                     </button>
-                                </div>
-                            </form>
+                                </form>
+                            </div>
                         </div>
                     ) : (
                         <div className="max-w-6xl w-full grid grid-cols-1 md:grid-cols-2 gap-8 items-center justify-items-center">
