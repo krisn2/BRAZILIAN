@@ -59,7 +59,7 @@ export default function TermsAndConditions() {
                                         1. About Diwanyeh
                                     </h2>
                                     <p>
-                                        Diwanyeh is an online platform designed to bring the classic Baloot card game experience to players through a modern digital environment. We provide users with an enjoyable and interactive card game experience where players can connect, compete, and enjoy Baloot with friends and other players.
+                                        Diwanyeh is an online platform designed to bring the classic Burraco & Baloot card game experience to players through a modern digital environment. We provide users with an enjoyable and interactive card game experience where players can connect, compete, and enjoy Baloot with friends and other players.
                                     </p>
                                 </section>
 
@@ -94,7 +94,7 @@ export default function TermsAndConditions() {
                                     <h2 className="text-base md:text-lg font-medium text-[#EFCC88] tracking-wide font-serif mb-2">
                                         4. Fair Gameplay Policy
                                     </h2>
-                                    <p className="mb-3">At Diwanyeh, we aim to provide a fair and enjoyable Baloot game environment for everyone. Users strictly agree not to:</p>
+                                    <p className="mb-3">At Diwanyeh, we aim to provide a fair and enjoyable Burraco & Baloot game environment for everyone. Users strictly agree not to:</p>
                                     <ul className="list-disc list-inside pl-2 flex flex-col gap-1 text-gray-400">
                                         <li>Use cheats, hacks, bots, or unauthorized third-party software.</li>
                                         <li>Manipulate game results, stats, or global match rankings.</li>
@@ -199,10 +199,10 @@ export default function TermsAndConditions() {
                                         14. Contact Us
                                     </h2>
                                     <p>
-                                        If you have questions, feedback, or compliance inquiries about these Terms & Conditions, reach out directly to the core development support lines via our web channel:
+                                        If you have questions, feedback, or compliance inquiries about these Terms & Conditions, reach out directly to the core development support lines via email
                                     </p>
                                     <p className="mt-2 font-medium text-[#EFCC88]">
-                                        Website: <a href="https://diwanyeh.com/" className="underline hover:text-[#fcd34d] transition-colors">https://diwanyeh.com/</a>
+                                        email: info@diwanyeh.com
                                     </p>
                                 </section>
 

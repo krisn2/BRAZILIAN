@@ -423,7 +423,7 @@ export default function ContactPage() {
 
                     {/* Main Containers Wrapper */}
                     {!isAuthenticated ? (
-                        <div 
+                        <div
                             className="w-full flex flex-col md:flex-row items-center justify-between relative shadow-2xl overflow-hidden"
                             style={{
                                 width: '100%',
@@ -477,7 +477,7 @@ export default function ContactPage() {
                                     </div>
                                     <div>
                                         <h3 className="text-[#f3c677] text-xs font-semibold uppercase tracking-wider mb-1">Mobile</h3>
-                                        <p className="text-[#e6dcc8] text-sm">0541002907</p>
+                                        <p className="text-[#e6dcc8] text-sm">+054 505 0888</p>
                                     </div>
                                 </div>
                             </div>

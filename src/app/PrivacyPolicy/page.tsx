@@ -63,7 +63,7 @@ export default function PrivacyPolicy() {
                                             <ul className="list-disc list-inside pl-2 flex flex-col gap-1 text-gray-400">
                                                 <li>Account details such as your name, username, email address, and password when you register.</li>
                                                 <li>Payment information when you make an in-app purchase (processed securely through trusted third-party payment providers — we do not store your full card details ourselves).</li>
-                                                <li>Any information you share when contacting our support team, such as messages, screenshots, or feedback.</li>
+                                                {/* <li>Any information you share when contacting our support team, such as messages, screenshots, or feedback.</li> */}
                                             </ul>
                                         </div>
 
@@ -92,7 +92,7 @@ export default function PrivacyPolicy() {
                                     <p className="mb-3">We use the information we collect to operate, secure, and personalize our matches. This includes goals to:</p>
                                     <ul className="list-disc list-inside pl-2 flex flex-col gap-1 text-gray-400">
                                         <li>Create and manage your Diwanyeh account profile.</li>
-                                        <li>Operate, maintain, and improve the baloot card game mechanics and overall Service systems.</li>
+                                        <li>Operate, maintain, and improve the card games mechanics and overall Service systems.</li>
                                         <li>Process in-app purchases and manage virtual currency balances or match rewards.</li>
                                         <li>Personalize your experience, including dynamic matchmaking pools and content recommendations.</li>
                                         <li>Detect and prevent cheating, hacks, fraud, and active system abuse to keep gameplay fair.</li>
@@ -172,7 +172,10 @@ export default function PrivacyPolicy() {
                                         10. Contact Us
                                     </h2>
                                     <p>
-                                        If you have questions, privacy concerns, or structural security remarks concerning data flow practices, open clear tickets natively via the Help interface of the app or reach out via our web channels.
+                                        If you have questions, privacy concerns, or structural security remarks concerning data flow practices, open clear tickets natively via the Help interface of the app or reach out via our email
+                                    </p>
+                                    <p className="mt-2 font-medium text-[#EFCC88]">
+                                        email: info@diwanyeh.com
                                     </p>
                                 </section>
 
