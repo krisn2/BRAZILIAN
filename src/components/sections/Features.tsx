@@ -1,31 +1,36 @@
+"use client";
+
 import Image from "next/image";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function FeatureRow() {
+    const { t } = useLanguage();
+
     const features = [
         {
-            title: "MULTIPLAYER FUN",
-            desc: "Challenge friends or compete with global players in real-time.",
+            title: t("feature_multiplayer_title"),
+            desc: t("feature_multiplayer_desc"),
             imgSrc: "/burracoAsset/multiplayer-logo.png",
             leftPos: "103px",
             width: "220px",
         },
         {
-            title: "SAFE & SECURE",
-            desc: "Your game data and privacy are always protected.",
+            title: t("feature_safe_title"),
+            desc: t("feature_safe_desc"),
             imgSrc: "/burracoAsset/safe&secure.png",
-            leftPos: "460px", // Margined cleanly to split the layout tracking evenly
+            leftPos: "460px",
             width: "215px",
         },
         {
-            title: "EXCITING REWARDS",
-            desc: "Win coins, unlock treasures, and much more.",
+            title: t("feature_rewards_title"),
+            desc: t("feature_rewards_desc"),
             imgSrc: "/burracoAsset/gift.png",
             leftPos: "803px",
             width: "215px",
         },
         {
-            title: "FAIR PLAY",
-            desc: "100% fair environment for every player.",
+            title: t("feature_fairplay_title"),
+            desc: t("feature_fairplay_desc"),
             imgSrc: "/burracoAsset/fair-play.png",
             leftPos: "1153px",
             width: "210px",
@@ -59,7 +64,7 @@ export default function FeatureRow() {
                         className="absolute flex items-center"
                         style={{
                             left: feat.leftPos,
-                            top: "23px", // Derived exact offset from top layout (480px - 457px)
+                            top: "23px",
                             height: "80px",
                         }}
                     >

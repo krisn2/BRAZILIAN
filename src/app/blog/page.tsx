@@ -1,72 +1,71 @@
+"use client";
+
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
-
-const BLOG_POSTS = [
-    {
-        id: 1,
-        title: "How to Control the Table Like a Pro",
-        date: "May 18, 2024",
-        category: "Strategies",
-        description: "Learn key tactics to dominate the table and keep your opponents guessing.",
-        image: "/burracoAsset/blog-1-image.svg",
-    },
-    {
-        id: 2,
-        title: "New Features Coming to Baloot",
-        date: "May 12, 2024",
-        category: "Game Updates",
-        description: "We're excited to introduce new features designed to elevate your experience.",
-        image: "/burracoAsset/blog-2-image.svg",
-    },
-    {
-        id: 3,
-        title: "Common Mistakes and How to Avoid Them",
-        date: "May 8, 2024",
-        category: "Tips & Tricks",
-        description: "Avoid typical errors players make. Learn smart plays that could be costing you the game.",
-        image: "/burracoAsset/blog-3-image.svg",
-    },
-];
-
-const CATEGORIES = [
-    { name: "All Posts", count: 18, icon: "/burracoAsset/blog-all-post.png", width: 26, height: 22 },
-    { name: "Game Updates", count: 6, icon: "/burracoAsset/blog-game-upfate.png", width: 30, height: 30 },
-    { name: "Strategies", count: 5, icon: "/burracoAsset/blog-stastgies.png", width: 30, height: 30 },
-    { name: "Tips & Tricks", count: 4, icon: "/burracoAsset/blog-tips.png", width: 30, height: 29 },
-    { name: "Community", count: 3, icon: "/burracoAsset/blog-community.png", width: 30, height: 24 },
-];
-
-const POPULAR_POSTS = [
-    {
-        id: 1,
-        title: "Top 5 Tips for Beginners",
-        date: "May 10, 2024",
-        image: "/burracoAsset/blog-post-1.png",
-        width: 89,
-        height: 67.5
-    },
-    {
-        id: 2,
-        title: "Baloot Tournament Highlights",
-        date: "April 25, 2024",
-        image: "/burracoAsset/blog-post-2.png",
-        width: 89,
-        height: 67.5
-    },
-    {
-        id: 3,
-        title: "Understanding Trump in Baloot",
-        date: "April 15, 2024",
-        image: "/burracoAsset/blog-post-3.png",
-        width: 89,
-        height: 67.5
-    },
-];
+import { useLanguage } from '@/context/LanguageContext';
 
 export default function BlogPage() {
+    const { t } = useLanguage();
+
+    const BLOG_POSTS = [
+        {
+            id: 1,
+            title: t("blog_p1_title"),
+            date: "May 18, 2024",
+            category: t("blog_cat_strategies"),
+            description: t("blog_p1_desc"),
+            image: "/burracoAsset/blog-1-image.svg",
+        },
+        {
+            id: 2,
+            title: t("blog_p2_title"),
+            date: "May 12, 2024",
+            category: t("blog_cat_updates"),
+            description: t("blog_p2_desc"),
+            image: "/burracoAsset/blog-2-image.svg",
+        },
+        {
+            id: 3,
+            title: t("blog_p3_title"),
+            date: "May 8, 2024",
+            category: t("blog_cat_tips"),
+            description: t("blog_p3_desc"),
+            image: "/burracoAsset/blog-3-image.svg",
+        },
+    ];
+
+    const CATEGORIES = [
+        { name: t("blog_cat_all"), count: 18, icon: "/burracoAsset/blog-all-post.png" },
+        { name: t("blog_cat_updates"), count: 6, icon: "/burracoAsset/blog-game-upfate.png" },
+        { name: t("blog_cat_strategies"), count: 5, icon: "/burracoAsset/blog-stastgies.png" },
+        { name: t("blog_cat_tips"), count: 4, icon: "/burracoAsset/blog-tips.png" },
+        { name: t("blog_cat_community"), count: 3, icon: "/burracoAsset/blog-community.png" },
+    ];
+
+    const POPULAR_POSTS = [
+        {
+            id: 1,
+            title: t("blog_pop1_title"),
+            date: "May 10, 2024",
+            image: "/burracoAsset/blog-post-1.png",
+        },
+        {
+            id: 2,
+            title: t("blog_pop2_title"),
+            date: "April 25, 2024",
+            image: "/burracoAsset/blog-post-2.png",
+        },
+        {
+            id: 3,
+            title: t("blog_pop3_title"),
+            date: "April 15, 2024",
+            image: "/burracoAsset/blog-post-3.png",
+        },
+    ];
+
     // Exact gold text gradient style
     const goldTextStyle = {
         background: "linear-gradient(180deg, #EFCC88 14.94%, #D59444 43.34%, #B86B1D 68.34%)",
@@ -103,12 +102,12 @@ export default function BlogPage() {
                                 className="font-serif tracking-widest font-bold uppercase drop-shadow-md flex items-center justify-start absolute text-4xl md:text-5xl"
                                 style={{
                                     ...goldTextStyle,
-                                    width: '250px', // Increased width slightly to prevent any potential wrapping
-                                    top: '40px',   // Slightly adjusted top to compensate for the natural height auto-scaling
-                                    left: '300px'  // Aligns left edge of heading to middle of golden line (202px + 169px)
+                                    width: '250px',
+                                    top: '40px',
+                                    left: '300px'
                                 }}
                             >
-                                Blog
+                                {t("blog_title")}
                             </h1>
 
                             {/* Golden Line SVG Divider */}
@@ -118,13 +117,13 @@ export default function BlogPage() {
                                     backgroundImage: `url('/burracoAsset/gloden-line.svg')`,
                                     width: '338px',
                                     height: '18px',
-                                    top: '108px', // 202px (canvas) - 94px (navbar) = 108px
+                                    top: '108px',
                                     left: '202px'
                                 }}
                             />
 
                             <p className="absolute text-sm md:text-base text-gray-300 max-w-md drop-shadow top-[140px] left-[202px]">
-                                Tips, strategies, updates, and stories from the world of Baloot. Stay informed and improve your game.
+                                {t("blog_hero_desc")}
                             </p>
                         </div>
                     </div>
@@ -190,7 +189,7 @@ export default function BlogPage() {
                                                 className="inline-flex items-center text-xs font-bold tracking-widest hover:text-white transition-colors uppercase"
                                                 style={goldTextStyle}
                                             >
-                                                Read More
+                                                {t("blog_read_more")}
                                                 <span className="ml-1 text-[10px] text-gray-400 group-hover:translate-x-1 transition-transform">❯</span>
                                             </Link>
                                         </div>
@@ -230,7 +229,7 @@ export default function BlogPage() {
                             {/* CATEGORIES WIDGET */}
                             <div className="w-full mb-8">
                                 <h3 className="text-xs font-bold tracking-widest uppercase pb-2 mb-4 border-b border-[#544434]/30" style={goldTextStyle}>
-                                    Categories
+                                    {t("blog_categories_title")}
                                 </h3>
                                 <ul className="space-y-0">
                                     {CATEGORIES.map((cat, idx) => (
@@ -243,7 +242,7 @@ export default function BlogPage() {
                                                     <div
                                                         className="relative shrink-0 flex items-center justify-center opacity-80 group-hover:opacity-100 transition-opacity"
                                                         style={{
-                                                            width: `20px`, // Slightly normalized size for cleaner alignment
+                                                            width: `20px`,
                                                             height: `20px`,
                                                         }}
                                                     >
@@ -267,7 +266,7 @@ export default function BlogPage() {
                             {/* POPULAR POSTS WIDGET */}
                             <div className="w-full">
                                 <h3 className="text-xs font-bold tracking-widest uppercase pb-2 mb-4 border-b border-[#544434]/30" style={goldTextStyle}>
-                                    Popular Posts
+                                    {t("blog_popular_posts_title")}
                                 </h3>
                                 <div className="space-y-0">
                                     {POPULAR_POSTS.map((pop, idx) => (
@@ -279,7 +278,7 @@ export default function BlogPage() {
                                                 <div
                                                     className="relative shrink-0 border border-[#544434]/30 bg-black/40 rounded-sm overflow-hidden"
                                                     style={{
-                                                        width: `72px`,  // Adjusted closer to the visual scale of Image 2
+                                                        width: `72px`,
                                                         height: `54px`,
                                                     }}
                                                 >

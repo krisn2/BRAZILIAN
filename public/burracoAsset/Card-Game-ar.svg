@@ -1,0 +1,22 @@
+<svg width="83" height="15" viewBox="0 0 83 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="cardGameGoldGradient" x1="41.5" y1="0" x2="41.5" y2="15" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#EFCC88"/>
+      <stop offset="0.48" stop-color="#D59444"/>
+      <stop offset="0.90" stop-color="#B86B1D"/>
+    </linearGradient>
+    <filter id="cardGameShadow" x="0" y="0" width="83" height="15" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="1" stdDeviation="0.5" flood-color="#000000" flood-opacity="0.8"/>
+    </filter>
+    <style>
+      .cardgame-arabic-text {
+        font-family: 'Cairo', 'Tajawal', 'Traditional Arabic', 'Arial', sans-serif;
+        font-weight: 800;
+        font-size: 11px;
+      }
+    </style>
+  </defs>
+  <g filter="url(#cardGameShadow)">
+    <text x="41.5" y="11" text-anchor="middle" fill="url(#cardGameGoldGradient)" class="cardgame-arabic-text">لعبة ورق</text>
+  </g>
+</svg>

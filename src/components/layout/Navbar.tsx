@@ -5,6 +5,7 @@ import { Poppins } from "next/font/google";
 import { usePathname, useRouter } from "next/navigation";
 import Login from "@/components/sections/Login";
 import { useAuth } from "@/context/AuthContext";
+import { useLanguage } from "@/context/LanguageContext";
 
 const poppins = Poppins({
     subsets: ["latin"],
@@ -17,21 +18,23 @@ export default function Navbar() {
     const [isLoginOpen, setIsLoginOpen] = useState(false);
     const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
 
-    // Assuming your auth context returns user details along with balance/coins
+    // Auth context
     const { isAuthenticated, logout, user } = useAuth();
 
-    // Fallback values matching your UI screenshot if user context isn't fully set up yet
+    // Language context
+    const { t, toggleLanguage, language, isArabic } = useLanguage();
+
     const userCoins = user?.coins ?? 0;
     const userName = user?.playerName;
-    const userAvatar = user?.avatarUrl ?? "/burracoAsset/default-avatar.svg"; // Fallback path
+    const userAvatar = user?.avatarUrl ?? "/burracoAsset/default-avatar.svg";
 
     const navLinks = [
-        { name: "HOME", href: "/" },
-        { name: "ABOUT US", href: "/about" },
-        { name: "GAMES", href: "/games" },
-        { name: "STORE", href: "/store" },
-        { name: "BLOG", href: "/blog" },
-        { name: "CONTACT US", href: "/contact" },
+        { name: t("nav_home"), href: "/" },
+        { name: t("nav_about"), href: "/about" },
+        { name: t("nav_games"), href: "/games" },
+        { name: t("nav_store"), href: "/store" },
+        { name: t("nav_blog"), href: "/blog" },
+        { name: t("nav_contact"), href: "/contact" },
     ];
 
     return (
@@ -54,7 +57,7 @@ export default function Navbar() {
                         className="w-[59px] h-[59px] object-contain"
                     />
                     <img
-                        src="/burracoAsset/DIWANYEH.svg"
+                        src={isArabic ? "/burracoAsset/DIWANYEH-ar.svg" : "/burracoAsset/DIWANYEH.svg"}
                         alt="DIWANYEH"
                         className="hidden sm:block w-[150px] md:w-[212px] h-[42px] object-contain"
                     />
@@ -66,7 +69,7 @@ export default function Navbar() {
                         const isActive = link.href === "/" ? pathname === "/" : pathname?.startsWith(link.href);
                         return (
                             <a
-                                key={link.name}
+                                key={link.href}
                                 href={link.href}
                                 className="relative flex flex-col items-center justify-center transition-colors duration-200 hover:opacity-80 active:opacity-100 text-base"
                                 style={{
@@ -87,8 +90,21 @@ export default function Navbar() {
                     })}
                 </div>
 
-                {/* ================= RIGHT AUTHENTICATION / USER PROFILE SECTION ================= */}
-                <div className="flex items-center gap-6">
+                {/* ================= RIGHT AUTHENTICATION / USER PROFILE & LANGUAGE SECTION ================= */}
+                <div className="flex items-center gap-4 sm:gap-6">
+
+                    {/* Language Switcher Button */}
+                    <button
+                        onClick={toggleLanguage}
+                        aria-label="Switch Language"
+                        className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#E5B962]/50 bg-[#14110E] text-[#E5B962] hover:border-[#E5B962] hover:bg-[#221D17] active:scale-95 transition-all text-xs font-semibold tracking-wider cursor-pointer shadow-sm"
+                    >
+                        <svg className="w-4 h-4 text-[#E5B962]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
+                        </svg>
+                        <span>{language === 'en' ? 'العربية' : 'English'}</span>
+                    </button>
+
                     {!isAuthenticated ? (
                         /* Unauthenticated: Show Login Button */
                         <button
@@ -130,7 +146,7 @@ export default function Navbar() {
                                         className="w-10 h-10 rounded-full border border-[#E5B962] object-cover"
                                     />
                                     <div className="hidden md:flex flex-col text-left leading-none">
-                                        <span className="text-[11px] text-gray-400 font-medium">Welcome,</span>
+                                        <span className="text-[11px] text-gray-400 font-medium">{t("nav_welcome")}</span>
                                         <span className="text-sm text-white font-semibold mt-0.5">{userName}</span>
                                     </div>
                                     <span className="text-gray-400 text-xs ml-1 transition-transform duration-200" style={{ transform: isProfileDropdownOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}>
@@ -144,11 +160,11 @@ export default function Navbar() {
                                         <button
                                             onClick={() => {
                                                 setIsProfileDropdownOpen(false);
-                                                router.push("/dashboard"); // Navigates to user dashboard page
+                                                router.push("/dashboard");
                                             }}
                                             className="w-full text-left px-4 py-2.5 text-sm text-white hover:bg-[#1C1712] hover:text-[#E5B962] transition-colors"
                                         >
-                                            User Dashboard
+                                            {t("nav_dashboard")}
                                         </button>
                                         <div className="border-t border-[#3E342A] my-1"></div>
                                         <button
@@ -158,7 +174,7 @@ export default function Navbar() {
                                             }}
                                             className="w-full text-left px-4 py-2.5 text-sm text-red-400 hover:bg-[#1C1712] transition-colors"
                                         >
-                                            Logout
+                                            {t("nav_logout")}
                                         </button>
                                     </div>
                                 )}

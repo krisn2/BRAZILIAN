@@ -1,0 +1,22 @@
+<svg width="448" height="35" viewBox="0 0 448 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="expGoldGrad" x1="224" y1="0" x2="224" y2="35" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#EFCC88"/>
+      <stop offset="0.48" stop-color="#D59444"/>
+      <stop offset="0.90" stop-color="#B86B1D"/>
+    </linearGradient>
+    <filter id="expShadow" x="0" y="0" width="448" height="35" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="2" stdDeviation="1" flood-color="#000000" flood-opacity="0.8"/>
+    </filter>
+    <style>
+      .exp-arabic-text {
+        font-family: 'Cairo', 'Tajawal', 'Traditional Arabic', 'Arial', sans-serif;
+        font-weight: 900;
+        font-size: 28px;
+      }
+    </style>
+  </defs>
+  <g filter="url(#expShadow)">
+    <text x="10" y="27" text-anchor="start" fill="url(#expGoldGrad)" class="exp-arabic-text">عش تجربة البلوت</text>
+  </g>
+</svg>

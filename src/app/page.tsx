@@ -1,10 +1,15 @@
+"use client";
+
 import Image from "next/image";
 import Footer from "@/components/layout/Footer";
 import Navbar from "@/components/layout/Navbar";
 import FeatureRow from "@/components/sections/Features";
 import PageFooterSection from "@/components/sections/PageFooterSection";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function Home() {
+  const { t, isArabic } = useLanguage();
+
   return (
     <div className="min-h-screen bg-[#060503] flex flex-col justify-between overflow-x-hidden">
       {/* Top Section */}
@@ -18,7 +23,7 @@ export default function Home() {
             style={{
               width: "1534px",
               height: "359px",
-              marginTop: "1px", // Seamless spacing directly below Navbar border edge
+              marginTop: "1px",
             }}
           >
             {/* Background Banner Image */}
@@ -34,26 +39,26 @@ export default function Home() {
             <div
               className="absolute flex flex-col justify-center"
               style={{
-                left: "83px", // Coordinates locked directly to the left grid margin
+                left: "83px",
                 top: "0px",
                 width: "550px",
                 height: "100%",
                 zIndex: 10,
               }}
             >
-              {/* Subheading text asset image: The royal card game.png */}
+              {/* Subheading text asset image */}
               <div style={{ width: "323px", height: "26px", marginBottom: "4px" }}>
                 <img
-                  src="/burracoAsset/The-royal-card-game.svg"
+                  src={isArabic ? "/burracoAsset/The-royal-card-game-ar.svg" : "/burracoAsset/The-royal-card-game.svg"}
                   alt="The Royal Card Game"
                   className="w-full h-full object-contain object-left"
                 />
               </div>
 
-              {/* Main Heading text asset image: experience baloot.png */}
+              {/* Main Heading text asset image */}
               <div style={{ width: "492px", height: "46px", marginBottom: "12px" }}>
                 <img
-                  src="/burracoAsset/experience-baloot.svg"
+                  src={isArabic ? "/burracoAsset/experience-baloot-ar.svg" : "/burracoAsset/experience-baloot.svg"}
                   alt="Experience Baloot"
                   className="w-full h-full object-contain object-left"
                 />
@@ -70,14 +75,11 @@ export default function Home() {
                   textShadow: "1px 1px 2px rgba(0, 0, 0, 0.9)"
                 }}
               >
-                Baloot is a classic trick-taking card game <br />
-                loved by millions. Play, strategize, and <br />
-                compete with players worldwide.
+                {t("hero_description")}
               </p>
 
-              {/* Store Badges Action Row - Fixed Aspect Ratio Proportions */}
+              {/* Store Badges Action Row */}
               <div className="flex items-center gap-3">
-                {/* Apple App Store Button */}
                 <a href="#" className="block hover:brightness-110">
                   <img
                     src="/burracoAsset/playstore.png"

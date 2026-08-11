@@ -3,6 +3,7 @@
 import React from 'react';
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import { useLanguage } from "@/context/LanguageContext";
 
 // Dynamic item data matching mockups
 const STORE_ITEMS = [
@@ -17,6 +18,8 @@ const STORE_ITEMS = [
 ];
 
 export default function StorePage() {
+    const { t, isArabic } = useLanguage();
+
     const handleBuy = (item: typeof STORE_ITEMS[0]) => {
         console.log(`Initiating purchase for ${item.amount} coins at ${item.price}`);
     };
@@ -30,9 +33,8 @@ export default function StorePage() {
                     <div className="max-w-[1165px] mx-auto flex flex-col items-center w-full">
                         {/* Header Title */}
                         <h1
-                            className="font-serif tracking-widest font-bold uppercase text-center flex items-center justify-center"
+                            className="font-serif tracking-widest font-bold uppercase text-center flex items-center justify-center min-w-[153px] px-4"
                             style={{
-                                width: '153px', // matches store heading or slightly wider if needed, 153px is good
                                 height: '27px',
                                 fontSize: '24px',
                                 lineHeight: '27px',
@@ -42,7 +44,7 @@ export default function StorePage() {
                                 WebkitTextFillColor: "transparent"
                             }}
                         >
-                            Store
+                            {t("store_title")}
                         </h1>
 
                         {/* Golden Decorative Line Divider */}
@@ -56,8 +58,8 @@ export default function StorePage() {
                             }}
                         />
 
-                        <p className="text-gray-400 text-sm md:text-base tracking-wide mb-12">
-                            Buy coins and enjoy the game more!
+                        <p className="text-gray-400 text-sm md:text-base tracking-wide mb-12 text-center">
+                            {t("store_subtitle")}
                         </p>
 
                         {/* Store Cards Grid */}
@@ -85,20 +87,19 @@ export default function StorePage() {
                                     {/* Below coins-name svg */}
                                     <div className="mt-1 h-[14px] flex items-center justify-center">
                                         <img
-                                            src="/burracoAsset/Coins-name.svg"
+                                            src={isArabic ? "/burracoAsset/Coins-name-ar.svg" : "/burracoAsset/Coins-name.svg"}
                                             alt="Coins"
                                             className="h-full object-contain"
                                         />
                                     </div>
 
-                                    {/* Coins illustration container (coins.svg) with short form label placed on the coin token */}
+                                    {/* Coins illustration container */}
                                     <div className="relative w-[180px] h-[100px] flex items-center justify-center mt-3 select-none">
                                         <img
                                             src="/burracoAsset/coins.svg"
                                             alt="Coins stack"
                                             className="w-full h-full object-contain pointer-events-none"
                                         />
-                                        {/* Overlay positioned exactly over the right-hand coin token */}
                                         <div className="absolute right-[10px] top-[15px] w-[70px] h-[70px] flex flex-col items-center justify-center z-10">
                                             <span className="text-lg font-serif font-black text-[#FFEFA6] drop-shadow-[0_2px_3px_rgba(0,0,0,0.9)] tracking-tight leading-none">
                                                 {item.label}
@@ -111,7 +112,7 @@ export default function StorePage() {
                                         </div>
                                     </div>
 
-                                    {/* Below coins svg is coins-price-b svg which contain price */}
+                                    {/* Price Box */}
                                     <div
                                         className="w-[120px] h-[36px] flex items-center justify-center relative mt-3 select-none"
                                         style={{
@@ -126,7 +127,7 @@ export default function StorePage() {
                                         </span>
                                     </div>
 
-                                    {/* Below that buy-button-bg svg containing "BUY NOW" */}
+                                    {/* Buy Button */}
                                     <button
                                         onClick={() => handleBuy(item)}
                                         className="w-[160px] h-[38px] flex items-center justify-center relative mt-2 active:scale-95 transition-transform duration-100 focus:outline-none"
@@ -138,7 +139,7 @@ export default function StorePage() {
                                         }}
                                     >
                                         <span className="text-white text-xs font-bold tracking-widest uppercase drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
-                                            Buy Now
+                                            {t("store_buy_now")}
                                         </span>
                                     </button>
                                 </div>

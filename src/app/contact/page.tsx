@@ -6,14 +6,18 @@ import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { LoginModal } from '@/components/login';
 import { useAuth } from '@/context/AuthContext';
+import { useLanguage } from '@/context/LanguageContext';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
 export default function ContactPage() {
+    const { t } = useLanguage();
+
     // Ticket submission states
     const [subject, setSubject] = useState('');
     const [category, setCategory] = useState('');
     const [description, setDescription] = useState('');
+
 
     // Chat support states
     const [chatMessage, setChatMessage] = useState('');
@@ -390,9 +394,8 @@ export default function ContactPage() {
                     {/* Header Section */}
                     <div className="flex flex-col items-center text-center">
                         <h1
-                            className="font-serif tracking-wide font-bold uppercase flex items-center justify-center"
+                            className="font-serif tracking-wide font-bold uppercase flex items-center justify-center min-w-[249px] px-4"
                             style={{
-                                width: '249px',
                                 height: '27px',
                                 fontSize: '24px',
                                 lineHeight: '27px',
@@ -402,7 +405,7 @@ export default function ContactPage() {
                                 WebkitTextFillColor: "transparent"
                             }}
                         >
-                            Contact Us
+                            {t("contact_title")}
                         </h1>
 
                         {/* Golden Line SVG Divider */}
@@ -416,8 +419,8 @@ export default function ContactPage() {
                             }}
                         />
 
-                        <p className="text-gray-400 text-sm md:text-base mb-12">
-                            We're here to help! Reach out to us anytime.
+                        <p className="text-gray-400 text-sm md:text-base mb-12 text-center">
+                            {t("contact_subtitle")}
                         </p>
                     </div>
 
@@ -449,7 +452,7 @@ export default function ContactPage() {
                             >
                                 <img src="/burracoAsset/custmore-support-logo.svg" alt="Customer Support" className="w-[120px] mb-6" />
                                 <h2 className="text-[#f3c677] text-xl md:text-2xl font-serif text-center uppercase tracking-widest mb-8 leading-tight">
-                                    CUSTOMER CARE<br />SUPPORT
+                                    {t("contact_customer_care")}
                                 </h2>
 
                                 <div className="w-[60%] border-b border-[#3e2c1c]/50 mb-8" />
@@ -462,7 +465,7 @@ export default function ContactPage() {
                                         </svg>
                                     </div>
                                     <div>
-                                        <h3 className="text-[#f3c677] text-xs font-semibold uppercase tracking-wider mb-1">Email</h3>
+                                        <h3 className="text-[#f3c677] text-xs font-semibold uppercase tracking-wider mb-1">{t("contact_email")}</h3>
                                         <p className="text-[#e6dcc8] text-sm">info@diwanyeh.com</p>
                                     </div>
                                 </div>
@@ -476,7 +479,7 @@ export default function ContactPage() {
                                         </svg>
                                     </div>
                                     <div>
-                                        <h3 className="text-[#f3c677] text-xs font-semibold uppercase tracking-wider mb-1">Mobile</h3>
+                                        <h3 className="text-[#f3c677] text-xs font-semibold uppercase tracking-wider mb-1">{t("contact_mobile")}</h3>
                                         <p className="text-[#e6dcc8] text-sm">+054 505 0888</p>
                                     </div>
                                 </div>
@@ -491,7 +494,7 @@ export default function ContactPage() {
                                             <svg className="w-5 h-5 text-[#f3c677]" fill="none" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M14.5 13.5V5.41a1 1 0 0 0-.3-.7L9.8.29A1 1 0 0 0 9.08 0H1.5v13.5A2.5 2.5 0 0 0 4 16h8a2.5 2.5 0 0 0 2.5-2.5m-1.5 0v-7H8v-5H3v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1M9.5 5V2.12L12.38 5zM5.13 5h-.62v1.25h2.12V5zm-.62 3h7.12v1.25H4.5zm.62 3h-.62v1.25h7.12V11z" clipRule="evenodd" fill="currentColor" fillRule="evenodd" />
                                             </svg>
-                                            Submit your query
+                                            {t("contact_submit_query")}
                                         </h2>
                                     </div>
 
@@ -502,7 +505,7 @@ export default function ContactPage() {
                                     <div className="space-y-6 text-xs flex-grow flex flex-col justify-start">
                                         {/* Name Field */}
                                         <div>
-                                            <label className="block text-[#a49a8a] font-medium mb-1.5 capitalize tracking-wide">Name</label>
+                                            <label className="block text-[#a49a8a] font-medium mb-1.5 capitalize tracking-wide">{t("contact_name")}</label>
                                             <input
                                                 type="text"
                                                 value={unauthName}
@@ -514,7 +517,7 @@ export default function ContactPage() {
 
                                         {/* Email Address Field */}
                                         <div>
-                                            <label className="block text-[#a49a8a] font-medium mb-1.5 capitalize tracking-wide">Email address</label>
+                                            <label className="block text-[#a49a8a] font-medium mb-1.5 capitalize tracking-wide">{t("contact_email_addr")}</label>
                                             <input
                                                 type="email"
                                                 value={unauthEmail}
@@ -526,7 +529,7 @@ export default function ContactPage() {
 
                                         {/* Query Field */}
                                         <div className="flex-1 flex flex-col">
-                                            <label className="block text-[#a49a8a] font-medium mb-1.5 capitalize tracking-wide">Query</label>
+                                            <label className="block text-[#a49a8a] font-medium mb-1.5 capitalize tracking-wide">{t("contact_query")}</label>
                                             <textarea
                                                 value={unauthQuery}
                                                 onChange={(e) => setUnauthQuery(e.target.value)}
@@ -548,7 +551,7 @@ export default function ContactPage() {
                                         className="w-full h-12 bg-cover bg-center rounded-lg font-serif font-bold text-sm text-[#3a2503] uppercase tracking-widest hover:brightness-110 active:scale-[0.99] transition-all flex items-center justify-center shadow-lg shadow-amber-950/20 shrink-0 mt-6"
                                         style={{ backgroundImage: "url('/burracoAsset/sumit-ticket-bg.svg')" }}
                                     >
-                                        Submit
+                                        {t("contact_submit_btn")}
                                     </button>
                                 </form>
                             </div>

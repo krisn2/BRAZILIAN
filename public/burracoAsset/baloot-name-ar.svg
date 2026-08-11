@@ -1,0 +1,22 @@
+<svg width="140" height="28" viewBox="0 0 140 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="balootGoldGradient" x1="70" y1="0" x2="70" y2="28" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#EFCC88"/>
+      <stop offset="0.48" stop-color="#D59444"/>
+      <stop offset="0.90" stop-color="#B86B1D"/>
+    </linearGradient>
+    <filter id="balootShadow" x="0" y="0" width="140" height="28" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="2" stdDeviation="1" flood-color="#000000" flood-opacity="0.8"/>
+    </filter>
+    <style>
+      .baloot-arabic-text {
+        font-family: 'Cairo', 'Tajawal', 'Traditional Arabic', 'Arial', sans-serif;
+        font-weight: 900;
+        font-size: 24px;
+      }
+    </style>
+  </defs>
+  <g filter="url(#balootShadow)">
+    <text x="70" y="22" text-anchor="middle" fill="url(#balootGoldGradient)" class="baloot-arabic-text">بلوت</text>
+  </g>
+</svg>

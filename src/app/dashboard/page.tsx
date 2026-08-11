@@ -5,6 +5,7 @@ import { Poppins } from "next/font/google";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { useAuth } from "@/context/AuthContext";
+import { useLanguage } from "@/context/LanguageContext";
 import { useRouter } from "next/navigation";
 import { io, Socket } from "socket.io-client";
 
@@ -38,6 +39,7 @@ interface Ticket {
 
 export default function DashboardPage() {
     const { user, token, isAuthenticated, isLoading } = useAuth();
+    const { t } = useLanguage();
     const router = useRouter();
 
     const [activeTab, setActiveTab] = useState("My Tickets");
@@ -249,13 +251,13 @@ export default function DashboardPage() {
                             {/* Navigation Options */}
                             <div className="flex flex-col gap-2">
                                 <span className="text-[10px] text-[#E5B962] tracking-widest font-semibold uppercase mb-2 block px-3">
-                                    User Dashboard
+                                    {t("dashboard_user_title")}
                                 </span>
 
                                 {[
-                                    { name: "My Tickets", icon: "🎫" },
-                                    { name: "Wallet", icon: "💼" },
-                                    { name: "Transaction History", icon: "📊" }
+                                    { name: "My Tickets", label: t("dashboard_my_tickets"), icon: "🎫" },
+                                    { name: "Wallet", label: t("dashboard_wallet"), icon: "💼" },
+                                    { name: "Transaction History", label: t("dashboard_history"), icon: "📊" }
                                 ].map((item) => {
                                     const isActive = activeTab === item.name;
                                     return (
@@ -268,7 +270,7 @@ export default function DashboardPage() {
                                                 }`}
                                         >
                                             <span>{item.icon}</span>
-                                            <span>{item.name}</span>
+                                            <span>{item.label}</span>
                                         </button>
                                     );
                                 })}

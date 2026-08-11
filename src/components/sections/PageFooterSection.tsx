@@ -2,22 +2,25 @@
 
 import React from "react";
 import Image from "next/image";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function PageFooterSection() {
+    const { t } = useLanguage();
+
     const games = [
         {
-            title: "BALOOT",
-            tagline: "The classic Baloot experience. Team up and show your strategy.",
+            title: t("footer_about_title"),
+            tagline: t("footer_baloot_tagline"),
             isThird: false,
             left: "0px",
-            logoWidth: "120px", // Optimized size to prevent boundaries overlap
+            logoWidth: "120px",
             logoHeight: "120px",
             logoLeft: "16px",
             logoTop: "7px",
         },
         {
-            title: "BALOOT TOURNAMENT",
-            tagline: "Compete in exciting tournaments and win big rewards.",
+            title: t("footer_tournament_title"),
+            tagline: t("footer_tournament_tagline"),
             isThird: false,
             left: "372px",
             logoWidth: "120px",
@@ -26,8 +29,8 @@ export default function PageFooterSection() {
             logoTop: "7px",
         },
         {
-            title: "COMING SOON",
-            tagline: "More exciting games are on the way. Stay tuned!",
+            title: t("footer_coming_soon"),
+            tagline: t("footer_coming_soon_tagline"),
             isThird: true,
             left: "744px",
             logoWidth: "130px",
@@ -72,10 +75,10 @@ export default function PageFooterSection() {
                     {/* ABOUT BALOOT Column */}
                     <div className="absolute text-left w-[350px] left-[50px] top-[25px] z-10">
                         <h3 className="font-medium bg-clip-text text-transparent bg-gradient-to-b from-[#FFFFFF] via-[#EFCC88] to-[#D59444]" style={{ fontFamily: "Transcend, sans-serif", fontSize: "16px", lineHeight: "120%", marginBottom: "10px", textTransform: "uppercase" }}>
-                            ABOUT BALOOT
+                            {t("footer_about_title")}
                         </h3>
                         <p className="text-[#988E7E] font-light leading-relaxed text-[11px]" style={{ fontFamily: "Poppins, sans-serif", lineHeight: "145%" }}>
-                            Baloot is a traditional trick-taking card game that combines skill, strategy, and partnership. Our mobile game brings the royal experience to your fingertips with smooth gameplay, stunning design, and competitive multiplayer mode.
+                            {t("footer_about_desc")}
                         </p>
                     </div>
 
@@ -87,24 +90,24 @@ export default function PageFooterSection() {
                     {/* HOW TO PLAY Column */}
                     <div className="absolute text-left w-[350px] left-[860px] top-[25px] z-10">
                         <h3 className="font-medium bg-clip-text text-transparent bg-gradient-to-b from-[#FFFFFF] via-[#EFCC88] to-[#D59444]" style={{ fontFamily: "Transcend, sans-serif", fontSize: "16px", lineHeight: "120%", marginBottom: "12px", textTransform: "uppercase" }}>
-                            HOW TO PLAY
+                            {t("footer_howtoplay_title")}
                         </h3>
                         <div className="flex flex-col gap-2 mb-4 text-[#988E7E] text-[10px]" style={{ fontFamily: "Poppins, sans-serif", lineHeight: "140%" }}>
                             <div className="flex items-start gap-2">
                                 <span className="flex-shrink-0 w-[14px] h-[14px] rounded-full bg-radial-gradient(50% 50% at 50% 50%, #5A3006 0%, #2D1302 100%) border border-[#816F5B] text-[8px] font-bold text-[#E5BF78] flex items-center justify-center">1</span>
-                                <span>The game is usually played by 4 players in 2 teams.</span>
+                                <span>{t("footer_howtoplay_step1")}</span>
                             </div>
                             <div className="flex items-start gap-2">
                                 <span className="flex-shrink-0 w-[14px] h-[14px] rounded-full bg-gradient-to-b from-[#E5BF78] to-[#7E4D15] text-[8px] font-bold text-[#2D1302] flex items-center justify-center">2</span>
-                                <span>Each player is dealt a set number of cards.</span>
+                                <span>{t("footer_howtoplay_step2")}</span>
                             </div>
                             <div className="flex items-start gap-2">
                                 <span className="flex-shrink-0 w-[14px] h-[14px] rounded-full bg-gradient-to-b from-[#E5BF78] to-[#7E4D15] text-[8px] font-bold text-[#2D1302] flex items-center justify-center">3</span>
-                                <span>The goal is to win tricks and score more points than the opposing team.</span>
+                                <span>{t("footer_howtoplay_step3")}</span>
                             </div>
                         </div>
-                        <a href="#" className="inline-block hover:brightness-110 active:brightness-95 transition-all">
-                            <img src="/burracoAsset/view-full-rules.svg" alt="View Full Rules" className="h-[28px] w-auto" />
+                        <a href="/rules" className="inline-block hover:brightness-110 active:brightness-95 transition-all">
+                            <img src="/burracoAsset/view-full-rules.svg" alt={t("footer_view_rules")} className="h-[28px] w-auto" />
                         </a>
                     </div>
                 </div>
@@ -126,33 +129,33 @@ export default function PageFooterSection() {
                 <div className="xl:hidden w-full max-w-[1242px] px-6 flex flex-col md:flex-row gap-8 items-stretch p-6 rounded-xl border border-[#D59444]/10 bg-black/60 backdrop-blur-md mt-6">
                     <div className="flex-1 text-left flex flex-col justify-center">
                         <h3 className="font-medium bg-clip-text text-transparent bg-gradient-to-b from-[#FFFFFF] via-[#EFCC88] to-[#D59444]" style={{ fontFamily: "Transcend, sans-serif", fontSize: "16px", marginBottom: "10px", textTransform: "uppercase" }}>
-                            ABOUT BALOOT
+                            {t("footer_about_title")}
                         </h3>
                         <p className="text-[#988E7E] font-light leading-relaxed text-[12px]" style={{ fontFamily: "Poppins, sans-serif" }}>
-                            Baloot is a traditional trick-taking card game that combines skill, strategy, and partnership. Our mobile game brings the royal experience to your fingertips with smooth gameplay, stunning design, and competitive multiplayer mode.
+                            {t("footer_about_desc")}
                         </p>
                     </div>
 
                     <div className="flex-1 text-left">
                         <h3 className="font-medium bg-clip-text text-transparent bg-gradient-to-b from-[#FFFFFF] via-[#EFCC88] to-[#D59444]" style={{ fontFamily: "Transcend, sans-serif", fontSize: "16px", marginBottom: "12px", textTransform: "uppercase" }}>
-                            HOW TO PLAY
+                            {t("footer_howtoplay_title")}
                         </h3>
                         <div className="flex flex-col gap-2 mb-4 text-[#988E7E] text-[11px]" style={{ fontFamily: "Poppins, sans-serif" }}>
                             <div className="flex items-start gap-2">
                                 <span className="flex-shrink-0 w-[16px] h-[16px] rounded-full bg-radial-gradient(50% 50% at 50% 50%, #5A3006 0%, #2D1302 100%) border border-[#816F5B] text-[9px] font-bold text-[#E5BF78] flex items-center justify-center">1</span>
-                                <span>The game is usually played by 4 players in 2 teams.</span>
+                                <span>{t("footer_howtoplay_step1")}</span>
                             </div>
                             <div className="flex items-start gap-2">
                                 <span className="flex-shrink-0 w-[16px] h-[16px] rounded-full bg-gradient-to-b from-[#E5BF78] to-[#7E4D15] text-[9px] font-bold text-[#2D1302] flex items-center justify-center">2</span>
-                                <span>Each player is dealt a set number of cards.</span>
+                                <span>{t("footer_howtoplay_step2")}</span>
                             </div>
                             <div className="flex items-start gap-2">
                                 <span className="flex-shrink-0 w-[16px] h-[16px] rounded-full bg-gradient-to-b from-[#E5BF78] to-[#7E4D15] text-[9px] font-bold text-[#2D1302] flex items-center justify-center">3</span>
-                                <span>The goal is to win tricks and score more points than the opposing team.</span>
+                                <span>{t("footer_howtoplay_step3")}</span>
                             </div>
                         </div>
-                        <a href="#" className="inline-block hover:brightness-110 active:brightness-95 transition-all">
-                            <img src="/burracoAsset/view-full-rules.svg" alt="View Full Rules" className="h-[28px] w-auto" />
+                        <a href="/rules" className="inline-block hover:brightness-110 active:brightness-95 transition-all">
+                            <img src="/burracoAsset/view-full-rules.svg" alt={t("footer_view_rules")} className="h-[28px] w-auto" />
                         </a>
                     </div>
                 </div>
@@ -226,7 +229,7 @@ export default function PageFooterSection() {
                             <div
                                 className="absolute flex flex-col justify-between py-2 text-left z-20"
                                 style={{
-                                    left: '156px', // Shifted from 144px to eliminate overlapping issues completely
+                                    left: '156px',
                                     right: '16px',
                                     top: '12px',
                                     bottom: '12px',
@@ -268,7 +271,7 @@ export default function PageFooterSection() {
                                         letterSpacing: '0.05em'
                                     }}
                                 >
-                                    <span>LEARN MORE</span>
+                                    <span>{t("footer_learn_more")}</span>
                                 </button>
                             </div>
                         </div>

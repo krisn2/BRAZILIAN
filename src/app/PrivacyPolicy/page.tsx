@@ -3,8 +3,240 @@
 import React from 'react';
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import { useLanguage } from "@/context/LanguageContext";
+
+const PRIVACY_EN = {
+    intro1: "At Diwanyeh, your privacy matters to us. We want you to feel comfortable using our games and services, so this policy explains what information we collect, why we collect it, and how we handle it.",
+    intro2: "This Privacy Policy applies when you use the Diwanyeh website, mobile app, or any related services, which we refer to together as the “Service.”",
+    intro3: "By using Diwanyeh, you acknowledge the practices explained below.",
+    sections: [
+        {
+            title: "1. Information We Collect",
+            content: [
+                {
+                    heading: "Information you provide to us",
+                    text: "When you create an account, you may be asked to provide basic details such as your name, username, email address, and password. If you make an in-app purchase, the payment is handled by a trusted third-party payment provider. Diwanyeh does not store your complete debit or credit card details."
+                },
+                {
+                    heading: "Information collected while you use the Service",
+                    text: "Certain information may be collected automatically when you play or use Diwanyeh, including device type, operating system, IP address, login sessions, match history, and performance data."
+                },
+                {
+                    heading: "Information from other services",
+                    text: "You may choose to sign in through another platform, such as Google, Apple, or Facebook. That provider may share limited profile information with us."
+                }
+            ]
+        },
+        {
+            title: "2. How We Use Your Information",
+            content: [
+                {
+                    heading: "",
+                    text: "We use your information to operate Diwanyeh, manage gameplay features, process purchases, keep track of virtual rewards, improve matchmaking, detect cheating or fraud, and communicate important updates."
+                }
+            ]
+        },
+        {
+            title: "3. Cookies and Similar Technologies",
+            content: [
+                {
+                    heading: "",
+                    text: "Diwanyeh may use cookies, local storage, and similar technologies to remember your preferences, keep you signed in, and save certain settings."
+                }
+            ]
+        },
+        {
+            title: "4. How We Share Information",
+            content: [
+                {
+                    heading: "Service providers",
+                    text: "We may work with trusted companies that help us operate Diwanyeh, including cloud hosting providers, analytics companies, and payment processors."
+                },
+                {
+                    heading: "Legal and safety reasons",
+                    text: "We may disclose information if required by law or reasonably necessary to protect Diwanyeh and our players from fraud or security threats."
+                },
+                {
+                    heading: "Information visible to other players",
+                    text: "Public profile information like username, ranking, and achievements may be visible to other players. Passwords and payment details are strictly private."
+                }
+            ]
+        },
+        {
+            title: "5. How We Protect Your Information",
+            content: [
+                {
+                    heading: "",
+                    text: "We use administrative, technical, and physical safeguards to reduce the risk of unauthorized access, misuse, or disclosure of your information."
+                }
+            ]
+        },
+        {
+            title: "6. Data Retention and Account Deletion",
+            content: [
+                {
+                    heading: "",
+                    text: "We keep personal information for as long as needed to provide the Service. If you request deletion, we will delete or anonymize your information where appropriate."
+                }
+            ]
+        },
+        {
+            title: "7. Your Privacy Rights and Choices",
+            content: [
+                {
+                    heading: "",
+                    text: "Depending on where you live, you may have rights to access, correct, delete, or receive a copy of your personal data."
+                }
+            ]
+        },
+        {
+            title: "8. Children’s Privacy",
+            content: [
+                {
+                    heading: "",
+                    text: "Diwanyeh is intended for people 18 years or older. We do not knowingly collect personal information from children."
+                }
+            ]
+        },
+        {
+            title: "9. International Data Transfers",
+            content: [
+                {
+                    heading: "",
+                    text: "Your information may be stored or processed in different countries using appropriate safeguards."
+                }
+            ]
+        },
+        {
+            title: "10. Contact Us",
+            content: [
+                {
+                    heading: "",
+                    text: "If you have questions about this Privacy Policy, please contact us at info@diwanyeh.com."
+                }
+            ]
+        }
+    ]
+};
+
+const PRIVACY_AR = {
+    intro1: "في ديوانية، تهمنا خصوصيتك للغاية. نريد منك الشعور بالراحة أثناء استخدام ألعابنا وخدماتنا، وتوضح هذه السياسة المعلومات التي نجمعها وسبب جمعها وكيفية التعامل معها.",
+    intro2: "تطبق سياسة الخصوصية هذه عند استخدامك لموقع ديوانية أو تطبيقات الجوال أو أي من الخدمات المرتبطة بها.",
+    intro3: "باستخدامك لديوانية، فإنك تقر بالممارسات الموضحة أدناه.",
+    sections: [
+        {
+            title: "1. المعلومات التي نجمعها",
+            content: [
+                {
+                    heading: "المعلومات التي تقدمها لنا",
+                    text: "عند إنشاء حساب، قد يُطلب منك تقديم تفاصيل أساسية مثل الاسم واسم المستخدم والبريد الإلكتروني وكلمة المرور. بالنسبة للمشتريات، تُعالج عمليات الدفع بواسطة مزودي دفع موثوقين ولا نخزن بيانات البطاقات الكاملة."
+                },
+                {
+                    heading: "المعلومات الجمّعة أثناء استخدام الخدمة",
+                    text: "قد تُجمع بعض المعلومات تلقائياً عند استخدام الخدمة، مثل نوع الجهاز، ونظام التشغيل، وعنوان IP، وسجلات الجلسات، وتاريخ المباريات والأداء الفني."
+                },
+                {
+                    heading: "المعلومات من خدمات أخرى",
+                    text: "عند تسجيل الدخول عبر منصات مثل Google أو Apple أو Facebook، قد تشارك تلك المنصات معلومات ملف شخصي محدودة معنا بناءً على إعداداتك."
+                }
+            ]
+        },
+        {
+            title: "2. كيف نستخدم معلوماتك",
+            content: [
+                {
+                    heading: "",
+                    text: "نستخدم معلوماتك لتشغيل ديوانية، وإدارة ميزات اللعب، ومعالجة المشتريات، ومتابعة المكافآت الافتراضية، وتحسين المطابقة، واكتشاف الغش والاحتيال، وإرسال التحديثات الهامة."
+                }
+            ]
+        },
+        {
+            title: "3. ملفات تعريف الارتباط والتقنيات المماثلة",
+            content: [
+                {
+                    heading: "",
+                    text: "قد نستخدم ملفات تعريف الارتباط (الكوكيز) والتخزين المحلي لحفظ تفضيلاتك، وإبقائك مسجلاً، وتخصيص تجربتك."
+                }
+            ]
+        },
+        {
+            title: "4. مشاركة المعلومات",
+            content: [
+                {
+                    heading: "مزودو الخدمات",
+                    text: "قد نتعاون مع شركات موثوقة تساعدنا في تشغيل ديوانية مثل مزودي الاستضافة السحابية والتحليلات ومعالجي الدفع."
+                },
+                {
+                    heading: "الأسباب القانونية والأمنية",
+                    text: "قد نكشف عن المعلومات إذا طلب القانون ذلك أو لحماية ديوانية ولاعبيها من الاحتيال والتهديدات الأمنية."
+                },
+                {
+                    heading: "المعلومات الظاهرة للاعبين الآخرين",
+                    text: "تكون معلومات الملف الشخصي العامة مثل اسم المستخدم والتصنيف والإنجازات مرئية للاعبين الآخرين. بينما تظل كلمات المرور وبيانات الدفع خاصة تماماً."
+                }
+            ]
+        },
+        {
+            title: "5. حماية معلوماتك",
+            content: [
+                {
+                    heading: "",
+                    text: "نستخدم تدابير حماية إدارية وتقنية وفيزيائية معقولة للمساعدة في حماية المعلومات ومنع الوصول غير المصرح به."
+                }
+            ]
+        },
+        {
+            title: "6. الاحتفاظ بالبيانات وحذف الحساب",
+            content: [
+                {
+                    heading: "",
+                    text: "نحتفظ بالمعلومات الشخصية لطالما كانت ضرورية لتقديم الخدمة. عند طلب حذف الحساب، سنقوم بحذف أو إخفاء هوية معلوماتك الشخصية حسب الاقتضاء."
+                }
+            ]
+        },
+        {
+            title: "7. حقوق الخصوصية والخيارات",
+            content: [
+                {
+                    heading: "",
+                    text: "بناءً على مكان إقامتك، قد يكون لديك الحق في الوصول إلى بياناتك الشخصية أو تصحيحها أو طلب حذفها."
+                }
+            ]
+        },
+        {
+            title: "8. خصوصية الأطفال",
+            content: [
+                {
+                    heading: "",
+                    text: "ديوانية مخصصة للأفراد البالغين من العمر 18 عاماً أو أكثر. نحن لا نجمع معلومات شخصية من الأطفال بشكل متعمد."
+                }
+            ]
+        },
+        {
+            title: "9. نقل البيانات الدولي",
+            content: [
+                {
+                    heading: "",
+                    text: "قد تُخزن معلوماتك أو تُعالج في دول مختلفة باستخدام ضوابط حماية مناسبة."
+                }
+            ]
+        },
+        {
+            title: "10. التواصل معنا",
+            content: [
+                {
+                    heading: "",
+                    text: "إذا كان لديك أي استفسار حول سياسة الخصوصية هذه، يرجى التواصل معنا عبر: info@diwanyeh.com."
+                }
+            ]
+        }
+    ]
+};
 
 export default function PrivacyPolicy() {
+    const { t, isArabic } = useLanguage();
+    const content = isArabic ? PRIVACY_AR : PRIVACY_EN;
+
     return (
         <div className="min-h-screen bg-[#060503] flex flex-col justify-between overflow-x-hidden">
             <div>
@@ -20,7 +252,7 @@ export default function PrivacyPolicy() {
                                 marginBottom: '20px',
                             }}
                         >
-                            Privacy Policy
+                            {t("privacy_title")}
                         </h1>
 
                         {/* Golden Line Divider */}
@@ -33,7 +265,7 @@ export default function PrivacyPolicy() {
 
                         {/* Last Updated Tag */}
                         <p className="text-xs font-mono tracking-widest text-[#D59444] uppercase mb-8">
-                            Last Updated: August 2026
+                            {t("privacy_last_updated")}
                         </p>
 
                         {/* --- CONTENT CONTAINER --- */}
@@ -42,257 +274,37 @@ export default function PrivacyPolicy() {
                             {/* Intro Block */}
                             <div className="text-gray-300 text-sm md:text-base tracking-wide leading-relaxed font-light mb-8 pb-6 border-b border-amber-950/30">
                                 <p className="mb-4">
-                                    At <strong>Diwanyeh</strong>, your privacy matters to us. We want you to feel comfortable using our games and services, so this policy explains what information we collect, why we collect it, and how we handle it.
+                                    {content.intro1}
                                 </p>
                                 <p className="mb-4">
-                                    This Privacy Policy applies when you use the Diwanyeh website, mobile app, or any related services, which we refer to together as the &ldquo;Service.&rdquo;
+                                    {content.intro2}
                                 </p>
                                 <p>
-                                    By using Diwanyeh, you acknowledge the practices explained below.
+                                    {content.intro3}
                                 </p>
                             </div>
 
                             {/* Policy Sections */}
                             <div className="flex flex-col gap-8 text-gray-300 text-sm md:text-base tracking-wide leading-relaxed font-light text-left">
-
-                                <section>
-                                    <h2 className="text-base md:text-lg font-medium text-[#EFCC88] tracking-wide font-serif mb-3">
-                                        1. Information We Collect
-                                    </h2>
-
-                                    <p className="mb-4">
-                                        The information we collect depends on how you use Diwanyeh.
-                                    </p>
-
-                                    <div className="flex flex-col gap-4 pl-1">
-                                        <div>
-                                            <h3 className="text-sm md:text-base font-medium text-[#D59444] mb-1">Information you provide to us</h3>
-                                            <p className="mb-2">
-                                                When you create an account, you may be asked to provide basic details such as your name, username, email address, and password.
-                                            </p>
-                                            <p>
-                                                If you make an in-app purchase, the payment is handled by a trusted third-party payment provider. Diwanyeh does not store your complete debit or credit card details.
-                                            </p>
+                                {content.sections.map((sec, idx) => (
+                                    <section key={idx}>
+                                        <h2 className="text-base md:text-lg font-medium text-[#EFCC88] tracking-wide font-serif mb-3">
+                                            {sec.title}
+                                        </h2>
+                                        <div className="flex flex-col gap-3">
+                                            {sec.content.map((item, itemIdx) => (
+                                                <div key={itemIdx}>
+                                                    {item.heading && (
+                                                        <h3 className="text-sm md:text-base font-medium text-[#D59444] mb-1">
+                                                            {item.heading}
+                                                        </h3>
+                                                    )}
+                                                    <p>{item.text}</p>
+                                                </div>
+                                            ))}
                                         </div>
-
-                                        <div>
-                                            <h3 className="text-sm md:text-base font-medium text-[#D59444] mb-1">Information collected while you use the Service</h3>
-                                            <p className="mb-2">
-                                                Certain information may be collected automatically when you play or use Diwanyeh. This can include:
-                                            </p>
-                                            <ul className="list-disc list-inside pl-2 flex flex-col gap-1 text-gray-400 mb-2">
-                                                <li>your device type and operating system;</li>
-                                                <li>device identifiers;</li>
-                                                <li>your IP address;</li>
-                                                <li>login and session information;</li>
-                                                <li>app usage and activity;</li>
-                                                <li>crash reports and technical performance data;</li>
-                                                <li>match history, scores, achievements, and other gameplay activity; and</li>
-                                                <li>details of in-game purchases.</li>
-                                            </ul>
-                                            <p>
-                                                We use this information mainly to understand how the Service is being used and to identify areas where the game or app can be improved.
-                                            </p>
-                                        </div>
-
-                                        <div>
-                                            <h3 className="text-sm md:text-base font-medium text-[#D59444] mb-1">Information from other services</h3>
-                                            <p className="mb-2">
-                                                You may choose to sign in through another platform, such as Google, Apple, or Facebook.
-                                            </p>
-                                            <p>
-                                                If you do, that provider may share limited profile information with us. What we receive depends on the permissions you have granted and the privacy settings of your account with that provider.
-                                            </p>
-                                        </div>
-                                    </div>
-                                </section>
-
-                                <section>
-                                    <h2 className="text-base md:text-lg font-medium text-[#EFCC88] tracking-wide font-serif mb-2">
-                                        2. How We Use Your Information
-                                    </h2>
-                                    <p className="mb-3">
-                                        We use your information to operate Diwanyeh and provide a safe, reliable, and enjoyable experience.
-                                    </p>
-                                    <p className="mb-3">
-                                        For example, we may use it to create and maintain your account, manage gameplay features, process purchases, and keep track of virtual currency, rewards, or similar in-game items.
-                                    </p>
-                                    <p className="mb-3">
-                                        Gameplay and technical data can also help us improve matchmaking, fix bugs, reduce performance issues, and understand which parts of the Service players find useful.
-                                    </p>
-                                    <p className="mb-3">
-                                        We may use certain information to protect the game and its community. This includes detecting or preventing cheating, fraud, hacking, misuse, or other activity that could affect players or the Service.
-                                    </p>
-                                    <p>
-                                        We may also contact you about important updates, support requests, new features, promotions, or in-game events.
-                                    </p>
-                                </section>
-
-                                <section>
-                                    <h2 className="text-base md:text-lg font-medium text-[#EFCC88] tracking-wide font-serif mb-2">
-                                        3. Cookies and Similar Technologies
-                                    </h2>
-                                    <p className="mb-3">
-                                        Diwanyeh may use cookies, local storage, and similar technologies to remember your preferences, keep you signed in, save certain settings, and understand how people use our website or app.
-                                    </p>
-                                    <p className="mb-3">
-                                        You can usually manage cookies through your browser or device settings.
-                                    </p>
-                                    <p>
-                                        If you disable some cookies, certain features may not work properly or may behave differently than expected.
-                                    </p>
-                                </section>
-
-                                <section>
-                                    <h2 className="text-base md:text-lg font-medium text-[#EFCC88] tracking-wide font-serif mb-2">
-                                        4. How We Share Information
-                                    </h2>
-                                    <p className="mb-3">
-                                        Diwanyeh does not sell your personal information.
-                                    </p>
-                                    <p className="mb-4">
-                                        However, there are situations where limited information may need to be shared.
-                                    </p>
-
-                                    <div className="flex flex-col gap-4 pl-1">
-                                        <div>
-                                            <h3 className="text-sm md:text-base font-medium text-[#D59444] mb-1">Service providers</h3>
-                                            <p className="mb-2">
-                                                We may work with companies that help us operate Diwanyeh. These may include cloud hosting providers, database services, analytics companies, technical support providers, and payment processors.
-                                            </p>
-                                            <p>
-                                                When these companies process information on our behalf, they are expected to handle it in accordance with their agreements with us and applicable privacy requirements.
-                                            </p>
-                                        </div>
-
-                                        <div>
-                                            <h3 className="text-sm md:text-base font-medium text-[#D59444] mb-1">Legal and safety reasons</h3>
-                                            <p className="mb-2">
-                                                We may disclose information if we are legally required to do so, including in response to a valid court order, legal process, regulation, or request from an authorized government or law-enforcement body.
-                                            </p>
-                                            <p>
-                                                We may also share information when reasonably necessary to protect Diwanyeh, our players, or others from fraud, security threats, abuse, or harmful activity.
-                                            </p>
-                                        </div>
-
-                                        <div>
-                                            <h3 className="text-sm md:text-base font-medium text-[#D59444] mb-1">Information visible to other players</h3>
-                                            <p className="mb-2">
-                                                Some information is naturally public within the game.
-                                            </p>
-                                            <p className="mb-2">
-                                                For example, other players may be able to see your username, ranking, leaderboard position, achievements, or similar gameplay details.
-                                            </p>
-                                            <p>
-                                                Private information such as your password, personal email address, or payment details is not shown to other players.
-                                            </p>
-                                        </div>
-                                    </div>
-                                </section>
-
-                                <section>
-                                    <h2 className="text-base md:text-lg font-medium text-[#EFCC88] tracking-wide font-serif mb-2">
-                                        5. How We Protect Your Information
-                                    </h2>
-                                    <p className="mb-3">
-                                        We use reasonable administrative, technical, and physical safeguards to help protect the information we hold.
-                                    </p>
-                                    <p className="mb-3">
-                                        These measures are designed to reduce the risk of unauthorized access, misuse, loss, alteration, or disclosure.
-                                    </p>
-                                    <p className="mb-3">
-                                        That said, no website, app, or online system can be guaranteed to be completely secure.
-                                    </p>
-                                    <p>
-                                        For this reason, we recommend using a strong and unique password and keeping your login details private.
-                                    </p>
-                                </section>
-
-                                <section>
-                                    <h2 className="text-base md:text-lg font-medium text-[#EFCC88] tracking-wide font-serif mb-2">
-                                        6. Data Retention and Account Deletion
-                                    </h2>
-                                    <p className="mb-3">
-                                        We generally keep personal information for as long as it is needed to provide the Service, maintain your account, comply with legal obligations, resolve disputes, or enforce our agreements.
-                                    </p>
-                                    <p className="mb-3">
-                                        If you request deletion of your account, we may delete or anonymize the personal information linked to it where appropriate.
-                                    </p>
-                                    <p>
-                                        In some situations, we may need to keep certain information for longer if required or permitted by law.
-                                    </p>
-                                </section>
-
-                                <section>
-                                    <h2 className="text-base md:text-lg font-medium text-[#EFCC88] tracking-wide font-serif mb-2">
-                                        7. Your Privacy Rights and Choices
-                                    </h2>
-                                    <p className="mb-3">
-                                        Your privacy rights may depend on the country or region where you live.
-                                    </p>
-                                    <p className="mb-2">
-                                        Where applicable, you may have the right to:
-                                    </p>
-                                    <ul className="list-disc list-inside pl-2 flex flex-col gap-1 text-gray-400 mb-3">
-                                        <li>request access to the personal information we hold about you;</li>
-                                        <li>ask us to correct inaccurate information;</li>
-                                        <li>request deletion of certain information;</li>
-                                        <li>object to or limit certain uses of your information; or</li>
-                                        <li>request a copy of your information in a portable format.</li>
-                                    </ul>
-                                    <p>
-                                        If you want to make a privacy-related request, you can contact us through the support options available in the Diwanyeh app or by email.
-                                    </p>
-                                </section>
-
-                                <section>
-                                    <h2 className="text-base md:text-lg font-medium text-[#EFCC88] tracking-wide font-serif mb-2">
-                                        8. Children&rsquo;s Privacy
-                                    </h2>
-                                    <p className="mb-3">
-                                        Diwanyeh is intended for people who are 18 years of age or older.
-                                    </p>
-                                    <p className="mb-3">
-                                        We do not knowingly allow users under 18 to create accounts, and we do not intentionally collect personal information from children.
-                                    </p>
-                                    <p>
-                                        If we discover that information has been collected from someone under the age of 18, we will take appropriate steps to remove it in accordance with applicable law.
-                                    </p>
-                                </section>
-
-                                <section>
-                                    <h2 className="text-base md:text-lg font-medium text-[#EFCC88] tracking-wide font-serif mb-2">
-                                        9. International Data Transfers
-                                    </h2>
-                                    <p className="mb-3">
-                                        Diwanyeh may use servers, service providers, or technical systems located in different countries.
-                                    </p>
-                                    <p className="mb-3">
-                                        Because of this, your information may sometimes be stored or processed outside the country where you live.
-                                    </p>
-                                    <p>
-                                        Where required, we use appropriate safeguards to help protect personal information when it is transferred internationally.
-                                    </p>
-                                </section>
-
-                                <section className="pt-4 border-t border-amber-950/30">
-                                    <h2 className="text-base md:text-lg font-medium text-[#D59444] uppercase tracking-wider font-serif mb-2">
-                                        10. Contact Us
-                                    </h2>
-                                    <p className="mb-2">
-                                        If you have questions about this Privacy Policy, want to make a privacy request, or have concerns about how your information is handled, you can contact us through the Help section of the Diwanyeh app.
-                                    </p>
-                                    <p className="mb-2">
-                                        You can also contact us by email:
-                                    </p>
-                                    <p className="mt-2 font-medium text-[#EFCC88]">
-                                        info@diwanyeh.com
-                                    </p>
-                                    <p className="mt-4 text-xs text-gray-500 font-mono">
-                                        &copy; Diwanyeh. All Rights Reserved
-                                    </p>
-                                </section>
-
+                                    </section>
+                                ))}
                             </div>
                         </div>
 

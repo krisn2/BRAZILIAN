@@ -1,0 +1,16 @@
+<svg width="82" height="18" viewBox="0 0 82 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="coinsGoldGradient" x1="41" y1="0" x2="41" y2="18" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFD052"/>
+      <stop offset="1" stop-color="#B16D1A"/>
+    </linearGradient>
+    <style>
+      .coins-arabic-text {
+        font-family: 'Cairo', 'Tajawal', 'Traditional Arabic', 'Arial', sans-serif;
+        font-weight: 900;
+        font-size: 15px;
+      }
+    </style>
+  </defs>
+  <text x="41" y="14" text-anchor="middle" fill="url(#coinsGoldGradient)" class="coins-arabic-text">عملات</text>
+</svg>

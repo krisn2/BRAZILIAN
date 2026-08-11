@@ -1,0 +1,22 @@
+<svg width="506" height="39" viewBox="0 0 506 39" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="royalGoldGrad" x1="253" y1="0" x2="253" y2="39" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#EFCC88"/>
+      <stop offset="0.48" stop-color="#D59444"/>
+      <stop offset="0.90" stop-color="#B86B1D"/>
+    </linearGradient>
+    <filter id="royalShadow" x="0" y="0" width="506" height="39" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="2" stdDeviation="1" flood-color="#000000" flood-opacity="0.8"/>
+    </filter>
+    <style>
+      .royal-arabic-text {
+        font-family: 'Cairo', 'Tajawal', 'Traditional Arabic', 'Arial', sans-serif;
+        font-weight: 800;
+        font-size: 26px;
+      }
+    </style>
+  </defs>
+  <g filter="url(#royalShadow)">
+    <text x="10" y="30" text-anchor="start" fill="url(#royalGoldGrad)" class="royal-arabic-text">لعبة الكروت الملكية</text>
+  </g>
+</svg>

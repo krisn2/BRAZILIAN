@@ -4,8 +4,11 @@ import React from 'react';
 import Link from 'next/link';
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function GamesPage() {
+    const { t, isArabic } = useLanguage();
+
     return (
         <div className="min-h-screen bg-[#060503] flex flex-col justify-between overflow-x-hidden">
             <div>
@@ -15,9 +18,8 @@ export default function GamesPage() {
                     <div className="max-w-[1165px] mx-auto flex flex-col items-center w-full">
                         {/* Header Title */}
                         <h1 
-                            className="font-serif tracking-widest font-bold uppercase text-center flex items-center justify-center"
+                            className="font-serif tracking-widest font-bold uppercase text-center flex items-center justify-center min-w-[249px] px-4"
                             style={{
-                                width: '249px', // fits "Our Games" beautifully
                                 height: '27px',
                                 fontSize: '24px',
                                 lineHeight: '27px',
@@ -27,7 +29,7 @@ export default function GamesPage() {
                                 WebkitTextFillColor: "transparent"
                             }}
                         >
-                            Our Games
+                            {t("games_title")}
                         </h1>
 
                         {/* Golden Decorative Line Divider */}
@@ -42,7 +44,7 @@ export default function GamesPage() {
                         />
 
                         <p className="text-gray-400 text-sm md:text-base tracking-wide mb-12 text-center">
-                            Explore our exciting card games.
+                            {t("games_subtitle")}
                         </p>
 
                         {/* Games Cards Grid Container */}
@@ -77,7 +79,7 @@ export default function GamesPage() {
                                     />
                                 </div>
 
-                                {/* Brazilian Name Logo */}
+                                {/* Brazilian Name Logo - English vs Arabic SVG */}
                                 <div
                                     className="absolute flex items-center justify-center pointer-events-none"
                                     style={{
@@ -88,7 +90,7 @@ export default function GamesPage() {
                                     }}
                                 >
                                     <img
-                                        src="/burracoAsset/BRAZILIAN-name.svg"
+                                        src={isArabic ? "/burracoAsset/BRAZILIAN-name-ar.svg" : "/burracoAsset/BRAZILIAN-name.svg"}
                                         alt="BRAZILIAN"
                                         className="w-full h-full object-contain"
                                     />
@@ -106,7 +108,7 @@ export default function GamesPage() {
                                     }}
                                 />
 
-                                {/* Description Text Area (Vertically positioned in the gap) */}
+                                {/* Description Text Area */}
                                 <div
                                     className="absolute flex items-center justify-center text-center px-6"
                                     style={{
@@ -117,7 +119,7 @@ export default function GamesPage() {
                                     }}
                                 >
                                     <p className="text-[#A49A8A] text-sm font-medium leading-relaxed max-w-[320px]">
-                                        A classic trick-taking card game of strategy, skill, and wit.
+                                        {t("games_brazilian_desc")}
                                     </p>
                                 </div>
 
@@ -136,11 +138,9 @@ export default function GamesPage() {
                                         backgroundRepeat: 'no-repeat'
                                     }}
                                 >
-                                    {/* Text centered, offset left to accommodate rules icon */}
                                     <span className="absolute left-[38%] top-[50%] -translate-x-[50%] -translate-y-[50%] text-[#F1DF82] text-sm font-bold tracking-widest uppercase drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
-                                        RULE
+                                        {t("games_rule_button")}
                                     </span>
-                                    {/* Rules Logo */}
                                     <img
                                         src="/burracoAsset/rules-log.svg"
                                         alt="Rules"
@@ -167,7 +167,7 @@ export default function GamesPage() {
                                     backgroundRepeat: 'no-repeat'
                                 }}
                             >
-                                {/* Baloot Logo (Cards & Spade Crest) */}
+                                {/* Baloot Logo */}
                                 <div
                                     className="absolute flex items-center justify-center pointer-events-none"
                                     style={{
@@ -195,7 +195,7 @@ export default function GamesPage() {
                                     }}
                                 >
                                     <img
-                                        src="/burracoAsset/baloot-name.svg"
+                                        src={isArabic ? "/burracoAsset/baloot-name-ar.svg" : "/burracoAsset/baloot-name.svg"}
                                         alt="BALOOT"
                                         className="w-full h-full object-contain"
                                     />
@@ -212,13 +212,13 @@ export default function GamesPage() {
                                     }}
                                 >
                                     <img
-                                        src="/burracoAsset/Card-Game.svg"
+                                        src={isArabic ? "/burracoAsset/Card-Game-ar.svg" : "/burracoAsset/Card-Game.svg"}
                                         alt="CARD GAME"
                                         className="w-full h-full object-contain"
                                     />
                                 </div>
 
-                                {/* Description Text Area (Vertically positioned in the gap) */}
+                                {/* Description Text Area */}
                                 <div
                                     className="absolute flex items-center justify-center text-center px-6"
                                     style={{
@@ -229,7 +229,7 @@ export default function GamesPage() {
                                     }}
                                 >
                                     <p className="text-[#A49A8A] text-sm font-medium leading-relaxed max-w-[320px]">
-                                        The royal card game of bidding, partnership, and smart play.
+                                        {t("games_baloot_desc")}
                                     </p>
                                 </div>
 
@@ -248,11 +248,9 @@ export default function GamesPage() {
                                         backgroundRepeat: 'no-repeat'
                                     }}
                                 >
-                                    {/* Text centered, offset left to accommodate rules icon */}
                                     <span className="absolute left-[38%] top-[50%] -translate-x-[50%] -translate-y-[50%] text-[#F1DF82] text-sm font-bold tracking-widest uppercase drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
-                                        RULE
+                                        {t("games_rule_button")}
                                     </span>
-                                    {/* Rules Logo */}
                                     <img
                                         src="/burracoAsset/rules-log.svg"
                                         alt="Rules"
