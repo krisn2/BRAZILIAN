@@ -14,7 +14,7 @@ export default function Footer() {
         <footer className="w-full bg-[#060503] border-t border-[#D59444]/15 py-8 px-6 md:px-12 flex flex-col md:flex-row items-center justify-between gap-6 text-[#988E7E]" style={{ fontFamily: "Poppins, sans-serif" }}>
             {/* Left section: Copyright */}
             <div className="flex-1 text-center md:text-left text-xs tracking-wide opacity-80">
-                © 2026 Baloot Card Game. All Rights Reserved.
+                © diwanyeh. All Rights Reserved.
             </div>
 
             {/* Middle section: Social Icons */}
