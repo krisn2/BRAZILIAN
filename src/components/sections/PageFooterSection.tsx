@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useLanguage } from "@/context/LanguageContext";
 
 export default function PageFooterSection() {
-    const { t } = useLanguage();
+    const { t, isArabic } = useLanguage();
 
     const games = [
         {
@@ -107,7 +107,7 @@ export default function PageFooterSection() {
                             </div>
                         </div>
                         <a href="/rules" className="inline-block hover:brightness-110 active:brightness-95 transition-all">
-                            <img src="/burracoAsset/view-full-rules.svg" alt={t("footer_view_rules")} className="h-[28px] w-auto" />
+                            <img src={isArabic ? "/burracoAsset/view-full-rules-ar.svg" : "/burracoAsset/view-full-rules.svg"} alt={t("footer_view_rules")} className="h-[28px] w-auto" />
                         </a>
                     </div>
                 </div>
@@ -155,7 +155,7 @@ export default function PageFooterSection() {
                             </div>
                         </div>
                         <a href="/rules" className="inline-block hover:brightness-110 active:brightness-95 transition-all">
-                            <img src="/burracoAsset/view-full-rules.svg" alt={t("footer_view_rules")} className="h-[28px] w-auto" />
+                            <img src={isArabic ? "/burracoAsset/view-full-rules-ar.svg" : "/burracoAsset/view-full-rules.svg"} alt={t("footer_view_rules")} className="h-[28px] w-auto" />
                         </a>
                     </div>
                 </div>
@@ -170,12 +170,10 @@ export default function PageFooterSection() {
                         left: "649px"
                     }}
                 >
-                    <Image
-                        src="/burracoAsset/ourGames.svg"
+                    <img
+                        src={isArabic ? "/burracoAsset/ourGames-ar.svg" : "/burracoAsset/ourGames.svg"}
                         alt="Our Games"
-                        fill
-                        priority
-                        className="object-contain pointer-events-none"
+                        className="w-full h-full object-contain pointer-events-none"
                     />
                 </div>
 

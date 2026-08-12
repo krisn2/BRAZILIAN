@@ -1,0 +1,31 @@
+<svg width="237" height="24" viewBox="0 0 237 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M195.001 11C195.001 11.6667 195.001 12.3333 195.001 13C195.701 12.9833 196.401 12.9667 197.101 12.95C209.701 12.65 222.301 12.35 234.901 12.05C235.601 12.0333 236.301 12.0167 237.001 12C236.301 11.9833 235.601 11.9667 234.901 11.95C222.301 11.65 209.701 11.35 197.101 11.05C196.401 11.0333 195.701 11.0167 195.001 11Z" fill="url(#paint0_linear_214_99)"/>
+  <rect x="194.88" y="9" width="4.07104" height="4.07104" transform="rotate(45 194.88 9)" fill="#CBA568"/>
+  <path d="M42 11C42 11.6667 42 12.3333 42 13C41.3 12.9833 40.6 12.9667 39.9 12.95C27.3 12.65 14.7 12.35 2.1 12.05C1.40001 12.0333 0.700005 12.0167 0 12C0.700005 11.9833 1.40001 11.9667 2.1 11.95C14.7 11.65 27.3 11.35 39.9 11.05C40.6 11.0333 41.3 11.0167 42 11Z" fill="url(#paint1_linear_214_99)"/>
+  <rect width="4.07104" height="4.07104" transform="matrix(-0.707107 0.707107 0.707107 0.707107 42.1211 9)" fill="#CBA568"/>
+
+  <defs>
+    <linearGradient id="paint0_linear_214_99" x1="194.365" y1="12" x2="237.001" y2="12" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#CBA568"/>
+      <stop offset="1" stop-color="#3A2C27" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="paint1_linear_214_99" x1="42.6364" y1="12" x2="3.97082e-07" y2="12" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#CBA568"/>
+      <stop offset="1" stop-color="#3A2C27" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="paint2_linear_214_99" x1="118.001" y1="3.58442" x2="118.001" y2="17.7662" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#EFCC88"/>
+      <stop offset="0.480769" stop-color="#D59444"/>
+      <stop offset="0.903846" stop-color="#B86B1D"/>
+    </linearGradient>
+    <style>
+      .ourgames-arabic-text {
+        font-family: 'Cairo', 'Tajawal', 'Traditional Arabic', 'Arial', sans-serif;
+        font-weight: 800;
+        font-size: 16px;
+      }
+    </style>
+  </defs>
+
+  <text x="118.5" y="17" text-anchor="middle" fill="url(#paint2_linear_214_99)" class="ourgames-arabic-text">ألعابنا</text>
+</svg>

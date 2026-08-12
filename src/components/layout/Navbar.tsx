@@ -112,7 +112,7 @@ export default function Navbar() {
                             className="hover:brightness-110 active:brightness-90 transition-all duration-200"
                         >
                             <img
-                                src="/burracoAsset/login.svg"
+                                src={isArabic ? "/burracoAsset/login-ar.svg" : "/burracoAsset/login.svg"}
                                 alt="Login"
                                 className="w-[101px] h-[40px] object-contain"
                             />
