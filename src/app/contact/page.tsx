@@ -394,11 +394,8 @@ export default function ContactPage() {
                     {/* Header Section */}
                     <div className="flex flex-col items-center text-center">
                         <h1
-                            className="font-serif tracking-wide font-bold uppercase flex items-center justify-center min-w-[249px] px-4"
+                            className="font-serif tracking-wide font-bold uppercase flex items-center justify-center px-4 text-xl sm:text-2xl"
                             style={{
-                                height: '27px',
-                                fontSize: '24px',
-                                lineHeight: '27px',
                                 marginBottom: '20px',
                                 background: "linear-gradient(180deg, #EFCC88 14.94%, #D59444 43.34%, #B86B1D 68.34%)",
                                 WebkitBackgroundClip: "text",
@@ -410,13 +407,8 @@ export default function ContactPage() {
 
                         {/* Golden Line SVG Divider */}
                         <div
-                            className="bg-center bg-no-repeat bg-contain"
-                            style={{
-                                backgroundImage: `url('/burracoAsset/gloden-line.svg')`,
-                                width: '338px',
-                                height: '18px',
-                                marginBottom: '46px'
-                            }}
+                            className="bg-center bg-no-repeat bg-contain w-[250px] sm:w-[338px] h-[14px] sm:h-[18px] mb-8 sm:mb-[46px]"
+                            style={{ backgroundImage: `url('/burracoAsset/gloden-line.svg')` }}
                         />
 
                         <p className="text-gray-400 text-sm md:text-base mb-12 text-center">
@@ -427,23 +419,21 @@ export default function ContactPage() {
                     {/* Main Containers Wrapper */}
                     {!isAuthenticated ? (
                         <div
-                            className="w-full flex flex-col md:flex-row items-center justify-between relative shadow-2xl overflow-hidden"
+                            className="w-full flex flex-col md:flex-row items-stretch justify-between relative shadow-2xl overflow-hidden rounded-xl md:rounded-none"
                             style={{
                                 width: '100%',
                                 maxWidth: '1145px',
-                                minHeight: '676px',
-                                backgroundImage: "url('/burracoAsset/contact-form-bg.svg')",
-                                backgroundSize: '100% 100%',
-                                backgroundPosition: 'center',
-                                backgroundRepeat: 'no-repeat',
-                                padding: '2rem'
+                                minHeight: '500px',
+                                background: 'linear-gradient(135deg, #18110b 0%, #060503 100%)',
+                                border: '1px solid rgba(62, 44, 28, 0.3)',
+                                padding: '1rem',
                             }}
                         >
                             {/* LEFT COLUMN: Customer Care Support */}
                             <div
-                                className="relative flex flex-col items-center justify-center w-full md:w-[45%]"
+                                className="relative flex flex-col items-center justify-center w-full md:w-[45%] py-8 md:py-0"
                                 style={{
-                                    height: '600px',
+                                    minHeight: '300px',
                                     backgroundImage: "url('/burracoAsset/contact-form-detail-bg.svg')",
                                     backgroundSize: '100% 100%',
                                     backgroundPosition: 'center',
@@ -486,7 +476,7 @@ export default function ContactPage() {
                             </div>
 
                             {/* RIGHT COLUMN: Submit your query */}
-                            <div className="relative p-6 md:p-8 flex flex-col justify-between w-full md:w-[50%] h-[600px]">
+                            <div className="relative p-4 sm:p-6 md:p-8 flex flex-col justify-between w-full md:w-[50%] min-h-[400px]">
                                 <form onSubmit={handleUnauthTicketSubmit} className="flex flex-col h-full justify-start">
                                     {/* Component Header */}
                                     <div className="text-left mb-3 shrink-0">
@@ -560,7 +550,7 @@ export default function ContactPage() {
                         <div className="max-w-6xl w-full grid grid-cols-1 md:grid-cols-2 gap-8 items-center justify-items-center">
                             {/* LEFT COLUMN: Live Chat Support */}
                             <div
-                                className="relative p-8 md:p-10 flex flex-col justify-between w-full max-w-[550px] h-[620px] shadow-2xl"
+                                className="relative p-6 sm:p-8 md:p-10 flex flex-col justify-between w-full max-w-[550px] min-h-[400px] md:h-[620px] shadow-2xl"
                                 style={{
                                     backgroundImage: "url('/burracoAsset/chat-box.svg')",
                                     backgroundSize: '100% 100%',
@@ -712,7 +702,7 @@ export default function ContactPage() {
 
                             {/* RIGHT COLUMN: Submit A Ticket */}
                             <div
-                                className="relative p-8 md:p-10 flex flex-col justify-between w-full max-w-[550px] h-[620px] shadow-2xl"
+                                className="relative p-6 sm:p-8 md:p-10 flex flex-col justify-between w-full max-w-[550px] min-h-[400px] md:h-[620px] shadow-2xl"
                                 style={{
                                     backgroundImage: "url('/burracoAsset/chat-box.svg')",
                                     backgroundSize: '100% 100%',

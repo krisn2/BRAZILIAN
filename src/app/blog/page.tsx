@@ -79,14 +79,11 @@ export default function BlogPage() {
             <div>
                 <Navbar />
 
-                {/* 1. HERO SECTION */}
+                {/* 1. HERO SECTION — responsive with proper mobile height */}
                 <section className="relative w-full flex justify-center mt-[1px]">
                     <div
-                        className="relative select-none overflow-hidden"
-                        style={{
-                            width: "1535px",
-                            height: "260px",
-                        }}
+                        className="relative select-none overflow-hidden w-full max-w-[1535px] min-h-[180px] sm:min-h-[220px] md:min-h-0"
+                        style={{ aspectRatio: "1535 / 260" }}
                     >
                         <Image
                             src="/burracoAsset/Blog-hero.svg"
@@ -96,33 +93,22 @@ export default function BlogPage() {
                             className="object-cover object-center"
                         />
                         {/* Overlay text */}
-                        <div className="absolute inset-0 z-10 bg-gradient-to-r from-black/60 to-transparent">
+                        <div className="absolute inset-0 z-10 bg-gradient-to-r from-black/70 via-black/40 to-transparent flex flex-col justify-center px-4 sm:px-8 md:px-16 lg:px-[202px]">
                             {/* Heading */}
                             <h1
-                                className="font-serif tracking-widest font-bold uppercase drop-shadow-md flex items-center justify-start absolute text-4xl md:text-5xl"
-                                style={{
-                                    ...goldTextStyle,
-                                    width: '250px',
-                                    top: '40px',
-                                    left: '300px'
-                                }}
+                                className="font-serif tracking-widest font-bold uppercase drop-shadow-md text-xl sm:text-3xl md:text-4xl lg:text-5xl mb-2 sm:mb-4"
+                                style={goldTextStyle}
                             >
                                 {t("blog_title")}
                             </h1>
 
                             {/* Golden Line SVG Divider */}
                             <div
-                                className="absolute bg-center bg-no-repeat bg-contain"
-                                style={{
-                                    backgroundImage: `url('/burracoAsset/gloden-line.svg')`,
-                                    width: '338px',
-                                    height: '18px',
-                                    top: '108px',
-                                    left: '202px'
-                                }}
+                                className="bg-center bg-no-repeat bg-contain w-[160px] sm:w-[280px] md:w-[338px] h-[12px] sm:h-[18px] mb-2 sm:mb-4"
+                                style={{ backgroundImage: `url('/burracoAsset/gloden-line.svg')` }}
                             />
 
-                            <p className="absolute text-sm md:text-base text-gray-300 max-w-md drop-shadow top-[140px] left-[202px]">
+                            <p className="text-[10px] sm:text-sm md:text-base text-gray-300 max-w-md drop-shadow leading-snug">
                                 {t("blog_hero_desc")}
                             </p>
                         </div>
@@ -130,18 +116,18 @@ export default function BlogPage() {
                 </section>
 
                 {/* 2. BODY CONTENT LAYOUT */}
-                <div className="max-w-[1440px] mx-auto px-4 md:px-20 py-16">
-                    <div className="flex flex-col lg:flex-row gap-10 items-start justify-center">
+                <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-12 lg:px-20 py-8 sm:py-12 lg:py-16">
+                    <div className="flex flex-col lg:flex-row gap-8 lg:gap-10 items-start justify-center">
 
                         {/* LEFT AREA: CARD FEED */}
-                        <div className="flex-1 max-w-[788px] w-full space-y-8">
+                        <div className="flex-1 w-full lg:max-w-[788px] space-y-6 sm:space-y-8">
                             {BLOG_POSTS.map((post) => (
                                 <article
                                     key={post.id}
-                                    className="relative flex flex-col sm:flex-row items-center gap-6 p-4 rounded-[3px] border border-[#544434]/20 overflow-hidden group transition-all duration-300"
+                                    className="relative flex flex-col sm:flex-row items-center gap-4 sm:gap-6 p-3 sm:p-4 rounded-[3px] border border-[#544434]/20 overflow-hidden group transition-all duration-300"
                                     style={{
                                         width: "100%",
-                                        minHeight: "167px",
+                                        minHeight: "140px",
                                         backgroundImage: `url('/burracoAsset/blog-list-bg.svg')`,
                                         backgroundSize: "100% 100%",
                                         backgroundPosition: "center",
@@ -150,11 +136,7 @@ export default function BlogPage() {
                                 >
                                     {/* Post Graphic Thumbnail */}
                                     <div
-                                        className="relative shrink-0 rounded-sm overflow-hidden border border-[#544434]/30"
-                                        style={{
-                                            width: "202px",
-                                            height: "152px",
-                                        }}
+                                        className="relative shrink-0 rounded-sm overflow-hidden border border-[#544434]/30 w-full sm:w-[202px] h-[180px] sm:h-[152px]"
                                     >
                                         <Image
                                             src={post.image}
@@ -165,8 +147,8 @@ export default function BlogPage() {
                                     </div>
 
                                     {/* Main Text Content */}
-                                    <div className="flex flex-col justify-center flex-grow space-y-2 relative z-10 py-1 pr-4">
-                                        <h2 className="text-lg md:text-xl font-serif font-semibold transition-colors duration-200 cursor-pointer">
+                                    <div className="flex flex-col justify-center flex-grow space-y-2 relative z-10 py-1 w-full">
+                                        <h2 className="text-base sm:text-lg md:text-xl font-serif font-semibold transition-colors duration-200 cursor-pointer">
                                             <Link href={`/blog/${post.id}`} style={goldTextStyle}>{post.title}</Link>
                                         </h2>
 
@@ -214,12 +196,10 @@ export default function BlogPage() {
                             </div>
                         </div>
 
-                        {/* RIGHT AREA: NAVIGATION SIDEBAR */}
+                        {/* RIGHT AREA: NAVIGATION SIDEBAR — now responsive width */}
                         <aside
-                            className="shrink-0 pt-10 pb-10 px-8 flex flex-col justify-start rounded-sm"
+                            className="shrink-0 pt-8 sm:pt-10 pb-8 sm:pb-10 px-5 sm:px-8 flex flex-col justify-start rounded-sm w-full lg:w-[382px]"
                             style={{
-                                width: "382px",
-                                minHeight: "590.5px",
                                 backgroundImage: `url('/burracoAsset/blog-catrgory-bg.svg')`,
                                 backgroundSize: "100% 100%",
                                 backgroundPosition: "center",
@@ -240,11 +220,7 @@ export default function BlogPage() {
                                             >
                                                 <div className="flex items-center space-x-3">
                                                     <div
-                                                        className="relative shrink-0 flex items-center justify-center opacity-80 group-hover:opacity-100 transition-opacity"
-                                                        style={{
-                                                            width: `20px`,
-                                                            height: `20px`,
-                                                        }}
+                                                        className="relative shrink-0 flex items-center justify-center opacity-80 group-hover:opacity-100 transition-opacity w-5 h-5"
                                                     >
                                                         <img
                                                             src={cat.icon}
@@ -276,11 +252,7 @@ export default function BlogPage() {
                                                 className="flex gap-4 items-center group cursor-pointer"
                                             >
                                                 <div
-                                                    className="relative shrink-0 border border-[#544434]/30 bg-black/40 rounded-sm overflow-hidden"
-                                                    style={{
-                                                        width: `72px`,
-                                                        height: `54px`,
-                                                    }}
+                                                    className="relative shrink-0 border border-[#544434]/30 bg-black/40 rounded-sm overflow-hidden w-[72px] h-[54px]"
                                                 >
                                                     <Image
                                                         src={pop.image}
@@ -289,7 +261,7 @@ export default function BlogPage() {
                                                         className="object-cover group-hover:scale-105 transition-transform duration-300"
                                                     />
                                                 </div>
-                                                <div className="space-y-1 flex-1">
+                                                <div className="space-y-1 flex-1 min-w-0">
                                                     <h4 className="text-xs font-medium text-[#dcd1bc] group-hover:text-[#E5B962] transition-colors line-clamp-2 leading-tight">
                                                         {pop.title}
                                                     </h4>

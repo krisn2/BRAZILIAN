@@ -18,11 +18,8 @@ export default function AboutUs() {
 
             {/* --- HEADER SECTION --- */}
             <h1
-              className="font-serif tracking-[0.2em] font-bold uppercase text-center drop-shadow-md flex items-center justify-center min-w-[249px] px-4"
+              className="font-serif tracking-[0.2em] font-bold uppercase text-center drop-shadow-md flex items-center justify-center px-4 text-xl sm:text-2xl"
               style={{
-                height: '27px',
-                fontSize: '24px',
-                lineHeight: '27px',
                 marginBottom: '20px',
                 background: "linear-gradient(180deg, #EFCC88 14.94%, #D59444 43.34%, #B86B1D 68.34%)",
                 WebkitBackgroundClip: "text",

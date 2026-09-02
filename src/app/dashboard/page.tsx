@@ -224,10 +224,9 @@ export default function DashboardPage() {
 
                         {/* ================= LEFT PROFILE SIDEBAR ================= */}
                         <div
-                            className="bg-cover bg-center p-6 flex flex-col gap-8 shrink-0 rounded-lg border border-[#3E342A]/20"
+                            className="bg-cover bg-center p-6 flex flex-col gap-8 shrink-0 rounded-lg border border-[#3E342A]/20 w-full lg:w-[286px]"
                             style={{
                                 backgroundImage: `url('/burracoAsset/profile-svg.svg')`,
-                                width: "286px",
                                 minHeight: "390px"
                             }}
                         >
@@ -282,11 +281,9 @@ export default function DashboardPage() {
                             <>
                                 {/* ================= MIDDLE TICKET LIST COLUMN ================= */}
                                 <div
-                                    className="bg-cover bg-center p-5 flex flex-col shrink-0 rounded-lg border border-[#2A2119]"
+                                    className="bg-cover bg-center p-5 flex flex-col shrink-0 rounded-lg border border-[#2A2119] w-full lg:w-[331px] h-auto min-h-[300px] lg:h-[838px]"
                                     style={{
                                         backgroundImage: `url('/burracoAsset/my-ticket-bg.svg')`,
-                                        width: "331px",
-                                        height: "838px"
                                     }}
                                 >
                                     <h2 className="text-[#E5B962] font-semibold text-base tracking-wide uppercase mb-1">
@@ -338,10 +335,9 @@ export default function DashboardPage() {
 
                                 {/* ================= RIGHT TICKET DETAILS CHAT VIEW ================= */}
                                 <div
-                                    className="bg-cover bg-center p-6 flex flex-col flex-1 min-w-[320px] rounded-lg border border-[#2A2119]"
+                                    className="bg-cover bg-center p-6 flex flex-col flex-1 min-w-0 sm:min-w-[320px] rounded-lg border border-[#2A2119] h-auto min-h-[400px] lg:h-[838px]"
                                     style={{
                                         backgroundImage: `url('/burracoAsset/ticket-details.svg')`,
-                                        height: "838px"
                                     }}
                                 >
                                     {/* Navigation Header Line */}
@@ -438,10 +434,9 @@ export default function DashboardPage() {
 
                         {activeTab === "Wallet" && (
                             <div
-                                className="bg-cover bg-center p-6 flex flex-col flex-1 min-w-[320px] rounded-lg border border-[#2A2119]"
+                                className="bg-cover bg-center p-6 flex flex-col flex-1 min-w-0 sm:min-w-[320px] rounded-lg border border-[#2A2119] h-auto min-h-[400px] lg:h-[838px]"
                                 style={{
                                     backgroundImage: `url('/burracoAsset/ticket-details.svg')`,
-                                    height: "838px"
                                 }}
                             >
                                 <h2 className="text-[#E5B962] font-semibold text-lg tracking-wide uppercase mb-1 border-b border-[#2A2119] pb-4">
@@ -495,10 +490,9 @@ export default function DashboardPage() {
 
                         {activeTab === "Transaction History" && (
                             <div
-                                className="bg-cover bg-center p-6 flex flex-col flex-1 min-w-[320px] rounded-lg border border-[#2A2119]"
+                                className="bg-cover bg-center p-6 flex flex-col flex-1 min-w-0 sm:min-w-[320px] rounded-lg border border-[#2A2119] h-auto min-h-[400px] lg:h-[838px]"
                                 style={{
                                     backgroundImage: `url('/burracoAsset/ticket-details.svg')`,
-                                    height: "838px"
                                 }}
                             >
                                 <h2 className="text-[#E5B962] font-semibold text-lg tracking-wide uppercase mb-1 border-b border-[#2A2119] pb-4">

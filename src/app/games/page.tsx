@@ -14,16 +14,12 @@ export default function GamesPage() {
             <div>
                 <Navbar />
 
-                <main className="text-white pt-[143px] pb-16 px-4 font-sans select-none flex flex-col items-center">
+                <main className="text-white pt-[100px] sm:pt-[143px] pb-16 px-4 font-sans select-none flex flex-col items-center">
                     <div className="max-w-[1165px] mx-auto flex flex-col items-center w-full">
                         {/* Header Title */}
-                        <h1 
-                            className="font-serif tracking-widest font-bold uppercase text-center flex items-center justify-center min-w-[249px] px-4"
+                        <h1
+                            className="font-serif tracking-widest font-bold uppercase text-center text-xl sm:text-2xl mb-5"
                             style={{
-                                height: '27px',
-                                fontSize: '24px',
-                                lineHeight: '27px',
-                                marginBottom: '20px',
                                 background: "linear-gradient(180deg, #EFCC88 14.94%, #D59444 43.34%, #B86B1D 68.34%)",
                                 WebkitBackgroundClip: "text",
                                 WebkitTextFillColor: "transparent"
@@ -34,28 +30,22 @@ export default function GamesPage() {
 
                         {/* Golden Decorative Line Divider */}
                         <div
-                            className="bg-center bg-no-repeat bg-contain"
-                            style={{ 
-                                backgroundImage: `url('/burracoAsset/gloden-line.svg')`,
-                                width: '338px',
-                                height: '18px',
-                                marginBottom: '46px'
-                            }}
+                            className="bg-center bg-no-repeat bg-contain w-[250px] sm:w-[338px] h-[14px] sm:h-[18px] mb-8 sm:mb-[46px]"
+                            style={{ backgroundImage: `url('/burracoAsset/gloden-line.svg')` }}
                         />
 
-                        <p className="text-gray-400 text-sm md:text-base tracking-wide mb-12 text-center">
+                        <p className="text-gray-400 text-sm md:text-base tracking-wide mb-8 sm:mb-12 text-center">
                             {t("games_subtitle")}
                         </p>
 
-                        {/* Games Cards Grid Container */}
-                        <div className="flex flex-col xl:flex-row gap-12 w-full justify-center items-center px-4">
+                        {/* Games Cards Grid Container — now responsive */}
+                        <div className="flex flex-col xl:flex-row gap-8 sm:gap-12 w-full justify-center items-center px-0 sm:px-4">
 
                             {/* Card 1: Brazilian */}
                             <div
-                                className="relative transition-transform duration-300 hover:scale-[1.015]"
+                                className="relative transition-transform duration-300 hover:scale-[1.015] w-full max-w-[500px]"
                                 style={{
-                                    width: '500px',
-                                    height: '646px',
+                                    aspectRatio: '500 / 646',
                                     backgroundImage: `url('/burracoAsset/game-card-bg-1.svg')`,
                                     backgroundSize: '100% 100%',
                                     backgroundPosition: 'center',
@@ -63,62 +53,21 @@ export default function GamesPage() {
                                 }}
                             >
                                 {/* Brazilian Logo (Gold Crest) */}
-                                <div
-                                    className="absolute flex items-center justify-center pointer-events-none"
-                                    style={{
-                                        width: '372px',
-                                        height: '372px',
-                                        left: '64px',
-                                        top: '25px',
-                                    }}
-                                >
-                                    <img
-                                        src="/burracoAsset/logo.svg"
-                                        alt="Brazilian Crest"
-                                        className="w-full h-full object-contain"
-                                    />
+                                <div className="absolute flex items-center justify-center pointer-events-none" style={{ width: '74.4%', height: '57.6%', left: '12.8%', top: '3.9%' }}>
+                                    <img src="/burracoAsset/logo.svg" alt="Brazilian Crest" className="w-full h-full object-contain" />
                                 </div>
 
-                                {/* Brazilian Name Logo - English vs Arabic SVG */}
-                                <div
-                                    className="absolute flex items-center justify-center pointer-events-none"
-                                    style={{
-                                        width: '356px',
-                                        height: '73px',
-                                        left: '72px',
-                                        top: '388px',
-                                    }}
-                                >
-                                    <img
-                                        src={isArabic ? "/burracoAsset/BRAZILIAN-name-ar.svg" : "/burracoAsset/BRAZILIAN-name.svg"}
-                                        alt="BRAZILIAN"
-                                        className="w-full h-full object-contain"
-                                    />
+                                {/* Brazilian Name Logo */}
+                                <div className="absolute flex items-center justify-center pointer-events-none" style={{ width: '71.2%', height: '11.3%', left: '14.4%', top: '60%' }}>
+                                    <img src={isArabic ? "/burracoAsset/BRAZILIAN-name-ar.svg" : "/burracoAsset/BRAZILIAN-name.svg"} alt="BRAZILIAN" className="w-full h-full object-contain" />
                                 </div>
 
                                 {/* Golden Divider Line */}
-                                <div
-                                    className="absolute bg-center bg-no-repeat bg-contain pointer-events-none"
-                                    style={{
-                                        width: '338px',
-                                        height: '18px',
-                                        left: '81px',
-                                        top: '455px',
-                                        backgroundImage: `url('/burracoAsset/gloden-line.svg')`
-                                    }}
-                                />
+                                <div className="absolute bg-center bg-no-repeat bg-contain pointer-events-none" style={{ width: '67.6%', height: '2.8%', left: '16.2%', top: '70.4%', backgroundImage: `url('/burracoAsset/gloden-line.svg')` }} />
 
                                 {/* Description Text Area */}
-                                <div
-                                    className="absolute flex items-center justify-center text-center px-6"
-                                    style={{
-                                        width: '400px',
-                                        left: '50px',
-                                        top: '485px',
-                                        height: '50px',
-                                    }}
-                                >
-                                    <p className="text-[#A49A8A] text-sm font-medium leading-relaxed max-w-[320px]">
+                                <div className="absolute flex items-center justify-center text-center px-4 sm:px-6" style={{ width: '80%', left: '10%', top: '75%', height: '7.7%' }}>
+                                    <p className="text-[#A49A8A] text-xs sm:text-sm font-medium leading-relaxed max-w-[320px]">
                                         {t("games_brazilian_desc")}
                                     </p>
                                 </div>
@@ -126,41 +75,34 @@ export default function GamesPage() {
                                 {/* Buy / Rules Button */}
                                 <Link
                                     href="/games/brazilian/rules"
-                                    className="absolute active:scale-95 transition-transform duration-100 focus:outline-none hover:brightness-110"
+                                    className="absolute active:scale-95 transition-transform duration-100 focus:outline-none hover:brightness-110 flex items-center justify-center"
                                     style={{
-                                        width: '260px',
-                                        height: '61.576576232910156px',
-                                        left: '120px',
-                                        top: '550px',
+                                        width: '52%',
+                                        height: '9.5%',
+                                        left: '24%',
+                                        top: '85.1%',
                                         backgroundImage: `url('/burracoAsset/buy-button-bg.svg')`,
                                         backgroundSize: '100% 100%',
                                         backgroundPosition: 'center',
                                         backgroundRepeat: 'no-repeat'
                                     }}
                                 >
-                                    <span className="absolute left-[38%] top-[50%] -translate-x-[50%] -translate-y-[50%] text-[#F1DF82] text-sm font-bold tracking-widest uppercase drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
+                                    <span className="text-[#F1DF82] text-xs sm:text-sm font-bold tracking-widest uppercase drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] mr-6">
                                         {t("games_rule_button")}
                                     </span>
                                     <img
                                         src="/burracoAsset/rules-log.svg"
                                         alt="Rules"
-                                        className="absolute object-contain"
-                                        style={{
-                                            width: '26.5px',
-                                            height: '27.837480545043945px',
-                                            left: '197px',
-                                            top: '17px',
-                                        }}
+                                        className="absolute object-contain w-[18px] sm:w-[26.5px] h-auto right-[15%] top-1/2 -translate-y-1/2"
                                     />
                                 </Link>
                             </div>
 
                             {/* Card 2: Baloot */}
                             <div
-                                className="relative transition-transform duration-300 hover:scale-[1.015]"
+                                className="relative transition-transform duration-300 hover:scale-[1.015] w-full max-w-[500px]"
                                 style={{
-                                    width: '500px',
-                                    height: '646px',
+                                    aspectRatio: '500 / 646',
                                     backgroundImage: `url('/burracoAsset/game-card-bg-2.svg')`,
                                     backgroundSize: '100% 100%',
                                     backgroundPosition: 'center',
@@ -168,67 +110,23 @@ export default function GamesPage() {
                                 }}
                             >
                                 {/* Baloot Logo */}
-                                <div
-                                    className="absolute flex items-center justify-center pointer-events-none"
-                                    style={{
-                                        width: '354px',
-                                        height: '354px',
-                                        left: '73px',
-                                        top: '34px',
-                                    }}
-                                >
-                                    <img
-                                        src="/burracoAsset/baloot-logo.svg"
-                                        alt="Baloot Crest"
-                                        className="w-full h-full object-contain"
-                                    />
+                                <div className="absolute flex items-center justify-center pointer-events-none" style={{ width: '70.8%', height: '54.8%', left: '14.6%', top: '5.3%' }}>
+                                    <img src="/burracoAsset/baloot-logo.svg" alt="Baloot Crest" className="w-full h-full object-contain" />
                                 </div>
 
                                 {/* Baloot Name Logo */}
-                                <div
-                                    className="absolute flex items-center justify-center pointer-events-none"
-                                    style={{
-                                        width: '239px',
-                                        height: '73px',
-                                        left: '131.78px',
-                                        top: '388px',
-                                    }}
-                                >
-                                    <img
-                                        src={isArabic ? "/burracoAsset/baloot-name-ar.svg" : "/burracoAsset/baloot-name.svg"}
-                                        alt="BALOOT"
-                                        className="w-full h-full object-contain"
-                                    />
+                                <div className="absolute flex items-center justify-center pointer-events-none" style={{ width: '47.8%', height: '11.3%', left: '26.4%', top: '60%' }}>
+                                    <img src={isArabic ? "/burracoAsset/baloot-name-ar.svg" : "/burracoAsset/baloot-name.svg"} alt="BALOOT" className="w-full h-full object-contain" />
                                 </div>
 
                                 {/* Card Game Logo */}
-                                <div
-                                    className="absolute flex items-center justify-center pointer-events-none"
-                                    style={{
-                                        width: '140px',
-                                        height: '29px',
-                                        left: '179.86px',
-                                        top: '451.53px',
-                                    }}
-                                >
-                                    <img
-                                        src={isArabic ? "/burracoAsset/Card-Game-ar.svg" : "/burracoAsset/Card-Game.svg"}
-                                        alt="CARD GAME"
-                                        className="w-full h-full object-contain"
-                                    />
+                                <div className="absolute flex items-center justify-center pointer-events-none" style={{ width: '28%', height: '4.5%', left: '36%', top: '69.9%' }}>
+                                    <img src={isArabic ? "/burracoAsset/Card-Game-ar.svg" : "/burracoAsset/Card-Game.svg"} alt="CARD GAME" className="w-full h-full object-contain" />
                                 </div>
 
                                 {/* Description Text Area */}
-                                <div
-                                    className="absolute flex items-center justify-center text-center px-6"
-                                    style={{
-                                        width: '400px',
-                                        left: '50px',
-                                        top: '485px',
-                                        height: '50px',
-                                    }}
-                                >
-                                    <p className="text-[#A49A8A] text-sm font-medium leading-relaxed max-w-[320px]">
+                                <div className="absolute flex items-center justify-center text-center px-4 sm:px-6" style={{ width: '80%', left: '10%', top: '75%', height: '7.7%' }}>
+                                    <p className="text-[#A49A8A] text-xs sm:text-sm font-medium leading-relaxed max-w-[320px]">
                                         {t("games_baloot_desc")}
                                     </p>
                                 </div>
@@ -236,31 +134,25 @@ export default function GamesPage() {
                                 {/* Buy / Rules Button */}
                                 <Link
                                     href="/games/baloot/rules"
-                                    className="absolute active:scale-95 transition-transform duration-100 focus:outline-none hover:brightness-110"
+                                    className="absolute active:scale-95 transition-transform duration-100 focus:outline-none hover:brightness-110 flex items-center justify-center"
                                     style={{
-                                        width: '260px',
-                                        height: '61.576576232910156px',
-                                        left: '120px',
-                                        top: '550px',
+                                        width: '52%',
+                                        height: '9.5%',
+                                        left: '24%',
+                                        top: '85.1%',
                                         backgroundImage: `url('/burracoAsset/buy-button-bg.svg')`,
                                         backgroundSize: '100% 100%',
                                         backgroundPosition: 'center',
                                         backgroundRepeat: 'no-repeat'
                                     }}
                                 >
-                                    <span className="absolute left-[38%] top-[50%] -translate-x-[50%] -translate-y-[50%] text-[#F1DF82] text-sm font-bold tracking-widest uppercase drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
+                                    <span className="text-[#F1DF82] text-xs sm:text-sm font-bold tracking-widest uppercase drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] mr-6">
                                         {t("games_rule_button")}
                                     </span>
                                     <img
                                         src="/burracoAsset/rules-log.svg"
                                         alt="Rules"
-                                        className="absolute object-contain"
-                                        style={{
-                                            width: '26.5px',
-                                            height: '27.837480545043945px',
-                                            left: '197px',
-                                            top: '17px',
-                                        }}
+                                        className="absolute object-contain w-[18px] sm:w-[26.5px] h-auto right-[15%] top-1/2 -translate-y-1/2"
                                     />
                                 </Link>
                             </div>

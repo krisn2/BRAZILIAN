@@ -12,36 +12,21 @@ export default function PageFooterSection() {
             title: t("footer_about_title"),
             tagline: t("footer_baloot_tagline"),
             isThird: false,
-            left: "0px",
-            logoWidth: "120px",
-            logoHeight: "120px",
-            logoLeft: "16px",
-            logoTop: "7px",
         },
         {
             title: t("footer_tournament_title"),
             tagline: t("footer_tournament_tagline"),
             isThird: false,
-            left: "372px",
-            logoWidth: "120px",
-            logoHeight: "120px",
-            logoLeft: "16px",
-            logoTop: "7px",
         },
         {
             title: t("footer_coming_soon"),
             tagline: t("footer_coming_soon_tagline"),
             isThird: true,
-            left: "744px",
-            logoWidth: "130px",
-            logoHeight: "120px",
-            logoLeft: "10px",
-            logoTop: "7px",
         },
     ];
 
     return (
-        <div className="relative w-full bg-[#060503] flex justify-center items-center overflow-hidden xl:h-[384px] z-0">
+        <div className="relative w-full bg-[#060503] flex justify-center items-center overflow-hidden z-0">
             {/* Background Image spanning across the elements */}
             <Image
                 src="/burracoAsset/last-bg.png"
@@ -52,16 +37,14 @@ export default function PageFooterSection() {
             />
 
             {/* Inner Content Wrapper */}
-            <div className="relative w-full max-w-[1535px] h-full flex flex-col items-center xl:block py-8 xl:py-0 z-10">
+            <div className="relative w-full max-w-[1535px] flex flex-col items-center py-8 px-4 sm:px-6 z-10">
 
                 {/* ================= PART 1: ABOUT BALOOT & HOW TO PLAY ================= */}
+                {/* Desktop layout with Union SVG background */}
                 <div
-                    className="relative hidden xl:block z-10"
+                    className="relative hidden xl:block z-10 w-full max-w-[1242px] mx-auto"
                     style={{
-                        width: "1242px",
                         height: "180px",
-                        top: "21px",
-                        left: "137px"
                     }}
                 >
                     <Image
@@ -112,21 +95,22 @@ export default function PageFooterSection() {
                     </div>
                 </div>
 
-                {/* Card Image Overlay */}
+                {/* Card Image Overlay (Desktop only) */}
                 <div
                     className="absolute hidden xl:block z-20 pointer-events-none"
                     style={{
                         width: "282px",
                         height: "188px",
                         top: "21px",
-                        left: "650px"
+                        left: "50%",
+                        marginLeft: "-100px",
                     }}
                 >
                     <Image src="/burracoAsset/card.svg" alt="Cards" fill className="object-contain" />
                 </div>
 
                 {/* Mobile/Tablet stacked layout */}
-                <div className="xl:hidden w-full max-w-[1242px] px-6 flex flex-col md:flex-row gap-8 items-stretch p-6 rounded-xl border border-[#D59444]/10 bg-black/60 backdrop-blur-md mt-6">
+                <div className="xl:hidden w-full max-w-[1242px] px-4 sm:px-6 flex flex-col md:flex-row gap-6 sm:gap-8 items-stretch p-4 sm:p-6 rounded-xl border border-[#D59444]/10 bg-black/60 backdrop-blur-md">
                     <div className="flex-1 text-left flex flex-col justify-center">
                         <h3 className="font-medium bg-clip-text text-transparent bg-gradient-to-b from-[#FFFFFF] via-[#EFCC88] to-[#D59444]" style={{ fontFamily: "Transcend, sans-serif", fontSize: "16px", marginBottom: "10px", textTransform: "uppercase" }}>
                             {t("footer_about_title")}
@@ -161,43 +145,20 @@ export default function PageFooterSection() {
                 </div>
 
                 {/* ================= PART 2: OUR GAMES SECTION ================= */}
-                <div
-                    className="relative mt-8 xl:mt-0 xl:absolute"
-                    style={{
-                        width: "237px",
-                        height: "24px",
-                        top: "209px",
-                        left: "649px"
-                    }}
-                >
+                <div className="mt-8 flex justify-center">
                     <img
                         src={isArabic ? "/burracoAsset/ourGames-ar.svg" : "/burracoAsset/ourGames.svg"}
                         alt="Our Games"
-                        className="w-full h-full object-contain pointer-events-none"
+                        className="w-[200px] sm:w-[237px] h-auto object-contain pointer-events-none"
                     />
                 </div>
 
-                {/* Cards Container */}
-                <div
-                    className="relative mt-6 xl:mt-0 xl:absolute flex flex-wrap xl:flex-none gap-6 xl:gap-0 justify-center items-center"
-                    style={{
-                        width: "100%",
-                        maxWidth: "1091px",
-                        height: "135px",
-                        top: "240px",
-                        left: "222px",
-                    }}
-                >
+                {/* Cards Container — now responsive flex */}
+                <div className="mt-6 flex flex-col sm:flex-row flex-wrap gap-4 sm:gap-6 justify-center items-center w-full max-w-[1091px]">
                     {games.map((game, idx) => (
                         <div
                             key={idx}
-                            className="relative flex items-center overflow-hidden transition-all duration-300 group xl:absolute z-10"
-                            style={{
-                                width: "347px",
-                                height: game.isThird ? "135px" : "134.73px",
-                                left: game.left,
-                                top: "0px",
-                            }}
+                            className="relative flex items-center overflow-hidden transition-all duration-300 group w-full sm:w-[347px] h-[135px]"
                         >
                             {/* Card Background */}
                             <img
@@ -210,10 +171,10 @@ export default function PageFooterSection() {
                             <div
                                 className="absolute pointer-events-none z-10"
                                 style={{
-                                    width: game.logoWidth,
-                                    height: game.logoHeight,
-                                    left: game.logoLeft,
-                                    top: game.logoTop
+                                    width: game.isThird ? "130px" : "120px",
+                                    height: "120px",
+                                    left: game.isThird ? "10px" : "16px",
+                                    top: "7px"
                                 }}
                             >
                                 <img

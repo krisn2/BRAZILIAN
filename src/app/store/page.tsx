@@ -33,11 +33,8 @@ export default function StorePage() {
                     <div className="max-w-[1165px] mx-auto flex flex-col items-center w-full">
                         {/* Header Title */}
                         <h1
-                            className="font-serif tracking-widest font-bold uppercase text-center flex items-center justify-center min-w-[153px] px-4"
+                            className="font-serif tracking-widest font-bold uppercase text-center flex items-center justify-center min-w-[153px] px-4 text-xl sm:text-2xl"
                             style={{
-                                height: '27px',
-                                fontSize: '24px',
-                                lineHeight: '27px',
                                 marginBottom: '20px',
                                 background: "linear-gradient(180deg, #EFCC88 14.94%, #D59444 43.34%, #B86B1D 68.34%)",
                                 WebkitBackgroundClip: "text",
@@ -49,13 +46,8 @@ export default function StorePage() {
 
                         {/* Golden Decorative Line Divider */}
                         <div
-                            className="bg-center bg-no-repeat bg-contain"
-                            style={{
-                                backgroundImage: `url('/burracoAsset/gloden-line.svg')`,
-                                width: '338px',
-                                height: '18px',
-                                marginBottom: '46px'
-                            }}
+                            className="bg-center bg-no-repeat bg-contain w-[250px] sm:w-[338px] h-[14px] sm:h-[18px] mb-8 sm:mb-[46px]"
+                            style={{ backgroundImage: `url('/burracoAsset/gloden-line.svg')` }}
                         />
 
                         <p className="text-gray-400 text-sm md:text-base tracking-wide mb-12 text-center">

@@ -16,13 +16,12 @@ export default function Home() {
       <div>
         <Navbar />
 
-        {/* Banner Section Container matching your canvas layout scale */}
+        {/* Banner Section Container — responsive with proper mobile height */}
         <div className="relative w-full flex justify-center">
           <div
-            className="relative select-none"
+            className="relative select-none w-full max-w-[1535px] min-h-[220px] sm:min-h-[260px] md:min-h-0"
             style={{
-              width: "1534px",
-              height: "359px",
+              aspectRatio: "1534 / 359",
               marginTop: "1px",
             }}
           >
@@ -37,64 +36,58 @@ export default function Home() {
 
             {/* ================= HERO TEXT & BADGES OVERLAY ================= */}
             <div
-              className="absolute flex flex-col justify-center"
-              style={{
-                left: "83px",
-                top: "0px",
-                width: "550px",
-                height: "100%",
-                zIndex: 10,
-              }}
+              className="absolute inset-0 flex flex-col justify-center px-4 sm:px-8 md:px-16 lg:px-20"
+              style={{ zIndex: 10 }}
             >
-              {/* Subheading text asset image */}
-              <div style={{ width: "323px", height: "26px", marginBottom: "4px" }}>
-                <img
-                  src={isArabic ? "/burracoAsset/The-royal-card-game-ar.svg" : "/burracoAsset/The-royal-card-game.svg"}
-                  alt="The Royal Card Game"
-                  className="w-full h-full object-contain object-left"
-                />
-              </div>
-
-              {/* Main Heading text asset image */}
-              <div style={{ width: "492px", height: "46px", marginBottom: "12px" }}>
-                <img
-                  src={isArabic ? "/burracoAsset/experience-baloot-ar.svg" : "/burracoAsset/experience-baloot.svg"}
-                  alt="Experience Baloot"
-                  className="w-full h-full object-contain object-left"
-                />
-              </div>
-
-              {/* Description Body Text */}
-              <p
-                className="text-[#A49A8A] font-normal leading-relaxed text-sm tracking-wide"
-                style={{
-                  fontFamily: "Poppins, sans-serif",
-                  maxWidth: "460px",
-                  marginBottom: "24px",
-                  color: '#fff',
-                  textShadow: "1px 1px 2px rgba(0, 0, 0, 0.9)"
-                }}
-              >
-                {t("hero_description")}
-              </p>
-
-              {/* Store Badges Action Row */}
-              <div className="flex items-center gap-3">
-                <a href="#" className="block hover:brightness-110">
+              <div className="max-w-[550px]">
+                {/* Subheading text asset image */}
+                <div className="w-[140px] sm:w-[240px] md:w-[323px] h-auto mb-1">
                   <img
-                    src="/burracoAsset/playstore.png"
-                    alt="Google Play"
-                    className="w-[140px] h-auto"
+                    src={isArabic ? "/burracoAsset/The-royal-card-game-ar.svg" : "/burracoAsset/The-royal-card-game.svg"}
+                    alt="The Royal Card Game"
+                    className="w-full h-auto object-contain object-left"
                   />
-                </a>
+                </div>
 
-                <a href="#" className="block hover:brightness-110">
+                {/* Main Heading text asset image */}
+                <div className="w-[180px] sm:w-[340px] md:w-[492px] h-auto mb-2 sm:mb-3">
                   <img
-                    src="/burracoAsset/apple.png"
-                    alt="App Store"
-                    className="w-[110px] h-auto"
+                    src={isArabic ? "/burracoAsset/experience-baloot-ar.svg" : "/burracoAsset/experience-baloot.svg"}
+                    alt="Experience Baloot"
+                    className="w-full h-auto object-contain object-left"
                   />
-                </a>
+                </div>
+
+                {/* Description Body Text */}
+                <p
+                  className="text-[#A49A8A] font-normal leading-relaxed text-xs sm:text-sm tracking-wide mb-4 sm:mb-6 max-w-[460px] hidden sm:block"
+                  style={{
+                    fontFamily: "Poppins, sans-serif",
+                    color: '#fff',
+                    textShadow: "1px 1px 2px rgba(0, 0, 0, 0.9)"
+                  }}
+                >
+                  {t("hero_description")}
+                </p>
+
+                {/* Store Badges Action Row */}
+                <div className="flex items-center gap-2 sm:gap-3">
+                  <a href="#" className="block hover:brightness-110">
+                    <img
+                      src="/burracoAsset/playstore.png"
+                      alt="Google Play"
+                      className="w-[90px] sm:w-[120px] md:w-[140px] h-auto"
+                    />
+                  </a>
+
+                  <a href="#" className="block hover:brightness-110">
+                    <img
+                      src="/burracoAsset/apple.png"
+                      alt="App Store"
+                      className="w-[72px] sm:w-[95px] md:w-[110px] h-auto"
+                    />
+                  </a>
+                </div>
               </div>
             </div>
 
