@@ -431,7 +431,7 @@ export default function ContactPage() {
                         >
                             {/* LEFT COLUMN: Customer Care Support */}
                             <div
-                                className="relative flex flex-col items-center justify-center w-full md:w-[45%] py-8 md:py-0"
+                                className="relative flex flex-col items-center justify-center w-full md:w-[45%] p-10 md:p-14"
                                 style={{
                                     minHeight: '300px',
                                     backgroundImage: "url('/burracoAsset/contact-form-detail-bg.svg')",
@@ -440,37 +440,38 @@ export default function ContactPage() {
                                     backgroundRepeat: 'no-repeat',
                                 }}
                             >
-                                <img src="/burracoAsset/custmore-support-logo.svg" alt="Customer Support" className="w-[120px] mb-6" />
-                                <h2 className="text-[#f3c677] text-xl md:text-2xl font-serif text-center uppercase tracking-widest mb-8 leading-tight">
-                                    {t("contact_customer_care")}
-                                </h2>
+                                <img src="/burracoAsset/custmore-support-logo.svg" alt="Customer Support" className="w-[90px] md:w-[110px] mb-4" />
+                                <h4 className="text-[#f3c677] text-lg md:text-xl font-serif text-center uppercase tracking-widest mb-6 leading-tight flex flex-col items-center">
+                                    <span>{t("contact_customer")}</span>
+                                    <span>{t("contact_care_support")}</span>
+                                </h4>
 
-                                <div className="w-[60%] border-b border-[#3e2c1c]/50 mb-8" />
+                                <div className="w-[80%] border-b border-[#3e2c1c]/50 mb-6" />
 
-                                <div className="flex items-center gap-6 w-[60%] mb-8">
-                                    <div className="w-12 h-12 rounded-full border border-[#f3c677] flex items-center justify-center shrink-0">
-                                        <svg className="w-6 h-6 text-[#f3c677]" fill="currentColor" viewBox="0 0 20 20">
+                                <div className="flex items-center justify-center gap-4 w-full mb-6">
+                                    <div className="w-10 h-10 rounded-full border border-[#f3c677] flex items-center justify-center shrink-0">
+                                        <svg className="w-5 h-5 text-[#f3c677]" fill="currentColor" viewBox="0 0 20 20">
                                             <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
                                             <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
                                         </svg>
                                     </div>
-                                    <div>
-                                        <h3 className="text-[#f3c677] text-xs font-semibold uppercase tracking-wider mb-1">{t("contact_email")}</h3>
-                                        <p className="text-[#e6dcc8] text-sm">info@diwanyeh.com</p>
+                                    <div className="flex flex-col items-start min-w-[120px]">
+                                        <h3 className="text-[#f3c677] text-[10px] font-semibold uppercase tracking-wider mb-0.5">{t("contact_email")}</h3>
+                                        <p className="text-[#e6dcc8] text-xs">info@diwanyeh.com</p>
                                     </div>
                                 </div>
 
-                                <div className="w-[60%] border-b border-[#3e2c1c]/50 mb-8" />
+                                <div className="w-[80%] border-b border-[#3e2c1c]/50 mb-6" />
 
-                                <div className="flex items-center gap-6 w-[60%]">
-                                    <div className="w-12 h-12 rounded-full border border-[#f3c677] flex items-center justify-center shrink-0">
-                                        <svg className="w-6 h-6 text-[#f3c677]" fill="currentColor" viewBox="0 0 20 20">
+                                <div className="flex items-center justify-center gap-4 w-full mb-2">
+                                    <div className="w-10 h-10 rounded-full border border-[#f3c677] flex items-center justify-center shrink-0">
+                                        <svg className="w-5 h-5 text-[#f3c677]" fill="currentColor" viewBox="0 0 20 20">
                                             <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
                                         </svg>
                                     </div>
-                                    <div>
-                                        <h3 className="text-[#f3c677] text-xs font-semibold uppercase tracking-wider mb-1">{t("contact_mobile")}</h3>
-                                        <p className="text-[#e6dcc8] text-sm">+054 505 0888</p>
+                                    <div className="flex flex-col items-start min-w-[120px]">
+                                        <h3 className="text-[#f3c677] text-[10px] font-semibold uppercase tracking-wider mb-0.5">{t("contact_mobile")}</h3>
+                                        <p className="text-[#e6dcc8] text-xs">+054 505 0888</p>
                                     </div>
                                 </div>
                             </div>

@@ -37,16 +37,7 @@ export default function RulesPage() {
 
             {/* --- CONTENT CONTAINER WITH DECORATIVE BACKGROUND --- */}
             <div 
-              className="relative w-full p-8 md:p-16 flex flex-col items-center justify-center"
-              style={{ 
-                backgroundImage: `url('/burracoAsset/box.svg')`,
-                backgroundSize: '100% 100%',
-                backgroundPosition: 'center',
-                backgroundRepeat: 'no-repeat',
-                width: '100%',
-                maxWidth: '1165px',
-                minHeight: '654px'
-              }}
+              className="relative w-full max-w-4xl md:max-w-[1165px] p-8 md:p-16 flex flex-col items-center justify-center bg-[#0c0a06]/60 backdrop-blur-sm border border-amber-950/40 rounded-2xl shadow-2xl md:bg-transparent md:backdrop-blur-none md:border-none md:shadow-none md:bg-[url('/burracoAsset/box.svg')] md:bg-[length:100%_100%] md:bg-center md:bg-no-repeat md:min-h-[654px]"
             >
               {/* Inner Text Block */}
               <div className="max-w-3xl text-center flex flex-col gap-4 text-gray-200 text-sm md:text-base tracking-wide leading-relaxed font-light px-4 z-10">

@@ -41,21 +41,43 @@ export default function Home() {
             >
               <div className="max-w-[550px]">
                 {/* Subheading text asset image */}
-                <div className="w-[140px] sm:w-[240px] md:w-[323px] h-auto mb-1">
+                <div className="w-full sm:w-[240px] md:w-[323px] h-auto mb-1">
                   <img
                     src={isArabic ? "/burracoAsset/The-royal-card-game-ar.svg" : "/burracoAsset/The-royal-card-game.svg"}
                     alt="The Royal Card Game"
-                    className="w-full h-auto object-contain object-left"
+                    className="hidden sm:block w-full h-auto object-contain object-left"
                   />
+                  <h2
+                    className={`sm:hidden font-bold ${isArabic ? 'text-base' : 'text-base uppercase'} tracking-wider`}
+                    style={{
+                      background: "linear-gradient(180deg, #EFCC88 0%, #D59444 48%, #B86B1D 100%)",
+                      WebkitBackgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
+                      filter: "drop-shadow(1px 1px 1px rgba(0,0,0,1)) drop-shadow(0px 0px 2px rgba(0,0,0,1))"
+                    }}
+                  >
+                    {t("hero_royal_alt")}
+                  </h2>
                 </div>
 
                 {/* Main Heading text asset image */}
-                <div className="w-[180px] sm:w-[340px] md:w-[492px] h-auto mb-2 sm:mb-3">
+                <div className="w-full sm:w-[340px] md:w-[492px] h-auto mb-2 sm:mb-3">
                   <img
                     src={isArabic ? "/burracoAsset/experience-baloot-ar.svg" : "/burracoAsset/experience-baloot.svg"}
                     alt="Experience Baloot"
-                    className="w-full h-auto object-contain object-left"
+                    className="hidden sm:block w-full h-auto object-contain object-left"
                   />
+                  <h1
+                    className={`sm:hidden font-black ${isArabic ? 'text-2xl leading-tight' : 'text-2xl uppercase leading-tight'}`}
+                    style={{
+                      background: "linear-gradient(180deg, #EFCC88 0%, #D59444 48%, #B86B1D 100%)",
+                      WebkitBackgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
+                      filter: "drop-shadow(1px 1px 1px rgba(0,0,0,1)) drop-shadow(0px 0px 2px rgba(0,0,0,1))"
+                    }}
+                  >
+                    {t("hero_experience_alt")}
+                  </h1>
                 </div>
 
                 {/* Description Body Text */}

@@ -73,12 +73,12 @@ export default function Navbar() {
                     <img
                         src="/burracoAsset/navbar-logo.svg"
                         alt="BALOOT"
-                        className="w-[36px] h-[36px] sm:w-[44px] sm:h-[44px] object-contain"
+                        className="w-[48px] h-[48px] sm:w-[56px] sm:h-[56px] object-contain"
                     />
                     <img
                         src={isArabic ? "/burracoAsset/DIWANYEH-ar.svg" : "/burracoAsset/DIWANYEH.svg"}
                         alt="DIWANYEH"
-                        className="w-[100px] sm:w-[130px] h-[32px] sm:h-[38px] object-contain"
+                        className="w-[120px] sm:w-[150px] h-[40px] sm:h-[46px] object-contain"
                     />
                 </div>
 
@@ -249,7 +249,7 @@ export default function Navbar() {
                         <img
                             src={isArabic ? "/burracoAsset/DIWANYEH-ar.svg" : "/burracoAsset/DIWANYEH.svg"}
                             alt="DIWANYEH"
-                            className="w-[130px] h-[32px] object-contain"
+                            className="w-[150px] h-[40px] object-contain"
                         />
                         <button
                             onClick={() => setIsMobileMenuOpen(false)}
