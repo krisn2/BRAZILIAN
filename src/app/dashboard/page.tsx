@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Poppins } from "next/font/google";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import { useAuth } from "@/context/AuthContext";
+import { useAuth, getCookie } from "@/context/AuthContext";
 import { useLanguage } from "@/context/LanguageContext";
 import { useRouter } from "next/navigation";
 import { io, Socket } from "socket.io-client";
@@ -33,6 +33,7 @@ interface Ticket {
     category: string;
     priority: string;
     status: string;
+    ticketStatus?: string;
     messages: TicketMessage[];
     createdAt: string;
 }
@@ -108,6 +109,46 @@ export default function DashboardPage() {
             });
         });
 
+        const reloadTickets = async () => {
+            try {
+                const cleanApiUrl = API_URL.endsWith("/api") ? API_URL : `${API_URL}/api`;
+                const res = await fetch(`${cleanApiUrl}/tickets/my-tickets`, {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                const data = await res.json();
+                if (data.success && data.data) {
+                    setTickets(data.data);
+                    setSelectedTicket(prev => {
+                        if (!prev) return data.data[0] || null;
+                        const match = data.data.find((t: any) => t._id === prev._id || t.ticketId === prev.ticketId);
+                        return match || prev;
+                    });
+                }
+            } catch (err) {
+                console.error("Error reloading tickets:", err);
+            }
+        };
+
+        socket.on('ticket-status-updated', (data: { ticketId: string, status?: string, ticketStatus?: string, ticket?: any }) => {
+            const newStatus: string = data.status || data.ticketStatus || "open";
+            setTickets(prevTickets => prevTickets.map(t => {
+                if (t._id === data.ticketId || t.ticketId === data.ticketId) {
+                    return { ...t, status: newStatus, ticketStatus: newStatus };
+                }
+                return t;
+            }));
+            setSelectedTicket(prevSelected => {
+                if (prevSelected && (prevSelected._id === data.ticketId || prevSelected.ticketId === data.ticketId)) {
+                    return { ...prevSelected, status: newStatus, ticketStatus: newStatus };
+                }
+                return prevSelected;
+            });
+        });
+
+        socket.on('ticket-updated', () => {
+            reloadTickets();
+        });
+
         return () => {
             socket.disconnect();
         };
@@ -159,7 +200,8 @@ export default function DashboardPage() {
     }, [isAuthenticated, token, user]);
 
     const handleSendReply = async () => {
-        if (!replyText.trim() || !selectedTicket || !token) return;
+        const activeToken = token || (typeof document !== "undefined" ? getCookie("token") : null) || (typeof window !== "undefined" ? localStorage.getItem("token") : null);
+        if (!replyText.trim() || !selectedTicket || !activeToken) return;
 
         try {
             const cleanApiUrl = API_URL.endsWith("/api") ? API_URL : `${API_URL}/api`;
@@ -167,7 +209,7 @@ export default function DashboardPage() {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`
+                    Authorization: `Bearer ${activeToken}`
                 },
                 body: JSON.stringify({ message: replyText })
             });
@@ -210,6 +252,21 @@ export default function DashboardPage() {
             default: return "text-white border-white/20 bg-white/5";
         }
     };
+
+    if (isLoading) {
+        return (
+            <div className={`min-h-screen bg-[#060403] text-white flex flex-col items-center justify-center ${poppins.className}`}>
+                <div className="flex flex-col items-center gap-3">
+                    <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-[#E5B962]"></div>
+                    <span className="text-xs text-[#E5B962] tracking-widest uppercase font-serif">Loading...</span>
+                </div>
+            </div>
+        );
+    }
+
+    if (!isAuthenticated) {
+        return null;
+    }
 
     return (
         <div className={`min-h-screen bg-[#060403] text-white flex flex-col items-center ${poppins.className}`}>
@@ -313,8 +370,8 @@ export default function DashboardPage() {
                                                             <span className={`text-[11px] font-semibold uppercase tracking-wider ${isSelected ? 'text-[#E5B962]' : 'text-gray-300'}`}>
                                                                 #{ticket.ticketId}
                                                             </span>
-                                                            <span className={`text-[9px] px-2 py-0.5 rounded-full border ${getStatusColor(ticket.status)}`}>
-                                                                {formatStatus(ticket.status)}
+                                                            <span className={`text-[9px] px-2 py-0.5 rounded-full border ${getStatusColor(ticket.status || (ticket as any).ticketStatus)}`}>
+                                                                {formatStatus(ticket.status || (ticket as any).ticketStatus)}
                                                             </span>
                                                         </div>
                                                         <h4 className="text-xs font-medium text-white line-clamp-1 mb-2">
@@ -360,8 +417,8 @@ export default function DashboardPage() {
                                             <div className="mb-6">
                                                 <div className="flex items-center gap-3 mb-2">
                                                     <span className="text-lg font-bold text-[#E5B962]">#{selectedTicket.ticketId}</span>
-                                                    <span className={`text-[10px] px-2 py-0.5 rounded border font-medium ${getStatusColor(selectedTicket.status)}`}>
-                                                        {formatStatus(selectedTicket.status)}
+                                                    <span className={`text-[10px] px-2 py-0.5 rounded border font-medium ${getStatusColor(selectedTicket.status || (selectedTicket as any).ticketStatus)}`}>
+                                                        {formatStatus(selectedTicket.status || (selectedTicket as any).ticketStatus)}
                                                     </span>
                                                 </div>
                                                 <h3 className="text-base font-semibold text-white mb-3">{selectedTicket.subject}</h3>

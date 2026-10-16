@@ -5,7 +5,7 @@ import { io, Socket } from 'socket.io-client';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { LoginModal } from '@/components/login';
-import { useAuth } from '@/context/AuthContext';
+import { useAuth, getCookie } from '@/context/AuthContext';
 import { useLanguage } from '@/context/LanguageContext';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
@@ -26,7 +26,7 @@ export default function ContactPage() {
     const [agentName, setAgentName] = useState('Agent');
 
     // Auth states from context
-    const { user, token, isAuthenticated, login } = useAuth();
+    const { user, token, isAuthenticated, isLoading, logout, login } = useAuth();
     const [showLoginModal, setShowLoginModal] = useState<boolean>(false);
 
     // Unauth guest query states
@@ -57,12 +57,19 @@ export default function ContactPage() {
     const uploadImage = async (file: File, module: 'chat' | 'ticket', entityId: string): Promise<{ key: string; publicUrl: string } | null> => {
         const cleanApiUrl = API_URL.endsWith('/api') ? API_URL : `${API_URL}/api`;
 
+        const activeToken = token || (typeof document !== 'undefined' ? getCookie('token') : null) || (typeof window !== 'undefined' ? localStorage.getItem('token') : null);
+
+        if (!activeToken) {
+            setShowLoginModal(true);
+            throw new Error('Please log in to attach files.');
+        }
+
         // Step 1: Get presigned upload URL from backend
         const presignRes = await fetch(`${cleanApiUrl}/uploads/presigned-url`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
+                'Authorization': `Bearer ${activeToken}`
             },
             body: JSON.stringify({
                 module,
@@ -74,7 +81,12 @@ export default function ContactPage() {
         });
 
         const presignData = await presignRes.json();
-        if (!presignData.success) {
+        if (!presignRes.ok || !presignData.success) {
+            if (presignRes.status === 401 || presignRes.status === 403 || presignData.message === 'Invalid token' || presignData.message === 'No token provided') {
+                logout();
+                setShowLoginModal(true);
+                throw new Error('Your session has expired. Please log in again.');
+            }
             throw new Error(presignData.message || 'Failed to get upload URL');
         }
 
@@ -95,13 +107,23 @@ export default function ContactPage() {
         };
     };
 
+
     // Handle chat image upload
     const handleChatImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
-        if (!file || !user || !socketRef.current) return;
+        if (!file) return;
 
         // Reset file input so the same file can be re-selected
         if (chatFileRef.current) chatFileRef.current.value = '';
+
+        if (!isAuthenticated || !user) {
+            setShowLoginModal(true);
+            setUploadError('Please log in to send images.');
+            setTimeout(() => setUploadError(null), 4000);
+            return;
+        }
+
+        if (!socketRef.current) return;
 
         // Client-side validation
         if (!ALLOWED_TYPES.includes(file.type)) {
@@ -157,10 +179,16 @@ export default function ContactPage() {
     // Handle ticket image upload
     const handleTicketImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
-        if (!file || !user) return;
+        if (!file) return;
 
         // Reset file input
         if (ticketFileRef.current) ticketFileRef.current.value = '';
+
+        if (!isAuthenticated || !user) {
+            setShowLoginModal(true);
+            setTicketStatus({ type: 'error', message: 'Please log in to attach files.' });
+            return;
+        }
 
         // Client-side validation
         if (!ALLOWED_TYPES.includes(file.type)) {
@@ -270,8 +298,10 @@ export default function ContactPage() {
     const handleTicketSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setTicketStatus(null);
-        if (!isAuthenticated || !token || !user) {
+        const activeToken = token || (typeof document !== 'undefined' ? getCookie('token') : null) || (typeof window !== 'undefined' ? localStorage.getItem('token') : null);
+        if (!isAuthenticated || !activeToken || !user) {
             setShowLoginModal(true);
+            setTicketStatus({ type: 'error', message: 'Please log in to submit a ticket.' });
             return;
         }
 
@@ -281,7 +311,7 @@ export default function ContactPage() {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
+                    'Authorization': `Bearer ${activeToken}`
                 },
                 body: JSON.stringify({
                     userId: user.userID,
@@ -299,6 +329,12 @@ export default function ContactPage() {
             });
 
             const data = await res.json();
+            if (!res.ok && (res.status === 401 || res.status === 403 || data.message === 'Invalid token' || data.message === 'No token provided')) {
+                logout();
+                setShowLoginModal(true);
+                setTicketStatus({ type: 'error', message: 'Your session has expired. Please log in again.' });
+                return;
+            }
             if (data.success) {
                 setTicketStatus({ type: 'success', message: 'Ticket submitted successfully!' });
                 setSubject('');
@@ -309,8 +345,8 @@ export default function ContactPage() {
             } else {
                 setTicketStatus({ type: 'error', message: data.message || 'Failed to submit ticket' });
             }
-        } catch (err) {
-            setTicketStatus({ type: 'error', message: 'Error connecting to backend server to submit ticket' });
+        } catch (err: any) {
+            setTicketStatus({ type: 'error', message: err.message || 'Error connecting to backend server to submit ticket' });
         }
     };
 
@@ -417,7 +453,24 @@ export default function ContactPage() {
                     </div>
 
                     {/* Main Containers Wrapper */}
-                    {!isAuthenticated ? (
+                    {isLoading ? (
+                        <div
+                            className="w-full flex items-center justify-center relative shadow-2xl rounded-xl"
+                            style={{
+                                width: '100%',
+                                maxWidth: '1145px',
+                                minHeight: '500px',
+                                background: 'linear-gradient(135deg, #18110b 0%, #060503 100%)',
+                                border: '1px solid rgba(62, 44, 28, 0.3)',
+                                padding: '1rem',
+                            }}
+                        >
+                            <div className="flex flex-col items-center gap-3">
+                                <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-[#E5B962]"></div>
+                                <span className="text-xs text-[#E5B962] tracking-widest uppercase font-serif">Loading...</span>
+                            </div>
+                        </div>
+                    ) : !isAuthenticated ? (
                         <div
                             className="w-full flex flex-col md:flex-row items-stretch justify-between relative shadow-2xl overflow-hidden rounded-xl md:rounded-none"
                             style={{
@@ -471,7 +524,7 @@ export default function ContactPage() {
                                     </div>
                                     <div className="flex flex-col items-start min-w-[120px]">
                                         <h3 className="text-[#f3c677] text-[10px] font-semibold uppercase tracking-wider mb-0.5">{t("contact_mobile")}</h3>
-                                        <p className="text-[#e6dcc8] text-xs">+054 505 0888</p>
+                                        <p className="text-[#e6dcc8] text-xs">+96654 505 0888</p>
                                     </div>
                                 </div>
                             </div>
@@ -844,6 +897,7 @@ export default function ContactPage() {
                     const { accessToken, user: userData } = data;
                     login(userData, accessToken);
                     setShowLoginModal(false);
+                    setTicketStatus(null);
                 }}
             />
         </div>

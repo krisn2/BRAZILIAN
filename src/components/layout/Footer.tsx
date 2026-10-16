@@ -3,6 +3,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import { useLanguage } from "@/context/LanguageContext";
 
 export default function Footer() {
@@ -33,9 +34,9 @@ export default function Footer() {
 
             {/* Right section: Links */}
             <div className="flex-1 flex justify-center md:justify-end items-center gap-6 text-xs font-light tracking-wide">
-                <a href="/TermsAndConditions" className="hover:text-white transition-colors duration-200">{t("footer_terms")}</a>
+                <Link href="/TermsAndConditions" className="hover:text-white transition-colors duration-200">{t("footer_terms")}</Link>
                 <span className="opacity-30">|</span>
-                <a href="/PrivacyPolicy" className="hover:text-white transition-colors duration-200">{t("footer_privacy")}</a>
+                <Link href="/PrivacyPolicy" className="hover:text-white transition-colors duration-200">{t("footer_privacy")}</Link>
             </div>
         </footer>
     );

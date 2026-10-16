@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import { Poppins } from "next/font/google";
 import { usePathname, useRouter } from "next/navigation";
 import Login from "@/components/sections/Login";
@@ -20,7 +21,7 @@ export default function Navbar() {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     // Auth context
-    const { isAuthenticated, logout, user } = useAuth();
+    const { isAuthenticated, isLoading, logout, user } = useAuth();
 
     // Language context
     const { t, toggleLanguage, language, isArabic } = useLanguage();
@@ -69,7 +70,7 @@ export default function Navbar() {
 
                 {/* ================= BRANDING SECTION ================= */}
                 {/* Mobile: Centered logo */}
-                <div className="lg:hidden absolute left-1/2 -translate-x-1/2 flex items-center gap-2 cursor-pointer" onClick={() => router.push("/")}>
+                <Link href="/" className="lg:hidden absolute left-1/2 -translate-x-1/2 flex items-center gap-2 cursor-pointer">
                     <img
                         src="/burracoAsset/navbar-logo.svg"
                         alt="BALOOT"
@@ -80,10 +81,10 @@ export default function Navbar() {
                         alt="DIWANYEH"
                         className="w-[120px] sm:w-[150px] h-[40px] sm:h-[46px] object-contain"
                     />
-                </div>
+                </Link>
 
                 {/* Desktop: Left-aligned logo */}
-                <div className="hidden lg:flex items-center gap-3 sm:gap-4 cursor-pointer shrink-0" onClick={() => router.push("/")}>
+                <Link href="/" className="hidden lg:flex items-center gap-3 sm:gap-4 cursor-pointer shrink-0">
                     <img
                         src="/burracoAsset/navbar-logo.svg"
                         alt="BALOOT"
@@ -94,14 +95,14 @@ export default function Navbar() {
                         alt="DIWANYEH"
                         className="w-[130px] md:w-[212px] h-[42px] object-contain"
                     />
-                </div>
+                </Link>
 
                 {/* ================= MIDDLE NAVIGATION LINKS (Desktop) ================= */}
                 <div className="hidden lg:flex items-center gap-8 xl:gap-12">
                     {navLinks.map((link) => {
                         const isActive = link.href === "/" ? pathname === "/" : pathname?.startsWith(link.href);
                         return (
-                            <a
+                            <Link
                                 key={link.href}
                                 href={link.href}
                                 className="relative flex flex-col items-center justify-center transition-colors duration-200 hover:opacity-80 active:opacity-100 text-base"
@@ -118,7 +119,7 @@ export default function Navbar() {
                                         <span className="h-[1px] w-4 bg-gradient-to-l from-transparent to-[#E5B962]"></span>
                                     </span>
                                 )}
-                            </a>
+                            </Link>
                         );
                     })}
                 </div>
@@ -138,7 +139,10 @@ export default function Navbar() {
                         <span>{language === 'en' ? 'العربية' : 'English'}</span>
                     </button>
 
-                    {!isAuthenticated ? (
+                    {isLoading ? (
+                        /* Avoid login button flashing while checking session */
+                        <div className="hidden sm:block w-[90px] sm:w-[101px] h-[36px] sm:h-[40px]" />
+                    ) : !isAuthenticated ? (
                         /* Unauthenticated: Show Login Button */
                         <button
                             onClick={() => setIsLoginOpen(true)}
@@ -267,7 +271,7 @@ export default function Navbar() {
                         {navLinks.map((link) => {
                             const isActive = link.href === "/" ? pathname === "/" : pathname?.startsWith(link.href);
                             return (
-                                <a
+                                <Link
                                     key={link.href}
                                     href={link.href}
                                     className={`px-4 py-3 rounded-lg text-sm font-medium uppercase tracking-wider transition-all duration-200 ${
@@ -278,7 +282,7 @@ export default function Navbar() {
                                     onClick={() => setIsMobileMenuOpen(false)}
                                 >
                                     {link.name}
-                                </a>
+                                </Link>
                             );
                         })}
                     </nav>
@@ -298,7 +302,9 @@ export default function Navbar() {
                             <span>{language === 'en' ? 'العربية' : 'English'}</span>
                         </button>
 
-                        {!isAuthenticated ? (
+                        {isLoading ? (
+                            <div className="w-full h-10" />
+                        ) : !isAuthenticated ? (
                             <button
                                 onClick={() => {
                                     setIsMobileMenuOpen(false);

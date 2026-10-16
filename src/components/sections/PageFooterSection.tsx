@@ -2,6 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { useLanguage } from "@/context/LanguageContext";
 
 export default function PageFooterSection() {
@@ -89,9 +90,9 @@ export default function PageFooterSection() {
                                 <span>{t("footer_howtoplay_step3")}</span>
                             </div>
                         </div>
-                        <a href="/rules" className="inline-block hover:brightness-110 active:brightness-95 transition-all">
+                        <Link href="/rules" className="inline-block hover:brightness-110 active:brightness-95 transition-all">
                             <img src={isArabic ? "/burracoAsset/view-full-rules-ar.svg" : "/burracoAsset/view-full-rules.svg"} alt={t("footer_view_rules")} className="h-[28px] w-auto" />
-                        </a>
+                        </Link>
                     </div>
                 </div>
 
@@ -138,9 +139,9 @@ export default function PageFooterSection() {
                                 <span>{t("footer_howtoplay_step3")}</span>
                             </div>
                         </div>
-                        <a href="/rules" className="inline-block hover:brightness-110 active:brightness-95 transition-all">
+                        <Link href="/rules" className="inline-block hover:brightness-110 active:brightness-95 transition-all">
                             <img src={isArabic ? "/burracoAsset/view-full-rules-ar.svg" : "/burracoAsset/view-full-rules.svg"} alt={t("footer_view_rules")} className="h-[28px] w-auto" />
-                        </a>
+                        </Link>
                     </div>
                 </div>
 
